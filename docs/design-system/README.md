@@ -96,6 +96,12 @@
    - chart summary + accessible data table
    - 현재 prototype accessibility audit
 
+16. `15-data-state-system.md`
+   - Availability / Freshness / Completeness / Value Origin 분리
+   - Loading / Refreshing / Empty / Partial / Stale / Estimated / Error
+   - 상태의 page/card/metric/source scope 규칙
+   - source coverage가 달라질 때 comparison 재검증 원칙
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -136,6 +142,10 @@ Rich music resource table, exact numeric table, ranking preview, rank change, na
 
 Keyboard/focus, contrast, tooltip, live status, chart alternative, 320px reflow, manual QA 항목을 검증하는 Accessibility Lab입니다.
 
+`prototype/design-system-lab/data-states.html`
+
+Ready/Loading/Refreshing/Partial/Stale/Error 상태 전환, Empty taxonomy, Estimated, source health, coverage mismatch를 검증하는 Data State Lab입니다.
+
 ## 상태 표기
 
 - **Stable**: 넓게 적용해도 되는 확정 원칙
@@ -154,7 +164,8 @@ Keyboard/focus, contrast, tooltip, live status, chart alternative, 320px reflow,
 - 컬러 구조: **Stable**
 - 컬러 값: **Proposed v0.1**
 - Dashboard UI sample: **Proposed v0.1**
-- Data State 정의: DSP 스키마/수집 주기 확인 후 **Deferred**
+- Data State 원칙·시각 문법: **Stable**
+- source별 refresh cadence / stale threshold / health aggregation: 실제 DSP 파이프라인 확인 후 **Deferred**
 - 접근성 기준선: **WCAG 2.2 AA / Stable**
 - 실제 browser zoom·screen reader·forced-colors QA: **Required before production**
 
