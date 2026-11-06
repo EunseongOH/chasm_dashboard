@@ -11,6 +11,7 @@ Read these documents first:
 5. `docs/design-system/03-brand-assets.md`
 6. `docs/design-system/04-spacing-and-radius.md`
 7. `docs/design-system/05-typography-and-card-anatomy.md`
+8. `docs/design-system/06-surface-border-elevation.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -78,6 +79,20 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Surface, border, and elevation
+
+Follow `docs/design-system/06-surface-border-elevation.md`.
+
+Key rules:
+- Default dashboard cards use white/default surface + 1px border + no shadow.
+- Shadow indicates actual elevation/overlap, not a generic card style.
+- Use surface color, border, and shadow deliberately; do not stack all three aggressively just to create separation.
+- Use subtle/inset surface for nested grouping instead of creating another bordered/shadowed card.
+- Tooltip/popover/dropdown/modal may use elevation shadows because they actually float above content.
+- Hover does not automatically mean elevation.
+- Table/list rows use subtle dividers rather than individual rounded cards.
+- Sidebar is a structural surface separated by a border, not a floating surface.
 
 ## Typography and card anatomy
 
