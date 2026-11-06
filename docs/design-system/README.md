@@ -71,6 +71,12 @@
    - rank change / exact value / artwork row 규칙
    - selection / pagination / wide comparison table 기준
 
+12. `11-insight-and-annotation-system.md`
+   - Observation / Comparison / Signal / Interpretation / Recommendation 구분
+   - evidence disclosure와 insight→chart linking
+   - Alert와 analytical insight 분리
+   - annotation copy / contradiction / insufficient evidence 원칙
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -94,6 +100,10 @@ Axis/Scale/Legend/Direct label/Missing/Event annotation 등 데이터 시각화 
 `prototype/design-system-lab/table-ranking.html`
 
 Rich music resource table, exact numeric table, ranking preview, rank change, narrow reflow, selection, wide comparison matrix를 검증하는 Table Lab입니다.
+
+`prototype/design-system-lab/insight-annotation.html`
+
+사실·비교·신호·해석·행동의 근거 수준, 근거 펼침, chart linking, contradiction, insufficient evidence, alert와 insight 구분을 검증하는 Insight Lab입니다.
 
 ## 상태 표기
 
