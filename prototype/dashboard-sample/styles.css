@@ -458,6 +458,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   font-size: var(--type-meta-size);
   line-height: var(--type-meta-line);
 }
+/* Prototype artwork: placeholder imagery is intentionally not part of the UI color-token contract. */
 .artist-avatar {
   width: 34px; height: 34px;
   display: grid; place-items: center;
@@ -1215,7 +1216,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   align-items: center;
   padding: var(--space-4) var(--space-5);
   margin-bottom: var(--space-4);
-  background: linear-gradient(90deg, var(--blue-50), #FAFCFF 70%);
+  background: linear-gradient(90deg, var(--blue-50), var(--neutral-25) 70%);
   border: 1px solid var(--blue-100);
   border-radius: var(--radius-card);
 }
@@ -2133,6 +2134,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   line-height: var(--type-meta-line);
 }
 
+/* Prototype artwork swatches below simulate album covers and are not system UI colors. */
 .cover {
   flex: 0 0 auto;
   width: var(--table-artwork-size);
