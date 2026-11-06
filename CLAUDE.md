@@ -21,6 +21,7 @@ Read these documents first:
 15. `docs/design-system/13-content-and-microcopy-system.md`
 16. `docs/design-system/14-accessibility-system.md`
 17. `docs/design-system/15-data-state-system.md`
+18. `docs/design-system/16-filter-search-date-query-system.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -88,6 +89,30 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Filter, search, date and query control system
+
+Follow `docs/design-system/16-filter-search-date-query-system.md`.
+
+Key rules:
+- Query Context, Filter, Search, Comparison Context, View Control, and Sort are different product concepts; do not style them as interchangeable “filters”.
+- Global query context changes the meaning of the whole analysis. Local filters/search/view controls belong inside the affected module.
+- Make scope visible through placement and labels.
+- Show exact resolved dates alongside relative period presets.
+- Do not call a rolling range “전월” unless it is actually a calendar-month comparison.
+- Treat complex multi-select filters as draft state until Apply when continuous remote queries would be noisy or expensive.
+- Default “all” selections do not need active chips; summarize only non-default constraints.
+- Query transition and background refresh are different. Never show a new query label with old-query data as if it were valid.
+- Background refresh may preserve last-known data; a changed query should commit query context and new result together or use an explicit loading state.
+- Global platform filtering can change aggregate meaning and must trigger valid metric recalculation. The current dashboard visualizes platform filtering as chart-local until real aggregation contracts are known.
+- Search labels must identify scope, e.g. “곡명 검색”. Provide clear and no-results behavior.
+- Sort changes order, not the result subset, and must not be represented as an active filter.
+- Comparison Off hides comparison-dependent values/insights; it does not replace them with zero.
+- URL-shareable state is a product direction for global query/date/filter/comparison, but routing/storage implementation remains Deferred.
+- Exact recent-N-day boundaries, timezone, default period, and remote-search debounce remain Deferred until real pipeline behavior is confirmed.
+
+Design-system query control lab:
+`prototype/design-system-lab/query-controls.html`
 
 ## Data state system
 
