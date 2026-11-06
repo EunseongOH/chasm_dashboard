@@ -69,7 +69,7 @@
           <p class="page-description">여러 플랫폼의 변화를 한 화면에서 보고, 지금 확인할 지점을 빠르게 찾습니다.</p>
         </div>
         <div class="header-actions">
-          <button class="icon-button" type="button" aria-label="내보내기"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10"/><path d="m8.5 10.5 3.5 3.5 3.5-3.5"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></button>
+          <button class="icon-button" id="exportDemoButton" type="button" aria-label="내보내기 피드백 예시"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10"/><path d="m8.5 10.5 3.5 3.5 3.5-3.5"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></button>
         </div>
       </header>
 
@@ -488,6 +488,7 @@
   </div>
 
   <div class="tooltip" id="tooltip" aria-hidden="true"></div>
+  <div class="toast-region" id="toastRegion" aria-label="알림"></div>
   <div class="sr-only" id="statusAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div>
   <script src="./app.js"></script>
 </body>
