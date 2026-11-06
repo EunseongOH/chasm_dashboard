@@ -65,6 +65,12 @@
    - Missing / Estimated / Indexed / Signed delta 표현
    - 음악 이벤트 annotation 및 cross-DSP 비교 원칙
 
+11. `10-table-and-ranking-system.md`
+   - Data Table / Resource Table / Ranking Preview / Comparison Matrix 구분
+   - numeric alignment / sort / density / responsive column priority
+   - rank change / exact value / artwork row 규칙
+   - selection / pagination / wide comparison table 기준
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -84,6 +90,10 @@ Button, Tabs, Segmented control, Filter chip, Focus, Disabled 등 interaction st
 `prototype/design-system-lab/data-visualization.html`
 
 Axis/Scale/Legend/Direct label/Missing/Event annotation 등 데이터 시각화 문법을 케이스별로 비교하는 Chart Lab입니다.
+
+`prototype/design-system-lab/table-ranking.html`
+
+Rich music resource table, exact numeric table, ranking preview, rank change, narrow reflow, selection, wide comparison matrix를 검증하는 Table Lab입니다.
 
 ## 상태 표기
 
