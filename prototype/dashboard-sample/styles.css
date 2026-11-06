@@ -180,6 +180,18 @@
   --table-row-hover: var(--surface-subtle);
   --table-divider: var(--border-subtle);
   --table-artwork-size: 36px;
+
+  --insight-observation-bg: transparent;
+  --insight-signal-bg: var(--surface-subtle);
+  --insight-interpretation-bg: #F8F6FA;
+  --insight-action-bg: var(--blue-50);
+  --insight-evidence-border: var(--border-default);
+  --insight-link-color: var(--blue-700);
+
+  --annotation-event-bg: var(--surface-default);
+  --annotation-event-border: var(--border-default);
+  --annotation-selected-bg: var(--blue-50);
+  --annotation-selected-border: var(--blue-200);
 }
 
 * { box-sizing: border-box; }
@@ -951,6 +963,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .insight-item:hover { background: var(--control-bg-hover); }
 .insight-item:active { background: var(--control-bg-pressed); }
+.insight-item.is-active {
+  background: var(--insight-action-bg);
+}
+.insight-item.is-active .arrow {
+  color: var(--fg-brand);
+}
 .insight-item:disabled {
   color: var(--control-fg-disabled);
   background: transparent;
@@ -963,7 +981,20 @@ button, a { -webkit-tap-highlight-color: transparent; }
   border-radius: var(--radius-control);
   font-size: 13px;
 }
-.insight-copy { display: grid; gap: var(--space-0_5); }
+.insight-copy {
+  display: grid;
+  gap: var(--space-0_5);
+}
+.insight-kind {
+  color: var(--fg-tertiary);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+.insight-kind--signal {
+  color: var(--fg-secondary);
+}
 .insight-copy strong {
   font-size: var(--type-supporting-size);
   line-height: var(--type-supporting-line);
@@ -992,6 +1023,95 @@ button, a { -webkit-tap-highlight-color: transparent; }
   color: var(--fg-tertiary);
   font-size: var(--type-meta-size);
   line-height: var(--type-meta-line);
+}
+
+.insight-evidence {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-subtle);
+  border-radius: var(--radius-control);
+}
+
+.insight-evidence__title {
+  margin: 0;
+  color: var(--fg-primary);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+  font-weight: 650;
+}
+
+.insight-evidence__list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.insight-evidence__row {
+  display: grid;
+  grid-template-columns: minmax(92px, auto) minmax(0, 1fr);
+  gap: var(--space-3);
+  color: var(--fg-secondary);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+}
+
+.insight-evidence__row dt {
+  color: var(--fg-tertiary);
+}
+
+.insight-evidence__row dd {
+  margin: 0;
+}
+
+.insight-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.insight-disclosure {
+  min-height: 32px;
+  padding: 0 var(--space-2);
+  color: var(--insight-link-color);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-control);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.insight-disclosure:hover {
+  background: var(--control-bg-hover);
+}
+
+.insight-disclosure:active {
+  background: var(--control-bg-pressed);
+}
+
+.chart-event-line[data-insight-target].is-linked-highlight {
+  stroke: var(--blue-500);
+  stroke-width: 1.5;
+}
+
+.chart-event-box[data-insight-target].is-linked-highlight,
+.chart-highlight-box[data-insight-target].is-linked-highlight {
+  fill: var(--annotation-selected-bg);
+  stroke: var(--annotation-selected-border);
+}
+
+.chart-event-label[data-insight-target].is-linked-highlight,
+.chart-highlight-label[data-insight-target].is-linked-highlight {
+  fill: var(--fg-brand);
+  font-weight: 700;
+}
+
+.data-table tbody tr.is-insight-highlight td {
+  background: var(--blue-50);
 }
 
 .secondary-grid > .card {
