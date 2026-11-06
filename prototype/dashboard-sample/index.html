@@ -13,9 +13,12 @@
       <div class="brand">
         <img class="brand-logo" src="../../assets/brand/chasm-logo.svg" alt="" aria-hidden="true" />
         <span>CHASM</span>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="주요 메뉴 열기" aria-expanded="false" aria-controls="sidebarNavigation">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg>
+        </button>
       </div>
 
-      <button class="artist-switcher" type="button" aria-label="아티스트 선택: 샘플 아티스트">
+      <button class="artist-switcher" id="artistContextButton" type="button" aria-label="아티스트 선택: 샘플 아티스트" aria-expanded="false" aria-controls="artistContextPanel">
         <span class="artist-avatar">ㅁ</span>
         <span class="artist-switcher__copy">
           <strong>샘플 아티스트</strong>
@@ -23,8 +26,14 @@
         </span>
         <span class="chevron"><svg class="ui-icon ui-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9.5 5 5 5-5"/></svg></span>
       </button>
+      <div class="artist-context-panel" id="artistContextPanel" hidden>
+        <span class="section-kicker">ARTIST CONTEXT</span>
+        <strong>샘플 아티스트</strong>
+        <p>아티스트 전환은 전체 분석 대상이 바뀌는 Context 변경입니다. 실제 데이터 라우팅 연결 후 다른 아티스트 선택을 활성화합니다.</p>
+      </div>
 
-      <nav class="nav" aria-label="주요 메뉴">
+      <nav class="nav" id="sidebarNavigation" aria-label="주요 메뉴">
+        <span class="nav-group-label">분석</span>
         <a class="nav-item is-active" href="#overview" aria-label="대시보드" aria-current="page">
           <span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg></span><span>대시보드</span>
         </a>
@@ -46,6 +55,7 @@
       </nav>
 
       <div class="sidebar-bottom">
+        <span class="nav-group-label">관리</span>
         <span class="nav-item is-disabled" role="link" aria-disabled="true" aria-label="데이터 업로드, 프로토타입에서 미구현"><span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V5"/><path d="m8 9 4-4 4 4"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></span><span>데이터 업로드</span></span>
         <span class="nav-item is-disabled" role="link" aria-disabled="true" aria-label="설정, 프로토타입에서 미구현"><span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h7M15 7h5M4 12h3M11 12h9M4 17h10M18 17h2"/><circle cx="13" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="16" cy="17" r="2"/></svg></span><span>설정</span></span>
       </div>
@@ -472,7 +482,7 @@
 
       <footer class="prototype-note">
         <strong>Prototype note</strong>
-        <span>모든 수치는 UI 검증용 샘플입니다. 실제 제품에서는 DSP별 지표 정의와 합산 가능 여부를 확인한 뒤 표시 규칙을 연결합니다.</span>
+        <span>모든 수치는 UI 검증용 샘플입니다. 현재 사이드바의 섹션 링크는 IA 시각화를 위한 in-page anchor이며, 실제 제품에서는 page route로 교체합니다.</span>
       </footer>
     </main>
   </div>
