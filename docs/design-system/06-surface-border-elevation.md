@@ -207,6 +207,8 @@ box-shadow: none;
 
 ---
 
+> Surface/border/shadow의 역할은 이 문서가 담당하고, box 내부 padding/inset은 `19-content-spacing-and-inset-system.md`를 따른다.
+
 # 5. Shadow System
 
 Shadow는 “Card style”이 아니라 **Elevation state**다.
