@@ -8,6 +8,8 @@ Read these documents first:
 2. `docs/design-system/00-context-and-principles.md`
 3. `docs/design-system/01-color-system.md`
 4. `docs/design-system/02-dashboard-ui-sample.md`
+5. `docs/design-system/03-brand-assets.md`
+6. `docs/design-system/04-spacing-and-radius.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -75,6 +77,21 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Spacing and radius
+
+Follow `docs/design-system/04-spacing-and-radius.md`.
+
+Key rules:
+- Use the shared spacing scale instead of arbitrary one-off margins.
+- Let parent layout `gap` and container `padding` manage spacing where possible.
+- Top-level dashboard cards use R16 as the current proposed value.
+- Standard card padding is 20px; compact KPI card padding is 16px.
+- Card-to-card gap is 12px.
+- Use smaller radii as component size/role becomes smaller.
+- For visually adjacent nested rounded surfaces, use the concentric-radius principle: inner radius ≈ outer radius - inset.
+- Do not create nested rounded boxes merely to group content; prefer spacing or dividers when no separate surface/interaction meaning exists.
+- Do not give every nested element the same radius.
 
 ## Official brand asset
 
