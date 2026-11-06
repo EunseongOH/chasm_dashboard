@@ -420,6 +420,21 @@ button, a { -webkit-tap-highlight-color: transparent; }
   background: var(--control-selected-bg);
   font-weight: 650;
 }
+
+.nav-item.is-disabled {
+  color: var(--control-fg-disabled);
+  cursor: default;
+}
+
+.nav-item.is-disabled:hover,
+.nav-item.is-disabled:active {
+  color: var(--control-fg-disabled);
+  background: transparent;
+}
+
+.nav-item.is-disabled .nav-icon {
+  color: var(--neutral-400);
+}
 .nav-icon {
   width: 22px;
   text-align: center;
@@ -1870,14 +1885,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
         <a class="nav-item" href="#events" aria-label="이벤트">
           <span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M8 3.8v3.4M16 3.8v3.4M4 9.5h16"/><circle cx="9" cy="13.5" r=".7" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r=".7" fill="currentColor" stroke="none"/></svg></span><span>이벤트</span>
         </a>
-        <a class="nav-item" href="#reports" aria-label="리포트">
+        <span class="nav-item is-disabled" role="link" aria-disabled="true" aria-label="리포트, 프로토타입에서 미구현">
           <span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V10M12 19V5M19 19v-6"/><path d="M3.5 19.5h17"/></svg></span><span>리포트</span>
-        </a>
+        </span>
       </nav>
 
       <div class="sidebar-bottom">
-        <a class="nav-item" href="#upload" aria-label="데이터 업로드"><span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V5"/><path d="m8 9 4-4 4 4"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></span><span>데이터 업로드</span></a>
-        <a class="nav-item" href="#settings" aria-label="설정"><span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h7M15 7h5M4 12h3M11 12h9M4 17h10M18 17h2"/><circle cx="13" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="16" cy="17" r="2"/></svg></span><span>설정</span></a>
+        <span class="nav-item is-disabled" role="link" aria-disabled="true" aria-label="데이터 업로드, 프로토타입에서 미구현"><span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V5"/><path d="m8 9 4-4 4 4"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></span><span>데이터 업로드</span></span>
+        <span class="nav-item is-disabled" role="link" aria-disabled="true" aria-label="설정, 프로토타입에서 미구현"><span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h7M15 7h5M4 12h3M11 12h9M4 17h10M18 17h2"/><circle cx="13" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="16" cy="17" r="2"/></svg></span><span>설정</span></span>
       </div>
     </aside>
 
