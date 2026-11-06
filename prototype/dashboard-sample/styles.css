@@ -37,7 +37,26 @@
   --border-subtle: var(--neutral-100);
   --border-default: var(--neutral-200);
   --border-strong: var(--neutral-300);
-  --border-focus: var(--blue-500);
+  --border-focus: var(--blue-700);
+
+  --focus-ring-color: var(--blue-700);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
+  --control-bg-default: var(--surface-default);
+  --control-bg-hover: var(--surface-subtle);
+  --control-bg-pressed: var(--surface-inset);
+  --control-bg-disabled: var(--neutral-50);
+  --control-fg-default: var(--neutral-700);
+  --control-fg-disabled: var(--neutral-400);
+  --control-border-default: var(--neutral-200);
+  --control-border-hover: var(--neutral-300);
+  --control-border-disabled: var(--neutral-100);
+
+  --control-selected-bg: var(--blue-50);
+  --control-selected-bg-pressed: var(--blue-100);
+  --control-selected-fg: var(--blue-700);
+  --control-selected-border: var(--blue-200);
 
   --bg-canvas: var(--surface-canvas);
   --bg-surface: var(--surface-default);
@@ -155,6 +174,25 @@ button, select { font: inherit; }
 button { color: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 
+:where(
+  button,
+  select,
+  a,
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+:where(button, select):disabled {
+  cursor: not-allowed;
+}
+
+:where(button, select):disabled,
+:where(button, select)[aria-disabled="true"] {
+  color: var(--control-fg-disabled);
+}
+
 .sr-only {
   position: absolute;
   width: 1px; height: 1px;
@@ -213,7 +251,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
   border-radius: var(--radius-container-sm);
   cursor: pointer;
 }
-.artist-switcher:hover { border-color: var(--stroke-strong); }
+.artist-switcher:hover {
+  background: var(--control-bg-hover);
+  border-color: var(--control-border-hover);
+}
+.artist-switcher:active {
+  background: var(--control-bg-pressed);
+}
 .artist-avatar {
   width: 34px; height: 34px;
   display: grid; place-items: center;
@@ -247,10 +291,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
   border-radius: var(--radius-control);
   font-weight: 550;
 }
-.nav-item:hover { background: var(--neutral-50); color: var(--fg-primary); }
+.nav-item:hover {
+  background: var(--control-bg-hover);
+  color: var(--fg-primary);
+}
+.nav-item:active {
+  background: var(--control-bg-pressed);
+}
 .nav-item.is-active {
-  color: var(--fg-brand);
-  background: var(--blue-50);
+  color: var(--control-selected-fg);
+  background: var(--control-selected-bg);
   font-weight: 650;
 }
 .nav-icon {
@@ -311,9 +361,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .icon-button {
   min-height: 40px;
   padding: 0 var(--space-3);
-  color: var(--fg-secondary);
-  background: var(--bg-surface);
-  border: 1px solid var(--stroke-default);
+  color: var(--control-fg-default);
+  background: var(--control-bg-default);
+  border: 1px solid var(--control-border-default);
   border-radius: var(--radius-control);
   cursor: pointer;
 }
@@ -321,7 +371,24 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .icon-button { width: 40px; padding: 0; }
 .select-control select:hover,
 .date-control:hover,
-.icon-button:hover { border-color: var(--stroke-strong); }
+.icon-button:hover {
+  background: var(--control-bg-hover);
+  border-color: var(--control-border-hover);
+}
+
+.select-control select:active,
+.date-control:active,
+.icon-button:active {
+  background: var(--control-bg-pressed);
+}
+
+.select-control select:disabled,
+.date-control:disabled,
+.icon-button:disabled {
+  color: var(--control-fg-disabled);
+  background: var(--control-bg-disabled);
+  border-color: var(--control-border-disabled);
+}
 
 .summary-banner {
   display: grid;
@@ -367,7 +434,17 @@ button, a { -webkit-tap-highlight-color: transparent; }
   font-weight: 650;
   cursor: pointer;
 }
-.text-action:hover { text-decoration: underline; }
+.text-action:hover {
+  color: var(--blue-800);
+  text-decoration: underline;
+}
+.text-action:active {
+  color: var(--blue-900, var(--blue-800));
+}
+.text-action:disabled {
+  color: var(--control-fg-disabled);
+  text-decoration: none;
+}
 
 .kpi-grid,
 .primary-grid,
@@ -540,8 +617,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .segmented button {
   min-width: 48px;
-  padding: var(--space-1_5) var(--space-2_5);
-  color: var(--fg-tertiary);
+  min-height: 32px;
+  padding: 0 var(--space-2_5);
+  color: var(--fg-secondary);
   background: transparent;
   border: 0;
   border-radius: var(--radius-control);
@@ -549,11 +627,32 @@ button, a { -webkit-tap-highlight-color: transparent; }
   line-height: var(--type-meta-line);
   cursor: pointer;
 }
+
+.segmented button:hover {
+  background: var(--control-bg-hover);
+}
+
+.segmented button:active {
+  background: var(--control-bg-pressed);
+}
 .segmented button.is-selected {
-  color: var(--fg-brand);
-  background: var(--surface-default);
+  color: var(--control-selected-fg);
+  background: var(--control-selected-bg);
   box-shadow: var(--shadow-none);
   font-weight: 650;
+}
+
+.segmented button.is-selected:hover {
+  background: var(--control-selected-bg);
+}
+
+.segmented button.is-selected:active {
+  background: var(--control-selected-bg-pressed);
+}
+
+.segmented button:disabled {
+  color: var(--control-fg-disabled);
+  background: transparent;
 }
 
 .chart-meta-row {
@@ -644,7 +743,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
   border-radius: var(--radius-control);
   cursor: pointer;
 }
-.insight-item:hover { background: var(--neutral-50); }
+.insight-item:hover { background: var(--control-bg-hover); }
+.insight-item:active { background: var(--control-bg-pressed); }
+.insight-item:disabled {
+  color: var(--control-fg-disabled);
+  background: transparent;
+}
 .insight-icon {
   width: 28px; height: 28px;
   display: grid; place-items: center;
