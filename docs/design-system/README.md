@@ -47,6 +47,12 @@
    - nested surface / divider 규칙
    - Tooltip·Popover·Modal elevation 기준
 
+8. `07-layout-and-grid.md`
+   - 12-column dashboard grid
+   - content max-width / gutter / sidebar mode
+   - breakpoint별 reflow 규칙
+   - chart / insight / KPI 최소 폭 검증
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
