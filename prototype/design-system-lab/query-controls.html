@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHASM Design System Lab — Query Controls</title>
+  <link rel="stylesheet" href="../dashboard-sample/styles.css" />
+  <style>
+    body { padding: 32px; }
+    .lab { max-width: 1240px; margin: 0 auto; }
+    .lab-head { margin-bottom: 32px; }
+    .lab-head h1 { margin: 4px 0 6px; font-size: 28px; line-height: 36px; }
+    .lab-head p { margin: 0; max-width: 940px; color: var(--fg-secondary); }
+    .lab-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .lab-card {
+      min-width:0; padding:20px; background:var(--surface-default);
+      border:1px solid var(--border-default); border-radius:var(--radius-card);
+    }
+    .lab-card--wide { grid-column:1 / -1; }
+    .case-tag { display:inline-flex; color:var(--fg-tertiary); font-size:11px; line-height:16px; font-weight:700; letter-spacing:.06em; }
+    .lab-card h2 { margin:2px 0 0; font-size:16px; line-height:24px; }
+    .lab-card > p { margin:0 0 16px; color:var(--fg-tertiary); font-size:13px; line-height:20px; }
+
+    .demo-query {
+      padding:16px; display:grid; gap:14px;
+      background:var(--surface-subtle); border:1px solid var(--border-subtle);
+      border-radius:var(--radius-container-sm);
+    }
+    .demo-query__controls { display:flex; flex-wrap:wrap; gap:8px; align-items:end; }
+    .demo-query__summary { color:var(--fg-tertiary); font-size:12px; line-height:16px; }
+
+    .draft-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .draft-panel { padding:14px; border:1px solid var(--border-default); border-radius:var(--radius-container-sm); }
+    .draft-panel h3 { margin:0 0 10px; font-size:13px; line-height:20px; }
+    .draft-options { display:grid; gap:8px; }
+    .draft-options label { min-height:32px; display:flex; gap:8px; align-items:center; color:var(--fg-secondary); font-size:13px; }
+    .draft-options input { width:18px; height:18px; accent-color:var(--blue-700); }
+    .draft-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; margin-top:12px; }
+    .applied-chips { min-height:34px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+
+    .search-demo { display:grid; gap:10px; }
+    .search-results { border:1px solid var(--border-default); border-radius:var(--radius-container-sm); overflow:hidden; }
+    .search-row { min-height:44px; padding:10px 14px; display:flex; justify-content:space-between; gap:12px; border-top:1px solid var(--border-subtle); }
+    .search-row:first-child { border-top:0; }
+    .search-row strong { font-size:13px; }
+    .search-row span { color:var(--fg-tertiary); font-size:12px; }
+    .search-empty { padding:24px 14px; text-align:center; color:var(--fg-secondary); font-size:13px; }
+
+    .transition-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .transition-card {
+      min-height:210px; padding:16px; display:grid; align-content:start; gap:12px;
+      border:1px solid var(--border-default); border-radius:var(--radius-container-sm);
+    }
+    .transition-card h3 { margin:0; font-size:14px; line-height:20px; }
+    .transition-card p { margin:0; color:var(--fg-tertiary); font-size:12px; line-height:16px; }
+    .transition-metric { font-size:28px; line-height:36px; font-weight:700; }
+    .transition-skeleton { display:grid; gap:8px; }
+    .transition-skeleton span:nth-child(1) { width:42%; height:12px; }
+    .transition-skeleton span:nth-child(2) { width:62%; height:32px; }
+    .transition-skeleton span:nth-child(3) { width:52%; height:12px; }
+
+    .scope-map { display:grid; gap:10px; }
+    .scope-row {
+      display:grid; grid-template-columns:120px minmax(0,1fr) auto; gap:12px; align-items:center;
+      padding:10px 0; border-top:1px solid var(--border-subtle); font-size:13px;
+    }
+    .scope-row:first-child { border-top:0; }
+    .scope-row strong { color:var(--fg-primary); }
+    .scope-row span { color:var(--fg-secondary); }
+    .scope-tag { padding:3px 7px; background:var(--surface-subtle); border-radius:var(--radius-tag); color:var(--fg-tertiary); font-size:11px; }
+
+    .sort-filter-demo { display:grid; gap:12px; }
+    .sort-filter-bar { display:flex; flex-wrap:wrap; gap:8px; align-items:end; }
+    .count-line { color:var(--fg-tertiary); font-size:12px; }
+    .sort-filter-list { display:grid; gap:0; border:1px solid var(--border-default); border-radius:var(--radius-container-sm); overflow:hidden; }
+    .sort-filter-item { padding:10px 14px; display:flex; justify-content:space-between; border-top:1px solid var(--border-subtle); font-size:13px; }
+    .sort-filter-item:first-child { border-top:0; }
+    .sort-filter-item span:last-child { font-variant-numeric:tabular-nums; color:var(--fg-secondary); }
+
+    .narrow-frame {
+      width:320px; max-width:100%; margin:0 auto; padding:12px;
+      border:1px dashed var(--border-strong); border-radius:var(--radius-container-sm); background:var(--surface-canvas);
+    }
+    .narrow-query { display:grid; gap:10px; }
+    .narrow-query .query-field select, .narrow-query .query-field input { width:100%; }
+
+    .state-table { width:100%; border-collapse:collapse; font-size:13px; line-height:20px; }
+    .state-table th,.state-table td { padding:10px 12px; border-top:1px solid var(--border-subtle); text-align:left; vertical-align:top; }
+    .state-table th { color:var(--fg-tertiary); background:var(--surface-subtle); font-size:12px; }
+
+    @media(max-width:900px){
+      body{padding:20px}
+      .lab-grid{grid-template-columns:1fr}
+      .lab-card--wide{grid-column:auto}
+      .draft-grid,.transition-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:560px){
+      body{padding:16px}
+      .lab-card{padding:16px}
+      .scope-row{grid-template-columns:1fr; gap:2px}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#labMain">본문으로 건너뛰기</a>
+  <main class="lab" id="labMain" tabindex="-1">
+    <header class="lab-head">
+      <span class="section-kicker">DESIGN SYSTEM LAB</span>
+      <h1>Filter, Search, Date & Query Controls</h1>
+      <p>페이지 전체의 Query Context와 local Filter, Search, Comparison, View Control, Sort를 분리하고 적용 범위와 commit 시점을 검증합니다.</p>
+    </header>
+
+    <div class="lab-grid">
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 01 · GLOBAL QUERY</span>
+        <h2>Preset + exact range + comparison</h2>
+        <p>상대 기간만 보여주지 않고 실제 적용 날짜를 함께 표시합니다.</p>
+        <div class="demo-query">
+          <div class="demo-query__controls">
+            <label class="query-field">
+              <span class="query-field__label">기간</span>
+              <select id="labPeriod">
+                <option value="90">최근 3개월</option>
+                <option value="30">최근 30일</option>
+                <option value="custom">사용자 지정</option>
+              </select>
+            </label>
+            <label class="query-field">
+              <span class="query-field__label">시작일</span>
+              <input id="labStart" type="date" value="2026-08-01" />
+            </label>
+            <label class="query-field">
+              <span class="query-field__label">종료일</span>
+              <input id="labEnd" type="date" value="2026-10-31" />
+            </label>
+            <label class="query-field">
+              <span class="query-field__label">비교 기준</span>
+              <select id="labComparison">
+                <option value="previous">이전 동일 기간</option>
+                <option value="none">비교 안 함</option>
+              </select>
+            </label>
+            <button class="button button--primary" type="button" id="labQueryApply">조회 조건 적용</button>
+          </div>
+          <div class="demo-query__summary" id="labQuerySummary">적용됨 · 최근 3개월 · 2026. 8. 1. – 10. 31. · 이전 동일 기간과 비교</div>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 02 · DRAFT VS APPLIED FILTER</span>
+        <h2>복합 필터는 고르는 중간 상태와 실제 결과를 분리</h2>
+        <p>체크박스를 바꿔도 “적용” 전에는 오른쪽 Applied 상태가 변하지 않습니다.</p>
+        <div class="draft-grid">
+          <div class="draft-panel">
+            <h3>필터 편집 · Draft</h3>
+            <div class="draft-options" id="draftOptions">
+              <label><input type="checkbox" value="Spotify" checked />Spotify</label>
+              <label><input type="checkbox" value="YouTube Music" checked />YouTube Music</label>
+              <label><input type="checkbox" value="Apple Music" checked />Apple Music</label>
+              <label><input type="checkbox" value="Melon" checked />Melon</label>
+            </div>
+            <p class="filter-error" id="draftError" hidden>최소 1개 플랫폼을 선택하세요.</p>
+            <div class="draft-actions">
+              <button class="button button--tertiary button--compact" type="button" id="draftReset">초안 초기화</button>
+              <button class="button button--primary button--compact" type="button" id="draftApply">적용</button>
+            </div>
+          </div>
+          <div class="draft-panel">
+            <h3>현재 적용 · Applied</h3>
+            <div class="applied-chips" id="appliedChips"></div>
+            <p class="demo-query__summary" id="appliedSummary"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 03 · COMPONENT SEARCH</span>
+        <h2>곡명 검색</h2>
+        <p>Search는 현재 목록 안에서 keyword로 resource를 찾고 결과 수를 바꿉니다.</p>
+        <div class="search-demo">
+          <div class="track-search">
+            <label class="sr-only" for="labSearch">곡명 검색</label>
+            <svg class="ui-icon ui-icon--sm track-search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4 4"/></svg>
+            <input id="labSearch" type="search" placeholder="곡명 검색" />
+            <button class="track-search__clear" id="labSearchClear" type="button" aria-label="검색어 지우기" hidden>×</button>
+          </div>
+          <div class="count-line" id="labSearchCount">4곡</div>
+          <div class="search-results" id="labSearchResults"></div>
+          <span class="sr-only" id="labSearchStatus" role="status" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 04 · SORT ≠ FILTER</span>
+        <h2>필터는 개수를 바꾸고, 정렬은 순서만 바꿈</h2>
+        <p>Sort state는 active filter chip에 포함하지 않습니다.</p>
+        <div class="sort-filter-demo">
+          <div class="sort-filter-bar">
+            <label class="query-field">
+              <span class="query-field__label">발매 유형</span>
+              <select id="typeFilter">
+                <option value="all">전체</option>
+                <option value="single">싱글</option>
+                <option value="ep">EP</option>
+              </select>
+            </label>
+            <label class="query-field">
+              <span class="query-field__label">정렬</span>
+              <select id="sortControl">
+                <option value="streams-desc">스트리밍 높은 순</option>
+                <option value="streams-asc">스트리밍 낮은 순</option>
+              </select>
+            </label>
+          </div>
+          <div class="count-line" id="sortFilterCount"></div>
+          <div class="sort-filter-list" id="sortFilterList"></div>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 05 · QUERY TRANSITION VS REFRESH</span>
+        <h2>조회 조건 변경과 백그라운드 갱신은 다른 loading</h2>
+        <p>Query가 바뀌면 old data를 새 label 아래 유지하지 않고, 같은 query refresh는 last-known data를 유지합니다.</p>
+        <div class="transition-grid">
+          <div class="transition-card">
+            <h3>Query transition</h3>
+            <p id="queryTransitionLabel">현재: 최근 3개월</p>
+            <div id="queryTransitionBody">
+              <div class="transition-metric">2,498만 회</div>
+              <p>이전 3개월 대비 +18.4%</p>
+            </div>
+            <button class="button button--secondary button--compact" type="button" id="queryTransitionButton">최근 30일로 변경</button>
+          </div>
+          <div class="transition-card">
+            <h3>Background refresh</h3>
+            <p>Query: 최근 3개월</p>
+            <div class="transition-metric">2,498만 회</div>
+            <div id="refreshState"><p>마지막 정상 데이터 00:30</p></div>
+            <button class="button button--secondary button--compact" type="button" id="refreshButton">새로고침 시뮬레이션</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 06 · SCOPE</span>
+        <h2>Control의 적용 범위</h2>
+        <p>위치와 label이 scope를 드러내야 합니다.</p>
+        <div class="scope-map">
+          <div class="scope-row"><strong>기간</strong><span>Dashboard 전체 결과</span><span class="scope-tag">Global query</span></div>
+          <div class="scope-row"><strong>플랫폼</strong><span>현재 chart series만</span><span class="scope-tag">Local filter</span></div>
+          <div class="scope-row"><strong>곡명 검색</strong><span>곡 table rows만</span><span class="scope-tag">Search</span></div>
+          <div class="scope-row"><strong>일간 / 주간</strong><span>같은 결과의 표현 방식</span><span class="scope-tag">View</span></div>
+          <div class="scope-row"><strong>높은 순</strong><span>같은 결과의 순서</span><span class="scope-tag">Sort</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 07 · NARROW REFLOW</span>
+        <h2>320px에서도 label과 scope 유지</h2>
+        <p>컨트롤을 작게 압축하기보다 세로로 재배치합니다.</p>
+        <div class="narrow-frame">
+          <div class="narrow-query">
+            <label class="query-field"><span class="query-field__label">기간</span><select><option>최근 3개월</option></select></label>
+            <label class="query-field"><span class="query-field__label">비교 기준</span><select><option>이전 동일 기간</option></select></label>
+            <button class="button button--secondary" type="button">플랫폼 2개</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 08 · PERSISTENCE CLASSIFICATION</span>
+        <h2>모든 control state를 같은 방식으로 저장하지 않음</h2>
+        <p>실제 routing/storage 구현은 Deferred지만 제품 요구사항을 미리 구분합니다.</p>
+        <div class="table-shell">
+          <table class="state-table">
+            <thead><tr><th>State</th><th>후보</th><th>이유</th></tr></thead>
+            <tbody>
+              <tr><td>기간 / global filter / comparison</td><td>URL-shareable</td><td>같은 분석 context를 다시 열거나 공유할 가치가 큼</td></tr>
+              <tr><td>table search / sort / expanded row</td><td>Session</td><td>현재 작업 흐름에는 유용하지만 공유 의미는 상대적으로 낮음</td></tr>
+              <tr><td>popover open / draft checkbox / hover</td><td>Ephemeral</td><td>아직 적용되지 않았거나 순간적인 interaction state</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const presets = {
+      "90": {label:"최근 3개월",start:"2026-08-01",end:"2026-10-31"},
+      "30": {label:"최근 30일",start:"2026-10-02",end:"2026-10-31"}
+    };
+    const p = document.getElementById('labPeriod');
+    const s = document.getElementById('labStart');
+    const e = document.getElementById('labEnd');
+    const comp = document.getElementById('labComparison');
+    const summary = document.getElementById('labQuerySummary');
+
+    function fmt(value){
+      const [y,m,d]=value.split('-').map(Number);
+      return y+'. '+m+'. '+d+'.';
+    }
+    p.addEventListener('change',()=>{
+      if(p.value!=='custom'){
+        s.value=presets[p.value].start;
+        e.value=presets[p.value].end;
+      }
+    });
+    document.getElementById('labQueryApply').addEventListener('click',()=>{
+      if(!s.value||!e.value||s.value>e.value){
+        summary.textContent='적용 실패 · 날짜 범위를 확인하세요.';
+        return;
+      }
+      const label=p.value==='custom'?'사용자 지정':presets[p.value].label;
+      summary.textContent='적용됨 · '+label+' · '+fmt(s.value)+' – '+fmt(e.value)+' · '+(comp.value==='previous'?'이전 동일 기간과 비교':'비교 없음');
+    });
+
+    const draftChecks=[...document.querySelectorAll('#draftOptions input')];
+    let applied=draftChecks.map(c=>c.value);
+    const appliedChips=document.getElementById('appliedChips');
+    const appliedSummary=document.getElementById('appliedSummary');
+    const draftError=document.getElementById('draftError');
+
+    function renderApplied(){
+      appliedChips.innerHTML='';
+      if(applied.length===4){
+        appliedChips.innerHTML='<span class="demo-query__summary">기본값 · 전체 플랫폼</span>';
+      } else {
+        applied.forEach(name=>{
+          const chip=document.createElement('span');
+          chip.className='filter-chip';
+          chip.textContent=name;
+          appliedChips.appendChild(chip);
+        });
+      }
+      appliedSummary.textContent='결과에는 '+applied.length+'개 플랫폼이 적용되어 있습니다.';
+    }
+    document.getElementById('draftApply').addEventListener('click',()=>{
+      const next=draftChecks.filter(c=>c.checked).map(c=>c.value);
+      if(!next.length){draftError.hidden=false;return;}
+      draftError.hidden=true; applied=next; renderApplied();
+    });
+    document.getElementById('draftReset').addEventListener('click',()=>{
+      draftChecks.forEach(c=>c.checked=true); draftError.hidden=true;
+    });
+    renderApplied();
+
+    const songs=[
+      {name:'늦은 여름',type:'싱글',kind:'single',streams:4832101},
+      {name:'그날의 우리',type:'EP',kind:'ep',streams:3214987},
+      {name:'지금, 여기',type:'싱글',kind:'single',streams:2976430},
+      {name:'안녕, 또 안녕',type:'EP',kind:'ep',streams:1982771}
+    ];
+
+    const search=document.getElementById('labSearch');
+    const clear=document.getElementById('labSearchClear');
+    const results=document.getElementById('labSearchResults');
+    const count=document.getElementById('labSearchCount');
+    const searchStatus=document.getElementById('labSearchStatus');
+
+    function renderSearch(){
+      const q=search.value.trim().toLocaleLowerCase('ko-KR');
+      const rows=songs.filter(song=>!q||song.name.toLocaleLowerCase('ko-KR').includes(q));
+      clear.hidden=!q;
+      count.textContent=rows.length+'곡';
+      if(!rows.length){
+        results.innerHTML='<div class="search-empty">검색어와 일치하는 곡이 없습니다.<br>검색어를 바꿔보세요.</div>';
+      }else{
+        results.innerHTML=rows.map(song=>'<div class="search-row"><strong>'+song.name+'</strong><span>'+song.type+'</span></div>').join('');
+      }
+      if(q) searchStatus.textContent=rows.length?rows.length+'개의 곡을 찾았습니다.':'검색 결과가 없습니다.';
+    }
+    search.addEventListener('input',renderSearch);
+    clear.addEventListener('click',()=>{search.value='';renderSearch();search.focus();});
+    renderSearch();
+
+    const typeFilter=document.getElementById('typeFilter');
+    const sortControl=document.getElementById('sortControl');
+    const sortList=document.getElementById('sortFilterList');
+    const sortCount=document.getElementById('sortFilterCount');
+
+    function renderSortFilter(){
+      let rows=songs.filter(song=>typeFilter.value==='all'||song.kind===typeFilter.value);
+      rows=[...rows].sort((a,b)=>sortControl.value==='streams-desc'?b.streams-a.streams:a.streams-b.streams);
+      sortCount.textContent=rows.length+'곡 · 정렬은 결과 수를 바꾸지 않습니다.';
+      sortList.innerHTML=rows.map(song=>'<div class="sort-filter-item"><span>'+song.name+' · '+song.type+'</span><span>'+song.streams.toLocaleString('ko-KR')+'</span></div>').join('');
+    }
+    typeFilter.addEventListener('change',renderSortFilter);
+    sortControl.addEventListener('change',renderSortFilter);
+    renderSortFilter();
+
+    const transitionBody=document.getElementById('queryTransitionBody');
+    const transitionLabel=document.getElementById('queryTransitionLabel');
+    const transitionButton=document.getElementById('queryTransitionButton');
+    let transition30=false;
+    transitionButton.addEventListener('click',()=>{
+      transitionButton.disabled=true;
+      transitionBody.innerHTML='<div class="transition-skeleton" aria-hidden="true"><span class="skeleton-block"></span><span class="skeleton-block"></span><span class="skeleton-block"></span></div><span class="sr-only">새 조회 조건의 데이터를 불러오는 중입니다.</span>';
+      window.setTimeout(()=>{
+        transition30=!transition30;
+        transitionLabel.textContent='현재: '+(transition30?'최근 30일':'최근 3개월');
+        transitionBody.innerHTML='<div class="transition-metric">'+(transition30?'982만 회':'2,498만 회')+'</div><p>'+(transition30?'이전 30일 대비 +7.2%':'이전 3개월 대비 +18.4%')+'</p>';
+        transitionButton.textContent=transition30?'최근 3개월로 변경':'최근 30일로 변경';
+        transitionButton.disabled=false;
+      },450);
+    });
+
+    const refreshState=document.getElementById('refreshState');
+    const refreshButton=document.getElementById('refreshButton');
+    refreshButton.addEventListener('click',()=>{
+      refreshButton.disabled=true;
+      refreshState.innerHTML='<div class="data-refreshing"><span class="data-refreshing__spinner" aria-hidden="true"></span><span>갱신 중 · 마지막 정상 데이터 00:30</span></div>';
+      window.setTimeout(()=>{
+        refreshState.innerHTML='<p>최신 데이터로 갱신했습니다. · 00:34</p>';
+        refreshButton.disabled=false;
+      },450);
+    });
+  </script>
+</body>
+</html>
