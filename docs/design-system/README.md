@@ -59,6 +59,12 @@
    - Focus ring 및 target-size 접근성 기준
    - keyboard interaction 원칙
 
+10. `09-data-visualization-system.md`
+   - 공통 Visualization Grammar와 케이스별 Axis/Scale variant
+   - Grid / Legend / Direct Label / Tooltip / Reference 규칙
+   - Missing / Estimated / Indexed / Signed delta 표현
+   - 음악 이벤트 annotation 및 cross-DSP 비교 원칙
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -74,6 +80,10 @@
 `prototype/design-system-lab/interaction-controls.html`
 
 Button, Tabs, Segmented control, Filter chip, Focus, Disabled 등 interaction state를 한 화면에서 비교하는 검증용 페이지입니다. VS Code Live Server에서 열어 실제 hover/focus/keyboard 상태를 확인합니다.
+
+`prototype/design-system-lab/data-visualization.html`
+
+Axis/Scale/Legend/Direct label/Missing/Event annotation 등 데이터 시각화 문법을 케이스별로 비교하는 Chart Lab입니다.
 
 ## 상태 표기
 
