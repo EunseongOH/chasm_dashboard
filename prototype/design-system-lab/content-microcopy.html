@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHASM Design System Lab — Content & Microcopy</title>
+  <link rel="stylesheet" href="../dashboard-sample/styles.css" />
+  <style>
+    body { padding: 32px; }
+    .lab { max-width: 1220px; margin: 0 auto; }
+    .lab-head { margin-bottom: 32px; }
+    .lab-head h1 { margin: 4px 0 6px; font-size: 28px; line-height: 36px; }
+    .lab-head p { margin: 0; max-width: 900px; color: var(--fg-secondary); }
+    .lab-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .lab-card {
+      min-width:0; padding:20px; background:var(--surface-default);
+      border:1px solid var(--border-default); border-radius:var(--radius-card);
+    }
+    .lab-card--wide { grid-column:1 / -1; }
+    .case-tag {
+      display:inline-flex; color:var(--fg-tertiary); font-size:11px; line-height:16px;
+      font-weight:700; letter-spacing:.06em;
+    }
+    .lab-card h2 { margin:2px 0 0; font-size:16px; line-height:24px; }
+    .lab-card > p { margin:0 0 16px; color:var(--fg-tertiary); font-size:13px; line-height:20px; }
+    .pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .copy-box { padding:14px 16px; border-radius:var(--radius-control); font-size:13px; line-height:20px; }
+    .copy-box strong { display:block; margin-bottom:4px; font-size:11px; line-height:16px; letter-spacing:.04em; }
+    .copy-box--do { background:var(--blue-50); }
+    .copy-box--dont { background:#FFF4F2; }
+    .copy-box--do strong { color:var(--blue-700); }
+    .copy-box--dont strong { color:#A33A2B; }
+    .copy-stack { display:grid; gap:10px; }
+    .copy-line {
+      display:grid; grid-template-columns:140px minmax(0,1fr); gap:12px;
+      padding:10px 0; border-bottom:1px solid var(--border-subtle);
+      font-size:13px; line-height:20px;
+    }
+    .copy-line:last-child { border-bottom:0; }
+    .copy-line dt { color:var(--fg-tertiary); }
+    .copy-line dd { margin:0; color:var(--fg-primary); }
+    .state-box {
+      padding:16px; display:grid; gap:8px; border:1px solid var(--border-default);
+      border-radius:var(--radius-container-sm); background:var(--surface-subtle);
+    }
+    .state-box strong { font-size:14px; line-height:20px; }
+    .state-box p { margin:0; color:var(--fg-secondary); font-size:13px; line-height:20px; }
+    .state-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+    .glossary {
+      width:100%; border-collapse:collapse; font-size:13px; line-height:20px;
+    }
+    .glossary th, .glossary td {
+      padding:10px 12px; border-top:1px solid var(--border-subtle); text-align:left; vertical-align:top;
+    }
+    .glossary th { color:var(--fg-tertiary); font-size:12px; background:var(--surface-subtle); }
+    .metric-demo {
+      display:grid; gap:4px; padding:14px 16px; background:var(--surface-subtle); border-radius:var(--radius-control);
+    }
+    .metric-demo span { color:var(--fg-tertiary); font-size:12px; line-height:16px; }
+    .metric-demo strong { font-size:14px; line-height:20px; }
+    .term-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+    .term-card {
+      padding:12px; background:var(--surface-subtle); border-radius:var(--radius-control);
+    }
+    .term-card strong { display:block; font-size:13px; line-height:20px; }
+    .term-card span { color:var(--fg-tertiary); font-size:12px; line-height:16px; }
+    @media (max-width: 840px) {
+      body { padding:20px; }
+      .lab-grid { grid-template-columns:1fr; }
+      .lab-card--wide { grid-column:auto; }
+      .pair { grid-template-columns:1fr; }
+      .term-grid { grid-template-columns:1fr; }
+    }
+    @media (max-width:560px) {
+      body { padding:16px; }
+      .lab-card { padding:16px; }
+      .copy-line { grid-template-columns:1fr; gap:2px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="lab">
+    <header class="lab-head">
+      <span class="section-kicker">DESIGN SYSTEM LAB</span>
+      <h1>Content & Microcopy</h1>
+      <p>같은 데이터가 화면마다 다른 의미로 읽히지 않도록 문체, 비교 기준, 전문용어, CTA, Empty/Error 상태 카피를 검증합니다.</p>
+    </header>
+
+    <div class="lab-grid">
+      <section class="lab-card">
+        <span class="case-tag">CASE 01 · TONE</span>
+        <h2>분석 화면은 합니다체</h2>
+        <p>라벨은 짧게, 완전한 설명 문장은 합니다체로 통일합니다.</p>
+        <div class="pair">
+          <div class="copy-box copy-box--do">
+            <strong>DO</strong>
+            신곡 발매 이후 스트리밍이 발매 전 4주 평균보다 높은 수준을 유지하고 있습니다.
+          </div>
+          <div class="copy-box copy-box--dont">
+            <strong>DON'T</strong>
+            신곡 발매 이후 스트리밍이 평소보다 높은 수준을 유지하고 있어요.
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 02 · COMPARISON</span>
+        <h2>비교 기준을 정확히 이름 붙이기</h2>
+        <p>최근 30일과 달력 월을 같은 “전월 대비”로 부르지 않습니다.</p>
+        <dl class="copy-stack">
+          <div class="copy-line"><dt>최근 30일 비교</dt><dd>이전 30일 대비</dd></div>
+          <div class="copy-line"><dt>10월 vs 9월</dt><dd>전월 대비</dd></div>
+          <div class="copy-line"><dt>이벤트 기준</dt><dd>발매 전 4주 평균 대비</dd></div>
+        </dl>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 03 · INCREASE / RISE / GROWTH</span>
+        <h2>비슷한 단어도 역할을 나눔</h2>
+        <p>수량 변화와 비율·순위 변화를 구분하고, 평가적인 “성장”은 generic direction 용어로 제한합니다.</p>
+        <div class="term-grid">
+          <div class="term-card"><strong>증가 / 감소</strong><span>스트리밍, 청취자 수, 팔로워 수 등 수량</span></div>
+          <div class="term-card"><strong>상승 / 하락</strong><span>저장률, 순위, 지수, 수준 등</span></div>
+          <div class="term-card"><strong>성장</strong><span>실제 metric name이거나 평가 맥락이 명확할 때만</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 04 · % / %p</span>
+        <h2>퍼센트와 퍼센트포인트</h2>
+        <p>같은 숫자처럼 보여도 의미가 다릅니다.</p>
+        <div class="copy-stack">
+          <div class="metric-demo"><span>스트리밍 상대 변화</span><strong>이전 30일 대비 +18.4%</strong></div>
+          <div class="metric-demo"><span>저장률 변화</span><strong>12.4% → 10.1% · 2.3%p 하락</strong></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 05 · CTA</span>
+        <h2>행동 결과가 보이는 라벨</h2>
+        <p>“확인”, “자세히”보다 destination과 action을 적습니다.</p>
+        <div class="pair">
+          <div class="copy-box copy-box--do"><strong>DO</strong>근거 보기<br>플랫폼별 보기<br>발매 전후 비교<br>필터 초기화</div>
+          <div class="copy-box copy-box--dont"><strong>DON'T</strong>확인<br>자세히<br>더보기<br>실행</div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 06 · TOOLTIP</span>
+        <h2>라벨을 반복하지 않고 정의를 보충</h2>
+        <p>Tooltip은 정의, 제한, 이유를 설명합니다.</p>
+        <div class="pair">
+          <div class="copy-box copy-box--do"><strong>전체 스트리밍</strong>합산 가능한 플랫폼의 재생 수만 포함합니다.</div>
+          <div class="copy-box copy-box--dont"><strong>전체 스트리밍</strong>전체 스트리밍입니다.</div>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 07 · EMPTY STATES</span>
+        <h2>“데이터 없음”을 상황별로 분리</h2>
+        <p>없음의 원인과 다음 행동이 다르면 카피도 달라야 합니다.</p>
+        <div class="lab-grid">
+          <div class="state-box">
+            <span class="statement__type">연결 전</span>
+            <strong>아직 연결된 데이터가 없습니다.</strong>
+            <p>사용 중인 플랫폼을 연결하면 성과 변화를 확인할 수 있습니다.</p>
+            <div class="state-actions"><button class="button button--primary button--compact">데이터 연결</button></div>
+          </div>
+          <div class="state-box">
+            <span class="statement__type">연결됨 · 수집 전</span>
+            <strong>아직 수집된 데이터가 없습니다.</strong>
+            <p>데이터가 들어오면 이곳에 최근 성과가 표시됩니다.</p>
+          </div>
+          <div class="state-box">
+            <span class="statement__type">필터 결과 없음</span>
+            <strong>조건에 맞는 결과가 없습니다.</strong>
+            <p>기간이나 필터를 바꿔보세요.</p>
+            <div class="state-actions"><button class="button button--secondary button--compact">필터 초기화</button></div>
+          </div>
+          <div class="state-box">
+            <span class="statement__type">지원하지 않음</span>
+            <strong>이 지표는 현재 플랫폼에서 제공되지 않습니다.</strong>
+            <p>값을 0으로 표시하지 않습니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 08 · ERROR</span>
+        <h2>문제 + 영향 + 다음 행동</h2>
+        <p>“오류가 발생했습니다”로 끝내지 않습니다.</p>
+        <div class="state-box">
+          <strong>Spotify 데이터를 불러오지 못했습니다.</strong>
+          <p>다른 플랫폼 데이터는 계속 확인할 수 있습니다.</p>
+          <div class="state-actions"><button class="button button--secondary button--compact">다시 시도</button></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 09 · PARTIAL / STALE / ESTIMATED</span>
+        <h2>데이터 상태도 구체적으로</h2>
+        <p>서로 다른 상태를 “데이터 오류” 하나로 합치지 않습니다.</p>
+        <dl class="copy-stack">
+          <div class="copy-line"><dt>Partial</dt><dd>일부 플랫폼 데이터만 포함되어 있습니다.</dd></div>
+          <div class="copy-line"><dt>Stale</dt><dd>Spotify 데이터가 아직 최신 상태가 아닙니다. 마지막 갱신: 2026. 11. 5.</dd></div>
+          <div class="copy-line"><dt>Estimated</dt><dd>일부 값은 추정치입니다.</dd></div>
+        </dl>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 10 · DESCRIPTIVE, NOT EVALUATIVE</span>
+        <h2>“좋다” 대신 관찰 가능한 기준</h2>
+        <p>benchmark가 없는데 성과를 평가하지 않습니다.</p>
+        <div class="pair">
+          <div class="copy-box copy-box--do"><strong>DO</strong>최근 5개 발매 중 스트리밍이 가장 높습니다.</div>
+          <div class="copy-box copy-box--dont"><strong>DON'T</strong>이번 곡의 성과가 매우 좋습니다.</div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 11 · TECHNICAL TERM</span>
+        <h2>분석 용어를 사용자 언어로</h2>
+        <p>전문 용어가 판단에 필요하지 않으면 자연어를 우선합니다.</p>
+        <dl class="copy-stack">
+          <div class="copy-line"><dt>baseline</dt><dd>비교 기준</dd></div>
+          <div class="copy-line"><dt>anomaly</dt><dd>평소와 다른 변화</dd></div>
+          <div class="copy-line"><dt>leading signal</dt><dd>먼저 나타난 신호</dd></div>
+          <div class="copy-line"><dt>index 100</dt><dd>기준값을 100으로 비교</dd></div>
+        </dl>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 12 · PROVISIONAL GLOSSARY</span>
+        <h2>제품 용어 사전</h2>
+        <p>실제 DSP schema와 entity model이 확정되기 전까지 Proposed로 유지합니다.</p>
+        <div class="table-shell">
+          <table class="glossary">
+            <thead><tr><th>기본 표현</th><th>피함/제한</th><th>비고</th></tr></thead>
+            <tbody>
+              <tr><td>곡</td><td>트랙</td><td>사용자-facing 기본</td></tr>
+              <tr><td>전체 스트리밍</td><td>총 재생</td><td>실제 metric 정의 확인 필요</td></tr>
+              <tr><td>청취자</td><td>리스너</td><td>DSP 공식 정의 확인 필요</td></tr>
+              <tr><td>이전 기간 대비</td><td>전기 대비</td><td>일반 사용자 우선</td></tr>
+              <tr><td>비교 기준</td><td>baseline</td><td>전문 detail에서 병기 가능</td></tr>
+              <tr><td>증가분 비중</td><td>contribution</td><td>합산 가능성이 검증된 경우만</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
