@@ -17,6 +17,7 @@ Read these documents first:
 11. `docs/design-system/09-data-visualization-system.md`
 12. `docs/design-system/10-table-and-ranking-system.md`
 13. `docs/design-system/11-insight-and-annotation-system.md`
+14. `docs/design-system/12-iconography-system.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -84,6 +85,28 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Iconography system
+
+Follow `docs/design-system/12-iconography-system.md`.
+
+Key rules:
+- Icons support meaning; they do not replace clear labels by default.
+- Use one coherent SVG icon style. Do not mix Unicode glyphs, emoji, icon fonts, and multiple icon families.
+- Use Regular/outline system icons as the default. Filled variants are reserved for selected/high-emphasis cases when they add value.
+- Current primitive sizes are 12 / 16 / 20 / 24 / 32px; 20px is the default system/navigation icon size.
+- Keep glyph size separate from hit target size: default icon-only target 40×40, compact 32×32.
+- Functional icons should generally use neutral-600 or stronger; neutral-400 is decorative-only on light surfaces.
+- Selected/action icons may use blue-700. Metric direction must not inherit success/error semantic colors automatically.
+- System icons, DSP brand logos, artwork, and avatars are different primitives and must not share the same treatment rules.
+- Do not add icons to every card heading for decoration.
+- Icon-only actions need an accessible name; tooltip text is not a substitute for aria-label.
+- With a visible text label, SVG icons are normally aria-hidden and inherit currentColor.
+- Use semantic product aliases such as nav.dashboard or action.export so the underlying asset can change later.
+- Prototype uses inline SVG with shared currentColor/stroke tokens. Final external icon library selection is Deferred.
+
+Design-system icon lab:
+`prototype/design-system-lab/iconography.html`
 
 ## Insight and annotation system
 
