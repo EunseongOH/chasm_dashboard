@@ -14,6 +14,7 @@ Read these documents first:
 8. `docs/design-system/06-surface-border-elevation.md`
 9. `docs/design-system/07-layout-and-grid.md`
 10. `docs/design-system/08-interaction-states-and-controls.md`
+11. `docs/design-system/09-data-visualization-system.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -81,6 +82,31 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Data visualization system
+
+Follow `docs/design-system/09-data-visualization-system.md`.
+
+Key rules:
+- Reuse chart grammar, not one rigid visual template.
+- Axis typography/grid tokens may be shared, but domain/reference behavior must follow analytical meaning.
+- Absolute bar comparisons start at zero.
+- Line charts may use focused non-zero domains only when the question is trend shape, not absolute magnitude.
+- Signed deltas keep a visible zero baseline.
+- Cross-platform comparisons require comparable metric definitions; otherwise use small multiples, indexed comparison, or change rates.
+- Indexed comparison uses an explicit baseline such as 100 and never mixes raw and indexed values on one axis.
+- Dual axes are not a default pattern; prefer small multiples or indexed comparison.
+- Missing data breaks a line. Only genuinely estimated/interpolated data may use an explicitly labeled dashed segment.
+- One-series charts do not need a legend. Prefer direct labels when they do not collide; use a compact legend when they do.
+- Dense series remove point markers before shrinking type.
+- Time-series default to horizontal major grid lines and no vertical grid unless the analysis requires both dimensions.
+- Event annotations are factual time context, not causal claims.
+- Do not rely on color alone; preserve labels/position/line style/markers where needed.
+- Axis labels may be compact, but tooltips/details should show exact values when available.
+- Responsive degradation should reduce ticks, switch direct labels to legends, cluster annotations, or reflow the card before shrinking meaningful text.
+
+Design-system chart lab:
+`prototype/design-system-lab/data-visualization.html`
 
 ## Interaction states and controls
 
