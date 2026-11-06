@@ -22,6 +22,7 @@ Read these documents first:
 16. `docs/design-system/14-accessibility-system.md`
 17. `docs/design-system/15-data-state-system.md`
 18. `docs/design-system/16-filter-search-date-query-system.md`
+19. `docs/design-system/17-navigation-and-information-architecture.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -89,6 +90,29 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Navigation and information architecture system
+
+Follow `docs/design-system/17-navigation-and-information-architecture.md`.
+
+Key rules:
+- Use the hierarchy Product → Artist Context → Primary Section → Detail. Do not force every hierarchy level into the sidebar.
+- Artist switching changes the analysis context; it is not ordinary page navigation.
+- Preserve the current L1 section across artist switches when valid, but reset invalid artist-specific entity/detail state.
+- Never show a new artist label over old-artist data.
+- Keep L1 navigation shallow. Use page tabs and drill-down for deeper related views rather than 3–4 levels of nested side navigation.
+- Use breadcrumbs only when real hierarchy/drill-down exists; top-level pages do not need breadcrumbs when sidebar current state + H1 already orient the user.
+- Breadcrumb means structural parent; Browser Back means actual navigation history. Do not label breadcrumbs as “back”.
+- Primary analysis destinations and utility/setup destinations are separate groups.
+- Current destination uses visual selected state plus aria-current="page"; Focus remains independent.
+- Full sidebar, icon rail, and mobile menu must expose the same L1 IA.
+- Icon rail needs visible hover/focus labels as well as accessible names.
+- Mobile navigation must remain available through an explicit menu control with aria-expanded and Escape/focus-return behavior.
+- Prototype section anchors are IA visualization only, not final production route definitions.
+- Actual route paths, permission-based navigation, report placement, data-connection naming, and scroll restoration remain Deferred or Proposed.
+
+Design-system navigation lab:
+`prototype/design-system-lab/navigation-ia.html`
 
 ## Filter, search, date and query control system
 
