@@ -859,6 +859,8 @@ last known value is stale
 
 ---
 
+> Data State의 의미는 이 문서가 담당하고, 사용자에게 어떤 feedback surface로 전달할지는 `18-feedback-notification-confirmation.md`를 따른다.
+
 # 30. State Surfaces
 
 상태에 따라 visual surface를 다르게 사용한다.
