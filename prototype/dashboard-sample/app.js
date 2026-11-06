@@ -46,6 +46,50 @@ let granularity = "day";
 
 const svg = document.getElementById("trendChart");
 const legend = document.getElementById("legend");
+const trendDataBody = document.getElementById("trendDataBody");
+const trendChartSummary = document.getElementById("trendChartSummary");
+const statusAnnouncer = document.getElementById("statusAnnouncer");
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function announce(message) {
+  if (!statusAnnouncer) return;
+  statusAnnouncer.textContent = "";
+  window.requestAnimationFrame(() => {
+    statusAnnouncer.textContent = message;
+  });
+}
+
+function scrollAndFocus(target) {
+  if (!target) return;
+  target.scrollIntoView({
+    behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+    block: "center"
+  });
+
+  window.setTimeout(() => {
+    target.focus({ preventScroll: true });
+  }, reducedMotionQuery.matches ? 0 : 250);
+}
+
+function renderChartDataTable(data) {
+  if (!trendDataBody) return;
+
+  trendDataBody.innerHTML = data.map((row) => `
+    <tr>
+      <th scope="row">${row.label}</th>
+      <td class="cell-number">${(row.spotify * 1000).toLocaleString("ko-KR")}</td>
+      <td class="cell-number">${(row.youtube * 1000).toLocaleString("ko-KR")}</td>
+      <td class="cell-number">${(row.apple * 1000).toLocaleString("ko-KR")}</td>
+      <td class="cell-number">${(row.melon * 1000).toLocaleString("ko-KR")}</td>
+    </tr>
+  `).join("");
+
+  if (trendChartSummary) {
+    trendChartSummary.textContent = granularity === "day"
+      ? "9월 18일 신곡 발매 직후 모든 플랫폼의 스트리밍이 증가했고, Spotify의 증가폭이 가장 큽니다."
+      : "9월 3주에 모든 플랫폼의 스트리밍이 이전 주보다 크게 증가했고, Spotify의 증가폭이 가장 큽니다.";
+  }
+}
 
 function svgEl(name, attrs = {}) {
   const el = document.createElementNS("http://www.w3.org/2000/svg", name);
@@ -201,6 +245,7 @@ function renderChart() {
   });
 
   attachChartTooltips();
+  renderChartDataTable(data);
 }
 
 function attachChartTooltips() {
@@ -219,9 +264,7 @@ function attachChartTooltips() {
       tooltip.style.top = `${event.clientY - 12}px`;
     });
 
-    hit.addEventListener("mouseleave", () => {
-      tooltip.classList.remove("is-visible");
-    });
+    hit.addEventListener("mouseleave", scheduleTooltipHide);
   });
 }
 
@@ -236,6 +279,7 @@ function selectGranularity(button) {
 
   granularity = button.dataset.granularity;
   renderChart();
+  announce(`${button.textContent.trim()} 보기로 변경했습니다.`);
 }
 
 segmentedButtons.forEach((button, index) => {
@@ -252,8 +296,21 @@ segmentedButtons.forEach((button, index) => {
 });
 
 const tooltip = document.getElementById("tooltip");
+let tooltipHideTimer;
+
+function cancelTooltipHide() {
+  window.clearTimeout(tooltipHideTimer);
+}
+
+function scheduleTooltipHide() {
+  window.clearTimeout(tooltipHideTimer);
+  tooltipHideTimer = window.setTimeout(() => {
+    tooltip.classList.remove("is-visible");
+  }, 120);
+}
 
 function showInfoTooltip(button) {
+  cancelTooltipHide();
   tooltip.textContent = button.dataset.tip;
   tooltip.classList.add("is-visible");
   const rect = button.getBoundingClientRect();
@@ -262,18 +319,21 @@ function showInfoTooltip(button) {
 }
 
 function hideInfoTooltip() {
+  window.clearTimeout(tooltipHideTimer);
   tooltip.classList.remove("is-visible");
 }
 
+tooltip.addEventListener("mouseenter", cancelTooltipHide);
+tooltip.addEventListener("mouseleave", scheduleTooltipHide);
+
 document.querySelectorAll(".info").forEach((button) => {
   button.addEventListener("mouseenter", () => showInfoTooltip(button));
-  button.addEventListener("mouseleave", hideInfoTooltip);
+  button.addEventListener("mouseleave", scheduleTooltipHide);
   button.addEventListener("focus", () => showInfoTooltip(button));
   button.addEventListener("blur", hideInfoTooltip);
   button.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       hideInfoTooltip();
-      button.blur();
     }
   });
 });
@@ -304,7 +364,8 @@ function activateInsight(item) {
     document.querySelectorAll('[data-insight-target="release"]')
       .forEach((node) => node.classList.add("is-linked-highlight"));
 
-    document.getElementById("music")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    scrollAndFocus(document.getElementById("musicTitle"));
+    announce("발매 전후 스트리밍 근거를 강조했습니다.");
     return;
   }
 
@@ -312,13 +373,15 @@ function activateInsight(item) {
     const row = document.getElementById("track-late-summer");
     if (row) {
       row.classList.add("is-insight-highlight");
-      row.scrollIntoView({ behavior: "smooth", block: "center" });
+      scrollAndFocus(row);
+      announce("늦은 여름 곡의 근거 행을 강조했습니다.");
     }
     return;
   }
 
   if (target === "trend") {
-    document.getElementById("music")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    scrollAndFocus(document.getElementById("musicTitle"));
+    announce("관련 스트리밍 추이 차트로 이동했습니다.");
   }
 }
 
@@ -326,11 +389,15 @@ insightItems.forEach((item) => {
   item.addEventListener("click", () => activateInsight(item));
 });
 
+document.getElementById("summaryEvidenceButton")?.addEventListener("click", () => {
+  if (insightItems[0]) activateInsight(insightItems[0]);
+});
+
 document.getElementById("periodSelect").addEventListener("change", (event) => {
   const is30 = event.target.value === "30";
-  document.querySelector(".date-control").textContent = is30
-    ? "2026. 10. 2. – 10. 31."
-    : "2026. 8. 1. – 10. 31.";
+  const range = is30 ? "2026. 10. 2. – 10. 31." : "2026. 8. 1. – 10. 31.";
+  document.querySelector(".date-control").textContent = range;
+  announce(`조회 기간을 ${event.target.options[event.target.selectedIndex].text}로 변경했습니다. 적용 기간은 ${range}입니다.`);
 });
 
 renderLegend();
