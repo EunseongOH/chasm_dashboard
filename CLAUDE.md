@@ -19,6 +19,7 @@ Read these documents first:
 13. `docs/design-system/11-insight-and-annotation-system.md`
 14. `docs/design-system/12-iconography-system.md`
 15. `docs/design-system/13-content-and-microcopy-system.md`
+16. `docs/design-system/14-accessibility-system.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -86,6 +87,33 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Accessibility system
+
+Follow `docs/design-system/14-accessibility-system.md`.
+
+Key rules:
+- WCAG 2.2 AA is the CHASM product baseline.
+- Accessibility is a cross-system requirement covering structure, keyboard, focus, contrast, reflow, charts, tables, dynamic status, motion, and content.
+- Provide skip navigation for repeated sidebar/navigation blocks and mark the current destination with aria-current.
+- Prefer native semantic HTML. Do not invent custom ARIA widgets when button/link/select/table/details already fit.
+- All meaningful functions must work with keyboard only and preserve a logical focus order.
+- Keep the 2px blue-700 focus ring. Do not remove focus outlines.
+- Minimum target is 24×24 CSS px; CHASM defaults remain 32/40px where possible.
+- Meaningful small text uses neutral-600 or stronger on light surfaces. neutral-500 is not a normal 11–14px text token.
+- Meaningful graphical objects such as chart lines and functional icons target at least 3:1 contrast.
+- Color must not be the sole carrier of state, series identity, direction, or status.
+- Respect prefers-reduced-motion; smooth scrolling and nonessential transitions must degrade to instant/minimal behavior.
+- Tooltip information must be available on hover and keyboard focus, dismissible with Escape, and programmatically associated with the trigger.
+- Dynamic changes that users need to know without focus movement should use a polite live status region.
+- Complex charts need both a concise accessible summary and an exact data-table path generated from the same data source.
+- Do not make every dense chart point a Tab stop by default; provide summary/table access unless a deliberate keyboard-explorable chart pattern is built.
+- Design for 200% text zoom and 320 CSS px / 400% reflow; genuine two-dimensional comparison workspaces may use intentional horizontal scrolling.
+- Production readiness requires manual keyboard, zoom/reflow, forced-colors, and screen-reader testing. Static/code inspection is not sufficient.
+- Prototype-only dead controls or missing destinations are not production-ready even if visually polished.
+
+Design-system accessibility lab:
+`prototype/design-system-lab/accessibility.html`
 
 ## Content and microcopy system
 
