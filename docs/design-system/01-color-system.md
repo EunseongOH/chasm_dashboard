@@ -182,6 +182,26 @@ Color만 기억해야 데이터를 읽을 수 있는 차트를 지양한다.
 
 SEED와 Microsoft Fluent의 Layered token 구조를 참고한다.
 
+### 6.1 CSS implementation alias policy
+
+현재 prototype CSS에서는 다음 naming을 canonical implementation alias로 사용한다.
+
+- Surface: `surface-*`
+- Border: `border-*`
+- Foreground: `fg-*`
+- Control: `control-*`
+- Component-specific state: `button-*`, `feedback-*`, `chart-*` 등
+
+초기 prototype에 있던 `bg-*` / `stroke-*` alias는 `surface-*` / `border-*`와 의미가 겹쳐 CSS 구현에서 제거한다. 문서의 `bg.canvas`, `stroke.default` 표기는 **개념적 semantic role**이며, 실제 CSS 변수명이 두 세트 존재해야 한다는 뜻이 아니다.
+
+Component token은 다음 중 하나일 때 만든다.
+
+1. 여러 state가 한 세트로 움직일 때
+2. raw palette를 직접 쓰면 semantic 의도가 흐려질 때
+3. 같은 component family에서 반복될 때
+
+단발성 decorative artwork 색까지 모두 token화하지 않는다.
+
 ### Layer 1 — Palette / Global Token
 
 Raw value.
