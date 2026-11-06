@@ -116,9 +116,9 @@ Primitive 값만 기억해서 사용하기보다 역할 기준으로 사용한�
 | page-padding-inline | 32px desktop |
 | page-padding-block-start | 32px |
 | page-section-gap | 24px |
-| page-card-gap | 12px |
+| page-card-gap | 16px |
 
-Dashboard는 독립 카드가 반복되는 구조이므로 카드 간격은 12px을 기본으로 한다.
+Dashboard의 layout-level module 간격은 16px을 기본으로 한다. 12px은 component 내부의 compact group에서 사용한다.
 
 큰 Section이 명확하게 바뀌는 경우 24px 이상을 사용한다.
 
@@ -186,9 +186,9 @@ Label → Value → Comparison은 하나의 정보 덩어리이므로 서로 가
 
 ### 카드의 외부 간격과 내부 간격을 구분
 
-카드 사이 gap이 12px이라고 해서 카드 내부의 모든 요소도 12px으로 만들지 않는다.
+카드 사이 layout gap이 16px이라고 해서 카드 내부의 모든 요소도 16px으로 만들지 않는다.
 
-- 카드와 카드: 12px
+- 카드와 카드: 16px
 - 카드 padding: 20px
 - 같은 텍스트 그룹: 4–8px
 - 내부 섹션: 16px
@@ -420,7 +420,7 @@ KPI card는 더 compact하게:
 
 ### Spacing
 - page horizontal padding: 32px desktop
-- cards gap: 12px
+- cards gap: 16px
 - standard card padding: 20px
 - KPI card padding: 16px
 - card header → content: 16px
@@ -481,7 +481,7 @@ Card
 | top-level card R16 | Proposed |
 | standard card padding 20px | Proposed |
 | compact KPI padding 16px | Proposed |
-| card gap 12px | Proposed |
+| layout card gap 16px | Proposed |
 | Concentric Radius 원칙 | Stable |
 | nested box 최소화 | Stable |
 | spacing으로 정보 관계 표현 | Stable |
