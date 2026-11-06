@@ -584,6 +584,8 @@ Iconography System 유지.
 
 ---
 
+> Feedback/Toast/Dialog의 제품 사용 규칙은 `18-feedback-notification-confirmation.md`를 따른다. 접근성 role/live region/focus 규칙은 이 문서가 담당한다.
+
 # 26. Live Feedback / Toast
 
 Success:
