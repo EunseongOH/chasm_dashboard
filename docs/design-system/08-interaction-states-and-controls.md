@@ -328,6 +328,8 @@ Compact:
 
 ---
 
+> Navigation current/artist context/breadcrumb/page tabs의 제품 의미는 `17-navigation-and-information-architecture.md`를 따른다.
+
 # 8. Tabs vs Segmented Control
 
 ## Tabs
