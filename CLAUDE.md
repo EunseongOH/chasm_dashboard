@@ -12,6 +12,7 @@ Read these documents first:
 6. `docs/design-system/04-spacing-and-radius.md`
 7. `docs/design-system/05-typography-and-card-anatomy.md`
 8. `docs/design-system/06-surface-border-elevation.md`
+9. `docs/design-system/07-layout-and-grid.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -80,6 +81,23 @@ Do not automatically use green for increases or red for decreases.
 
 DSP brand color is not automatically chart series color.
 
+## Layout and grid
+
+Follow `docs/design-system/07-layout-and-grid.md`.
+
+Key rules:
+- Use a 12-column page grid for dashboard composition, not inside every component.
+- Default layout gutter is 16px.
+- Current proposed content max-width is 1440px.
+- >=1280px: full sidebar; 1024–1279px: 72px icon rail.
+- >=1024px: main chart + insight may use 8+4 columns.
+- <1024px: stack chart and insight instead of squeezing them.
+- 768–1023px: KPI uses 6+6 and supporting modules use two-column reflow.
+- <768px: sidebar becomes a top brand/header structure.
+- Responsive decisions should be based on content minimum widths, not device labels alone.
+- Reflow before hiding meaningful data.
+- Do not shrink chart labels or meaningful text to compensate for insufficient width.
+
 ## Surface, border, and elevation
 
 Follow `docs/design-system/06-surface-border-elevation.md`.
@@ -118,7 +136,7 @@ Key rules:
 - Let parent layout `gap` and container `padding` manage spacing where possible.
 - Top-level dashboard cards use R16 as the current proposed value.
 - Standard card padding is 20px; compact KPI card padding is 16px.
-- Card-to-card gap is 12px.
+- Layout-level card/module gap is 16px. Use 12px for compact component groups, not the main page grid.
 - Use smaller radii as component size/role becomes smaller.
 - For visually adjacent nested rounded surfaces, use the concentric-radius principle: inner radius ≈ outer radius - inset.
 - Do not create nested rounded boxes merely to group content; prefer spacing or dividers when no separate surface/interaction meaning exists.
