@@ -620,6 +620,8 @@ Metric definition이 아직 확정되지 않은 prototype에서는 `샘플 지�
 
 ---
 
+> Data State 상세 시각/행동 규칙은 `15-data-state-system.md`를 따른다. 이 문서는 상태별 문구 vocabulary를 정의한다.
+
 # 23. Empty State Taxonomy
 
 “데이터 없음” 하나로 통일하지 않는다.
