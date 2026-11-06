@@ -877,10 +877,10 @@ Selected는 persistent.
 현재 CHASM starting palette:
 
 1. Blue #1393FD
-2. Teal #2EAD75
+2. Teal #278F63
 3. Purple #9D6ADE
 4. Coral #E5484D
-5. Amber #D99A13
+5. Amber #B7790D
 6. Slate #5C6F8A
 
 ## Stable entity mapping
@@ -928,6 +928,24 @@ Green/Red를 기본 diverging pair로 쓰지 않는다.
 중립 midpoint를 명확히 한다.
 
 ---
+
+## Accessibility contrast note
+
+Categorical line colors are meaningful graphical objects이므로 light background에서 최소 3:1 대비를 확보한다.
+
+2026-11 accessibility audit에서:
+- 기존 Teal #2EAD75 → 약 2.86:1
+- 기존 Amber #D99A13 → 약 2.45:1
+
+로 확인되어 Proposed palette를:
+- Teal #278F63
+- Amber #B7790D
+
+로 조정했다.
+
+또한 11px axis label은 normal text contrast 기준을 적용해 chart-axis-text를 neutral-600 #5E6978로 올렸다.
+
+색상 대비를 통과해도 series 구분을 색 하나에만 의존하지 않는 원칙은 유지한다.
 
 # 23. DSP Brand Identity
 
@@ -1258,7 +1276,7 @@ Tooltip은 mouse hover 전용 정보가 되지 않는다.
 --chart-grid-major: #E5EAF0;
 --chart-grid-minor: #F1F4F8;
 --chart-axis-line: #D5DCE5;
---chart-axis-text: #7C8796;
+--chart-axis-text: #5E6978;
 --chart-reference: #7C8796;
 
 --chart-line-standard: 2px;
