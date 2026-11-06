@@ -102,6 +102,13 @@
    - 상태의 page/card/metric/source scope 규칙
    - source coverage가 달라질 때 comparison 재검증 원칙
 
+17. `16-filter-search-date-query-system.md`
+   - Query / Filter / Search / Comparison / View / Sort 역할 분리
+   - global vs local control scope
+   - period preset + exact date + custom range
+   - draft/applied multi-filter, active chips, search/no-results
+   - query transition과 background refresh 분리
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -146,6 +153,10 @@ Keyboard/focus, contrast, tooltip, live status, chart alternative, 320px reflow,
 
 Ready/Loading/Refreshing/Partial/Stale/Error 상태 전환, Empty taxonomy, Estimated, source health, coverage mismatch를 검증하는 Data State Lab입니다.
 
+`prototype/design-system-lab/query-controls.html`
+
+Global query, date preset/custom range, comparison, draft/applied multi-filter, active filter, component search, sort, query-transition을 검증하는 Query Control Lab입니다.
+
 ## 상태 표기
 
 - **Stable**: 넓게 적용해도 되는 확정 원칙
@@ -166,6 +177,8 @@ Ready/Loading/Refreshing/Partial/Stale/Error 상태 전환, Empty taxonomy, Esti
 - Dashboard UI sample: **Proposed v0.1**
 - Data State 원칙·시각 문법: **Stable**
 - source별 refresh cadence / stale threshold / health aggregation: 실제 DSP 파이프라인 확인 후 **Deferred**
+- Query/Filter/Search 역할 구분과 scope 원칙: **Stable**
+- 기본 기간 / timezone / URL serialization 구현: 실제 product/data architecture 확인 후 **Deferred**
 - 접근성 기준선: **WCAG 2.2 AA / Stable**
 - 실제 browser zoom·screen reader·forced-colors QA: **Required before production**
 
