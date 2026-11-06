@@ -109,6 +109,13 @@
    - draft/applied multi-filter, active chips, search/no-results
    - query transition과 background refresh 분리
 
+18. `17-navigation-and-information-architecture.md`
+   - Product / Artist Context / L1 Section / Detail hierarchy
+   - Sidebar / icon rail / mobile menu 역할
+   - Breadcrumb / Browser Back / page tabs 구분
+   - Artist context switch와 cross-page drill-down
+   - Proposed L1 IA와 route 방향
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -157,6 +164,10 @@ Ready/Loading/Refreshing/Partial/Stale/Error 상태 전환, Empty taxonomy, Esti
 
 Global query, date preset/custom range, comparison, draft/applied multi-filter, active filter, component search, sort, query-transition을 검증하는 Query Control Lab입니다.
 
+`prototype/design-system-lab/navigation-ia.html`
+
+Full sidebar, icon rail, mobile menu, artist context, breadcrumb, tabs, drill-down, deep-link orientation을 검증하는 Navigation & IA Lab입니다.
+
 ## 상태 표기
 
 - **Stable**: 넓게 적용해도 되는 확정 원칙
@@ -177,6 +188,8 @@ Global query, date preset/custom range, comparison, draft/applied multi-filter, 
 - Dashboard UI sample: **Proposed v0.1**
 - Data State 원칙·시각 문법: **Stable**
 - source별 refresh cadence / stale threshold / health aggregation: 실제 DSP 파이프라인 확인 후 **Deferred**
+- Navigation hierarchy 원칙과 Breadcrumb/Back 구분: **Stable**
+- 현재 L1 메뉴 이름/순서 및 route schema: **Proposed / Deferred implementation**
 - Query/Filter/Search 역할 구분과 scope 원칙: **Stable**
 - 기본 기간 / timezone / URL serialization 구현: 실제 product/data architecture 확인 후 **Deferred**
 - 접근성 기준선: **WCAG 2.2 AA / Stable**
