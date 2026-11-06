@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHASM Design System Lab — Insight & Annotation</title>
+  <link rel="stylesheet" href="../dashboard-sample/styles.css" />
+  <style>
+    body { padding: 32px; }
+    .lab { max-width: 1280px; margin: 0 auto; }
+    .lab-head { margin-bottom: 32px; }
+    .lab-head h1 { margin: 4px 0 6px; font-size: 28px; line-height: 36px; }
+    .lab-head p { margin: 0; max-width: 900px; color: var(--fg-secondary); }
+    .lab-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .lab-card {
+      min-width: 0;
+      padding: 20px;
+      background: var(--surface-default);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
+    }
+    .lab-card--wide { grid-column: 1 / -1; }
+    .case-tag {
+      display: inline-flex;
+      margin-bottom: 2px;
+      color: var(--fg-tertiary);
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: .06em;
+    }
+    .lab-card h2 { margin: 0; font-size: 16px; line-height: 24px; }
+    .lab-card > p { margin: 0 0 16px; color: var(--fg-tertiary); font-size: 13px; line-height: 20px; }
+    .statement {
+      display: grid;
+      gap: 4px;
+      padding: 14px 16px;
+      border-radius: var(--radius-control);
+    }
+    .statement + .statement { margin-top: 10px; }
+    .statement--observation { background: var(--surface-subtle); }
+    .statement--signal { background: var(--insight-signal-bg); }
+    .statement--interpretation { background: var(--insight-interpretation-bg); }
+    .statement--action { background: var(--insight-action-bg); }
+    .statement__type {
+      color: var(--fg-tertiary);
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+    }
+    .statement strong { font-size: 14px; line-height: 20px; }
+    .statement small { color: var(--fg-tertiary); font-size: 12px; line-height: 16px; }
+    .statement__actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+
+    .expanded-insight {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+      background: var(--surface-default);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-container-sm);
+    }
+    .expanded-insight__head { display: grid; gap: 4px; }
+    .expanded-insight__head strong { font-size: 14px; line-height: 20px; }
+    .expanded-insight__head p { margin: 0; color: var(--fg-tertiary); font-size: 12px; line-height: 16px; }
+
+    .evidence-panel[hidden] { display: none; }
+    .interpretation-note {
+      padding: 10px 12px;
+      color: var(--fg-secondary);
+      background: var(--insight-interpretation-bg);
+      border-radius: var(--radius-control);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .mini-chart {
+      position: relative;
+      height: 190px;
+      margin-top: 14px;
+      border-bottom: 1px solid var(--chart-axis-line);
+    }
+    .mini-chart svg { width: 100%; height: 100%; overflow: visible; }
+    .mini-chart .series {
+      fill: none;
+      stroke: var(--viz-blue);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .mini-chart .event-line {
+      stroke: var(--neutral-400);
+      stroke-width: 1;
+      stroke-dasharray: 4 4;
+    }
+    .mini-chart .event-line.is-active { stroke: var(--blue-500); stroke-width: 1.5; }
+    .mini-chart .band {
+      fill: var(--blue-50);
+      opacity: 0;
+    }
+    .mini-chart .band.is-active { opacity: 1; }
+    .mini-chart text { font-family: var(--font-family-base); font-size: 11px; fill: var(--fg-tertiary); }
+
+    .contradiction {
+      display: grid;
+      gap: 10px;
+    }
+    .metric-line {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--fg-secondary);
+      font-size: 13px;
+    }
+    .metric-line:last-child { border-bottom: 0; padding-bottom: 0; }
+    .metric-line strong { font-variant-numeric: tabular-nums; color: var(--fg-primary); }
+
+    .message-demo {
+      padding: 14px 16px;
+      border-radius: var(--radius-control);
+      font-size: 13px;
+      line-height: 20px;
+    }
+    .message-demo strong { display: block; }
+    .message-demo--alert {
+      background: #FFF8E6;
+      border: 1px solid #F2D49B;
+      color: #6A4B16;
+    }
+    .message-demo--insight {
+      margin-top: 10px;
+      background: var(--blue-50);
+      color: var(--fg-secondary);
+    }
+
+    .summary-demo {
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      background: var(--blue-50);
+      border: 1px solid var(--blue-100);
+      border-radius: var(--radius-card);
+    }
+    .summary-demo__icon {
+      width: 34px; height: 34px;
+      display: grid; place-items: center;
+      color: var(--fg-brand);
+      background: var(--surface-default);
+      border-radius: var(--radius-container-sm);
+    }
+    .summary-demo strong { display: block; font-size: 14px; line-height: 20px; }
+    .summary-demo small { color: var(--fg-secondary); font-size: 12px; line-height: 16px; }
+
+    .ai-marker {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 24px;
+      padding: 0 8px;
+      align-items: center;
+      gap: 5px;
+      color: var(--fg-secondary);
+      background: var(--surface-inset);
+      border-radius: var(--radius-tag);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    @media (max-width: 900px) {
+      body { padding: 20px; }
+      .lab-grid { grid-template-columns: 1fr; }
+      .lab-card--wide { grid-column: auto; }
+    }
+    @media (max-width: 640px) {
+      body { padding: 16px; }
+      .lab-card { padding: 16px; }
+      .summary-demo { grid-template-columns: auto 1fr; }
+      .summary-demo .button { grid-column: 2; justify-self: start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="lab">
+    <header class="lab-head">
+      <span class="section-kicker">DESIGN SYSTEM LAB</span>
+      <h1>Insight & Annotation</h1>
+      <p>사실·비교·신호·해석·행동을 하나의 “인사이트” 톤으로 뭉개지 않고, 사용자가 근거 수준과 다음 탐색 경로를 이해할 수 있는지 검증합니다.</p>
+    </header>
+
+    <div class="lab-grid">
+      <section class="lab-card">
+        <span class="case-tag">CASE 01 · OBSERVATION / COMPARISON</span>
+        <h2>직접 확인 가능한 변화</h2>
+        <p>원 데이터와 deterministic 계산은 단정형 문장을 사용할 수 있습니다.</p>
+        <div class="statement statement--observation">
+          <span class="statement__type">비교</span>
+          <strong>전체 스트리밍이 발매 전 4주 평균보다 42.3% 높습니다.</strong>
+          <small>2026. 9. 18. 발매 · 발매 전 4주 평균 대비</small>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 02 · SIGNAL</span>
+        <h2>함께 나타난 신호</h2>
+        <p>시간적 선행·동시 변화는 보여주되 인과로 바꾸지 않습니다.</p>
+        <div class="statement statement--signal">
+          <span class="statement__type">신호</span>
+          <strong>Instagram 반응 상승이 스트리밍 상승보다 4일 먼저 나타났습니다.</strong>
+          <small>최근 8주 시계열 비교 · 인과관계는 확인되지 않음</small>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 03 · INTERPRETATION + EVIDENCE</span>
+        <h2>가능한 해석은 근거를 펼칠 수 있어야 함</h2>
+        <p>설명 가설은 uncertainty language와 progressive disclosure를 함께 사용합니다.</p>
+        <div class="expanded-insight">
+          <div class="expanded-insight__head">
+            <span class="statement__type">가능한 해석</span>
+            <strong>발매 시점과 가까운 상승일 가능성이 있습니다.</strong>
+            <p>발매 직후 여러 플랫폼에서 동시에 상승했지만, 인과관계는 확정되지 않았습니다.</p>
+          </div>
+          <div class="insight-actions">
+            <button class="insight-disclosure" type="button" id="evidenceToggle" aria-expanded="false" aria-controls="evidencePanel">근거 보기</button>
+            <button class="button button--secondary button--compact" type="button" id="highlightEvidence">발매 전후 보기</button>
+          </div>
+          <div class="evidence-panel" id="evidencePanel" hidden>
+            <div class="insight-evidence">
+              <p class="insight-evidence__title">이 해석에 사용한 근거</p>
+              <dl class="insight-evidence__list">
+                <div class="insight-evidence__row"><dt>Spotify</dt><dd>발매 전 4주 평균 대비 +38.1%</dd></div>
+                <div class="insight-evidence__row"><dt>YouTube Music</dt><dd>+21.4%</dd></div>
+                <div class="insight-evidence__row"><dt>비교 기준</dt><dd>발매 전 4주 평균</dd></div>
+                <div class="insight-evidence__row"><dt>이벤트</dt><dd>싱글 발매 · 2026. 9. 18.</dd></div>
+              </dl>
+              <div class="interpretation-note">이 데이터는 시간상 가까운 변화를 보여주지만, 발매가 상승의 직접 원인이었다는 뜻은 아닙니다.</div>
+            </div>
+          </div>
+          <div class="mini-chart" aria-label="발매 전후 스트리밍 변화 예시">
+            <svg viewBox="0 0 900 190" role="img">
+              <rect class="band" id="releaseBand" x="400" y="18" width="300" height="145" rx="8"></rect>
+              <line x1="40" y1="55" x2="860" y2="55" stroke="var(--chart-grid-major)"/>
+              <line x1="40" y1="105" x2="860" y2="105" stroke="var(--chart-grid-major)"/>
+              <line x1="40" y1="155" x2="860" y2="155" stroke="var(--chart-grid-major)"/>
+              <line class="event-line" id="releaseLine" x1="430" y1="18" x2="430" y2="163"/>
+              <polyline class="series" points="40,140 130,136 220,128 310,124 400,118 490,76 580,60 670,72 760,68 860,74"/>
+              <text x="430" y="14" text-anchor="middle">발매 9.18</text>
+              <text x="40" y="184">D-28</text>
+              <text x="430" y="184" text-anchor="middle">D0</text>
+              <text x="860" y="184" text-anchor="end">D+28</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 04 · ACTION</span>
+        <h2>Exploration action을 먼저</h2>
+        <p>사용자가 근거를 더 확인하는 행동을 외부 행동 추천보다 우선합니다.</p>
+        <div class="statement statement--action">
+          <span class="statement__type">다음 확인</span>
+          <strong>증가분이 어느 플랫폼에서 발생했는지 비교해볼 수 있습니다.</strong>
+          <div class="statement__actions">
+            <button class="button button--secondary button--compact">플랫폼별 보기</button>
+            <button class="button button--tertiary button--compact">발매 전후 비교</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 05 · OPERATIONAL RECOMMENDATION</span>
+        <h2>외부 행동 추천은 더 높은 근거 필요</h2>
+        <p>행동을 단정적으로 지시하기보다 근거와 예상 범위를 함께 보여줍니다.</p>
+        <div class="statement statement--interpretation">
+          <span class="statement__type">추천 · 검토 필요</span>
+          <strong>최근 반응이 좋았던 짧은 라이브 클립 형식을 다시 테스트해볼 수 있습니다.</strong>
+          <small>최근 3개 유사 콘텐츠 중 2개에서 프로필 방문 상승 관찰</small>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 06 · CONTRADICTORY SIGNALS</span>
+        <h2>지표가 다른 방향이면 그대로 보여줌</h2>
+        <p>억지로 “좋음/나쁨” 하나로 결론 내리지 않습니다.</p>
+        <div class="statement statement--signal">
+          <span class="statement__type">엇갈린 변화</span>
+          <strong>스트리밍은 늘었지만 저장률은 낮아졌습니다.</strong>
+          <small>최근 30일 vs 이전 30일</small>
+        </div>
+        <div class="contradiction" style="margin-top:12px">
+          <div class="metric-line"><span>전체 스트리밍</span><strong>↑ 18.4%</strong></div>
+          <div class="metric-line"><span>청취자</span><strong>↑ 7.1%</strong></div>
+          <div class="metric-line"><span>저장률</span><strong>↓ 2.8%p</strong></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 07 · INSUFFICIENT EVIDENCE</span>
+        <h2>근거가 부족하면 원인을 만들지 않음</h2>
+        <p>결과를 못 주는 이유와 다음 확인 경로를 함께 제공합니다.</p>
+        <div class="statement statement--observation">
+          <span class="statement__type">판단 보류</span>
+          <strong>현재 데이터만으로 상승 원인을 판단하기 어렵습니다.</strong>
+          <small>비교 가능한 이전 발매 데이터가 충분하지 않습니다.</small>
+          <div class="statement__actions">
+            <button class="button button--secondary button--compact">현재 데이터 보기</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 08 · ALERT VS INSIGHT</span>
+        <h2>시스템 문제와 분석 변화 분리</h2>
+        <p>Amber/red alert tone을 데이터의 증가·감소에 사용하지 않습니다.</p>
+        <div class="message-demo message-demo--alert">
+          <strong>Spotify 데이터 갱신이 지연되고 있습니다.</strong>
+          마지막 수집: 2일 전 · 최신 기간 해석에 주의가 필요합니다.
+        </div>
+        <div class="message-demo message-demo--insight">
+          <strong>Spotify 스트리밍은 이전 30일보다 18.4% 높습니다.</strong>
+          분석 변화는 alert severity가 아닌 insight 문법으로 표시합니다.
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 09 · SUMMARY INSIGHT</span>
+        <h2>한 화면에서 가장 먼저 볼 한 가지</h2>
+        <p>Summary는 여러 분석 문장을 나열하기보다 primary statement 하나를 중심으로 둡니다.</p>
+        <div class="summary-demo">
+          <div class="summary-demo__icon" aria-hidden="true">✦</div>
+          <div>
+            <strong>신곡 발매 이후 스트리밍이 이전 수준보다 높게 유지되고 있습니다.</strong>
+            <small>Spotify와 YouTube Music의 증가분이 가장 큽니다.</small>
+          </div>
+          <button class="button button--tertiary button--compact">근거 보기</button>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 10 · AI TRANSPARENCY PLACEHOLDER</span>
+        <h2>AI가 해석을 작성할 경우</h2>
+        <p>현재 구현 대상은 아니지만, 향후 생성형 해석에는 출처를 숨기지 않는 원칙을 예약합니다.</p>
+        <div class="statement statement--interpretation">
+          <span class="ai-marker">✦ AI 해석</span>
+          <strong>공연 시점과 청취 증가가 관련됐을 가능성이 있습니다.</strong>
+          <small>AI label은 정확도 보증이 아니라 생성 출처와 설명 경로를 알리는 역할입니다.</small>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 11 · ANNOTATION COPY</span>
+        <h2>Plot 안에는 짧고 사실적으로</h2>
+        <p>긴 해석과 인과 문장은 plot 밖 insight surface로 이동합니다.</p>
+        <div class="mini-chart">
+          <svg viewBox="0 0 560 190" role="img" aria-label="이벤트 annotation copy 비교">
+            <line x1="40" y1="58" x2="520" y2="58" stroke="var(--chart-grid-major)"/>
+            <line x1="40" y1="110" x2="520" y2="110" stroke="var(--chart-grid-major)"/>
+            <polyline class="series" points="40,140 110,136 180,130 250,92 320,68 390,78 460,72 520,76"/>
+            <line class="event-line" x1="250" y1="22" x2="250" y2="150"/>
+            <rect x="203" y="4" width="94" height="24" rx="6" fill="var(--blue-50)" stroke="var(--blue-100)"/>
+            <text x="250" y="20" text-anchor="middle" fill="var(--fg-brand)">싱글 발매 · 9.18</text>
+          </svg>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const evidenceToggle = document.getElementById('evidenceToggle');
+    const evidencePanel = document.getElementById('evidencePanel');
+    evidenceToggle.addEventListener('click', () => {
+      const expanded = evidenceToggle.getAttribute('aria-expanded') === 'true';
+      evidenceToggle.setAttribute('aria-expanded', String(!expanded));
+      evidenceToggle.textContent = expanded ? '근거 보기' : '근거 접기';
+      evidencePanel.hidden = expanded;
+    });
+
+    const highlight = document.getElementById('highlightEvidence');
+    const releaseLine = document.getElementById('releaseLine');
+    const releaseBand = document.getElementById('releaseBand');
+    highlight.addEventListener('click', () => {
+      const active = releaseLine.classList.toggle('is-active');
+      releaseBand.classList.toggle('is-active', active);
+      highlight.textContent = active ? '강조 해제' : '발매 전후 보기';
+    });
+  </script>
+</body>
+</html>
