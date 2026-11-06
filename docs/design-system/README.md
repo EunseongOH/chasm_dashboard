@@ -77,6 +77,12 @@
    - Alert와 analytical insight 분리
    - annotation copy / contradiction / insufficient evidence 원칙
 
+13. `12-iconography-system.md`
+   - Navigation / Action / Status / Data cue / Decorative 역할 분리
+   - 12/16/20/24/32px size와 SVG stroke 원칙
+   - icon-only 접근성 및 target 규칙
+   - System icon / DSP logo / artwork / avatar 구분
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -104,6 +110,10 @@ Rich music resource table, exact numeric table, ranking preview, rank change, na
 `prototype/design-system-lab/insight-annotation.html`
 
 사실·비교·신호·해석·행동의 근거 수준, 근거 펼침, chart linking, contradiction, insufficient evidence, alert와 insight 구분을 검증하는 Insight Lab입니다.
+
+`prototype/design-system-lab/iconography.html`
+
+아이콘 size/stroke, navigation state, icon button target, status, contrast, insight cue, icon-only 접근성을 검증하는 Iconography Lab입니다.
 
 ## 상태 표기
 
