@@ -24,6 +24,11 @@
    - 실제 화면에서 검증할 컬러·KPI·Insight·Event 규칙
    - Prototype에서 다음 단계로 가져갈 질문
 
+4. `03-brand-assets.md`
+   - 공식 CHASM 로고 source of truth
+   - 로고 크기·색상·접근성 사용 원칙
+   - Prototype/preview에서 로고를 참조하는 방식
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
