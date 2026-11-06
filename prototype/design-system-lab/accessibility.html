@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHASM Design System Lab — Accessibility</title>
+  <link rel="stylesheet" href="../dashboard-sample/styles.css" />
+  <style>
+    body { padding: 32px; }
+    .lab { max-width: 1240px; margin: 0 auto; }
+    .lab-head { margin-bottom: 32px; }
+    .lab-head h1 { margin: 4px 0 6px; font-size: 28px; line-height: 36px; }
+    .lab-head p { margin: 0; max-width: 900px; color: var(--fg-secondary); }
+    .lab-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    .lab-card {
+      min-width: 0;
+      padding: 20px;
+      background: var(--surface-default);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
+    }
+    .lab-card--wide { grid-column: 1 / -1; }
+    .case-tag {
+      display: inline-flex;
+      color: var(--fg-tertiary);
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: .06em;
+    }
+    .lab-card h2 { margin: 2px 0 0; font-size: 16px; line-height: 24px; }
+    .lab-card > p { margin: 0 0 16px; color: var(--fg-tertiary); font-size: 13px; line-height: 20px; }
+
+    .focus-row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+    .target-demo {
+      width: 24px; height: 24px;
+      display: inline-grid; place-items:center;
+      color:var(--fg-secondary); background:var(--surface-default);
+      border:1px solid var(--border-strong); border-radius:var(--radius-control);
+      font-size:11px;
+    }
+
+    .contrast-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+    .contrast-card {
+      min-height:90px; padding:12px; display:grid; align-content:center; gap:5px;
+      border:1px solid var(--border-default); border-radius:var(--radius-control);
+      background:#fff;
+    }
+    .contrast-card strong { font-size:13px; }
+    .contrast-card span { font-size:12px; line-height:16px; }
+    .text-old { color:#7C8796; }
+    .text-new { color:#5E6978; }
+    .chart-teal { color:#278F63; }
+    .chart-amber { color:#B7790D; }
+
+    .tooltip-demo { display:flex; align-items:center; gap:10px; min-height:90px; }
+    .demo-tip {
+      position:absolute; z-index:30; max-width:250px; padding:8px 10px;
+      color:#fff; background:var(--neutral-900); border-radius:var(--radius-control);
+      font-size:12px; line-height:16px; opacity:0; pointer-events:auto;
+      transform:translateY(-8px); box-shadow:var(--shadow-mid);
+    }
+    .demo-tip.is-visible { opacity:1; }
+
+    .status-demo { display:grid; gap:12px; }
+    .status-visible {
+      min-height:42px; padding:10px 12px; color:var(--fg-secondary);
+      background:var(--surface-subtle); border-radius:var(--radius-control);
+      font-size:13px; line-height:20px;
+    }
+
+    .chart-a11y-demo {
+      display:grid; gap:12px;
+    }
+    .simple-chart {
+      width:100%; height:auto; display:block;
+      border-bottom:1px solid var(--chart-axis-line);
+    }
+    .simple-chart polyline { fill:none; stroke:var(--viz-blue); stroke-width:2; }
+    .simple-chart line { stroke:var(--chart-grid-major); stroke-width:1; }
+
+    .reflow-frame {
+      width:320px; max-width:100%; margin:0 auto; padding:12px;
+      background:var(--surface-canvas); border:1px dashed var(--border-strong);
+      border-radius:var(--radius-container-sm);
+    }
+    .reflow-card {
+      padding:16px; display:grid; gap:12px;
+      background:var(--surface-default); border:1px solid var(--border-default);
+      border-radius:var(--radius-card);
+    }
+    .reflow-actions { display:flex; flex-wrap:wrap; gap:8px; }
+    .reflow-metrics { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .reflow-metric { padding:10px; background:var(--surface-subtle); border-radius:var(--radius-control); }
+    .reflow-metric span { display:block; color:var(--fg-tertiary); font-size:12px; }
+    .reflow-metric strong { font-size:16px; }
+
+    .signal-list { display:grid; gap:10px; }
+    .signal-item {
+      display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center;
+      padding:10px 12px; border:1px solid var(--border-default); border-radius:var(--radius-control);
+    }
+    .signal-line { width:22px; height:3px; border-radius:999px; background:var(--c); }
+    .signal-line.dashed {
+      height:0; background:none; border-top:3px dashed var(--c);
+    }
+    .signal-item strong { font-size:13px; }
+    .signal-item span:last-child { color:var(--fg-secondary); font-size:12px; }
+
+    .checklist {
+      width:100%; border-collapse:collapse; font-size:13px; line-height:20px;
+    }
+    .checklist th, .checklist td {
+      padding:10px 12px; text-align:left; vertical-align:top;
+      border-top:1px solid var(--border-subtle);
+    }
+    .checklist th { color:var(--fg-tertiary); background:var(--surface-subtle); font-size:12px; }
+
+    @media (max-width: 860px) {
+      body { padding:20px; }
+      .lab-grid { grid-template-columns:1fr; }
+      .lab-card--wide { grid-column:auto; }
+      .contrast-grid { grid-template-columns:1fr; }
+    }
+    @media (max-width: 560px) {
+      body { padding:16px; }
+      .lab-card { padding:16px; }
+      .reflow-metrics { grid-template-columns:1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration:.01ms !important; animation-duration:.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#labMain">본문으로 건너뛰기</a>
+  <main class="lab" id="labMain" tabindex="-1">
+    <header class="lab-head">
+      <span class="section-kicker">DESIGN SYSTEM LAB</span>
+      <h1>Accessibility</h1>
+      <p>WCAG 2.2 AA를 기본선으로 삼아 keyboard, focus, contrast, reflow, tooltip, live status, chart alternative를 실제 상호작용으로 검증합니다.</p>
+    </header>
+
+    <div class="lab-grid">
+      <section class="lab-card">
+        <span class="case-tag">CASE 01 · KEYBOARD / FOCUS</span>
+        <h2>Focus는 항상 보이고 순서가 예측 가능해야 함</h2>
+        <p>Tab/Shift+Tab으로 이동하면서 2px blue-700 focus ring을 확인합니다.</p>
+        <div class="focus-row">
+          <button class="button button--primary">주요 행동</button>
+          <button class="button button--secondary">보조 행동</button>
+          <button class="icon-button" aria-label="검색">
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4 4"/></svg>
+          </button>
+          <button class="target-demo" aria-label="24픽셀 최소 타깃 예시">i</button>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 02 · TEXT / GRAPHIC CONTRAST</span>
+        <h2>작은 텍스트와 차트 선 대비</h2>
+        <p>neutral-500은 작은 텍스트에서 제외하고, chart Teal/Amber도 3:1 이상 후보로 조정했습니다.</p>
+        <div class="contrast-grid">
+          <div class="contrast-card">
+            <strong class="text-old">neutral-500</strong>
+            <span class="text-old">3.64:1 · 작은 일반 텍스트에는 부족</span>
+          </div>
+          <div class="contrast-card">
+            <strong class="text-new">neutral-600</strong>
+            <span class="text-new">5.57:1 · supporting text 기본</span>
+          </div>
+          <div class="contrast-card">
+            <strong><span class="chart-teal">Teal 4.04:1</span> · <span class="chart-amber">Amber 3.65:1</span></strong>
+            <span>의미 있는 chart line용 후보</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 03 · TOOLTIP</span>
+        <h2>Hover와 keyboard focus 모두 지원</h2>
+        <p>버튼 설명은 aria-describedby로 항상 연결되고, visual tooltip은 Escape로 닫을 수 있습니다.</p>
+        <div class="tooltip-demo">
+          <button class="info" id="tipTrigger" type="button" aria-label="전체 스트리밍 지표 설명" aria-describedby="tipDescription">
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg>
+          </button>
+          <span>마우스를 올리거나 Tab으로 포커스하세요.</span>
+          <span class="sr-only" id="tipDescription">합산 가능한 플랫폼의 재생 수만 포함합니다.</span>
+          <div class="demo-tip" id="demoTip" aria-hidden="true">합산 가능한 플랫폼의 재생 수만 포함합니다.</div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 04 · LIVE STATUS</span>
+        <h2>Focus 이동 없이 상태 변화 전달</h2>
+        <p>선택으로 콘텐츠가 갱신되면 필요한 변화만 polite live region으로 알립니다.</p>
+        <div class="status-demo">
+          <label class="select-control">
+            <span class="sr-only">조회 기간 예시</span>
+            <select id="statusSelect">
+              <option>최근 3개월</option>
+              <option>최근 30일</option>
+            </select>
+          </label>
+          <div class="status-visible" id="statusVisible">현재 조회 기간: 최근 3개월</div>
+          <div class="sr-only" id="labStatus" role="status" aria-live="polite" aria-atomic="true"></div>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 05 · CHART ALTERNATIVE</span>
+        <h2>Chart는 요약 + exact data path를 함께 제공</h2>
+        <p>SVG를 보지 못해도 핵심 변화와 정확한 수치를 확인할 수 있어야 합니다.</p>
+        <div class="chart-a11y-demo">
+          <p class="sr-only" id="labChartSummary">9월 18일 이후 모든 플랫폼이 증가했고 Spotify의 증가폭이 가장 큽니다.</p>
+          <svg class="simple-chart" viewBox="0 0 760 180" role="img" aria-label="플랫폼 스트리밍 추이 예시" aria-describedby="labChartSummary">
+            <line x1="40" y1="40" x2="720" y2="40"/>
+            <line x1="40" y1="90" x2="720" y2="90"/>
+            <line x1="40" y1="140" x2="720" y2="140"/>
+            <polyline points="40,132 160,126 280,119 400,72 520,58 640,66 720,63"/>
+          </svg>
+          <details class="chart-data-details">
+            <summary>차트 데이터 표로 보기</summary>
+            <div class="table-shell">
+              <table class="data-table compact-table chart-data-table">
+                <caption class="sr-only">플랫폼 스트리밍 추이 예시 데이터</caption>
+                <thead><tr><th scope="col">기간</th><th scope="col" class="cell-number">Spotify</th><th scope="col" class="cell-number">YouTube Music</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">9. 12.</th><td class="cell-number">96,000</td><td class="cell-number">42,000</td></tr>
+                  <tr><th scope="row">9. 18.</th><td class="cell-number">132,000</td><td class="cell-number">58,000</td></tr>
+                  <tr><th scope="row">9. 26.</th><td class="cell-number">119,000</td><td class="cell-number">55,000</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 06 · REFLOW</span>
+        <h2>320px에서도 핵심 정보 유지</h2>
+        <p>고정 desktop layout을 축소하지 않고 stack/wrap합니다.</p>
+        <div class="reflow-frame">
+          <div class="reflow-card">
+            <div>
+              <span class="section-kicker">MOBILE / ZOOM TEST</span>
+              <strong>플랫폼별 성과 요약</strong>
+            </div>
+            <div class="reflow-metrics">
+              <div class="reflow-metric"><span>스트리밍</span><strong>2,498만 회</strong></div>
+              <div class="reflow-metric"><span>최근 변화</span><strong>↑ 18.4%</strong></div>
+            </div>
+            <div class="reflow-actions">
+              <button class="button button--secondary button--compact">근거 보기</button>
+              <button class="button button--tertiary button--compact">플랫폼별 보기</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 07 · COLOR IS NOT THE ONLY SIGNAL</span>
+        <h2>Series identity는 label/style과 함께</h2>
+        <p>색을 구분하지 못해도 이름과 line style로 series를 식별할 수 있습니다.</p>
+        <div class="signal-list">
+          <div class="signal-item"><span class="signal-line" style="--c:var(--viz-blue)"></span><strong>Spotify</strong><span>실선</span></div>
+          <div class="signal-item"><span class="signal-line dashed" style="--c:var(--viz-teal)"></span><strong>YouTube Music</strong><span>점선 예시</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 08 · MANUAL QA</span>
+        <h2>자동 검사만으로 통과 처리하지 않음</h2>
+        <p>아래 항목은 실제 브라우저와 보조기기에서 확인해야 합니다.</p>
+        <div class="table-shell">
+          <table class="checklist">
+            <thead><tr><th>검증</th><th>방법</th><th>통과 기준</th></tr></thead>
+            <tbody>
+              <tr><td>Keyboard</td><td>Tab / Shift+Tab / Enter / Space / Escape / Arrow</td><td>모든 기능 완료, trap 없음, 순서 예측 가능</td></tr>
+              <tr><td>200% text zoom</td><td>브라우저 text/page zoom</td><td>clip/overlap/기능 손실 없음</td></tr>
+              <tr><td>400% / 320px</td><td>viewport 축소 또는 zoom</td><td>일반 콘텐츠 2차원 scroll 없이 reflow</td></tr>
+              <tr><td>Reduced motion</td><td>OS 설정 후 interaction</td><td>smooth/decorative motion 제거</td></tr>
+              <tr><td>Screen reader</td><td>NVDA/VoiceOver</td><td>landmark, heading, control, status, chart alternative 이해 가능</td></tr>
+              <tr><td>Forced colors</td><td>Windows High Contrast</td><td>focus/selection/controls 의미 유지</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const trigger = document.getElementById('tipTrigger');
+    const tip = document.getElementById('demoTip');
+    let hideTimer;
+
+    function showTip() {
+      clearTimeout(hideTimer);
+      const rect = trigger.getBoundingClientRect();
+      tip.style.left = rect.left + 'px';
+      tip.style.top = (rect.bottom + 10) + 'px';
+      tip.classList.add('is-visible');
+    }
+    function hideTip() { tip.classList.remove('is-visible'); }
+    function scheduleHide() { hideTimer = setTimeout(hideTip, 120); }
+
+    trigger.addEventListener('mouseenter', showTip);
+    trigger.addEventListener('mouseleave', scheduleHide);
+    trigger.addEventListener('focus', showTip);
+    trigger.addEventListener('blur', hideTip);
+    trigger.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') hideTip();
+    });
+    tip.addEventListener('mouseenter', () => clearTimeout(hideTimer));
+    tip.addEventListener('mouseleave', scheduleHide);
+
+    const select = document.getElementById('statusSelect');
+    const visible = document.getElementById('statusVisible');
+    const live = document.getElementById('labStatus');
+    select.addEventListener('change', () => {
+      const message = '조회 기간을 ' + select.value + '로 변경했습니다.';
+      visible.textContent = '현재 조회 기간: ' + select.value;
+      live.textContent = '';
+      requestAnimationFrame(() => live.textContent = message);
+    });
+  </script>
+</body>
+</html>
