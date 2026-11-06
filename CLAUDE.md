@@ -25,6 +25,8 @@ Read these documents first:
 19. `docs/design-system/17-navigation-and-information-architecture.md`
 20. `docs/design-system/18-feedback-notification-confirmation.md`
 21. `docs/design-system/19-content-spacing-and-inset-system.md`
+22. `docs/design-system/20-component-inventory-and-token-audit.md`
+23. `docs/design-system/component-inventory.json`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -92,6 +94,22 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Component inventory and token audit
+
+Follow `docs/design-system/20-component-inventory-and-token-audit.md` and `docs/design-system/component-inventory.json`.
+
+Key rules:
+- Check the component registry before creating a new component or variant.
+- Reuse an existing Shared component when its product role matches; do not fork a lookalike just for one screen.
+- Treat the registry status literally: Shared is reusable now, Dashboard-specific is not automatically a generic component, Lab-only/Proposed still depends on product decisions, Deferred must not be implemented as if finalized.
+- Token order is Palette/Primitive → Semantic → Component → Reserved contract.
+- CSS implementation uses surface-*, border-*, fg-*, control-* and explicit component token families as canonical names. Do not reintroduce legacy bg-* or stroke-* aliases.
+- Do not delete a token only because the dashboard sample does not reference it; check all Design System Labs and whether it is a foundation/reserved contract.
+- Raw system UI hex colors are not allowed. Prototype artwork/album-cover placeholder gradients are the explicit exception.
+- When the same spacing/color/state becomes a repeated component decision, promote it to a semantic/component token instead of copying raw values.
+- Shared promotion requires role, tokens, spacing/inset, states, accessibility, responsive behavior, visual Lab/Explorer coverage, registry update, and source-of-truth documentation.
+- Do not prematurely extract routing-aware Breadcrumb, calendar, chart renderer, or other Deferred/Proposed abstractions.
 
 ## Content spacing and inset system
 
