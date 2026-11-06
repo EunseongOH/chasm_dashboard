@@ -1010,8 +1010,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
   min-width: 560px;
 }
 
-.chart-data-table tbody th {
+.chart-data-table tbody th,
+.chart-data-table tbody td {
   height: var(--table-row-compact);
+}
+
+.chart-data-table tbody th {
   padding-inline: var(--table-cell-padding-x);
   color: var(--fg-secondary);
   background: var(--table-row-bg);
