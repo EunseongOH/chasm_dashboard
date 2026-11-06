@@ -214,6 +214,14 @@
   --a11y-text-muted: var(--neutral-600);
   --a11y-focus: var(--blue-700);
   --a11y-target-min: 24px;
+
+  --data-state-fresh: #278F63;
+  --data-state-info: var(--blue-700);
+  --data-state-attention: #8A5D00;
+  --data-state-attention-bg: #FFF8E6;
+  --data-state-critical: #B42318;
+  --data-state-critical-bg: #FFF4F2;
+  --data-state-neutral-bg: var(--surface-subtle);
 }
 
 * { box-sizing: border-box; }
@@ -520,6 +528,246 @@ button, a { -webkit-tap-highlight-color: transparent; }
   color: var(--control-fg-disabled);
   background: var(--control-bg-disabled);
   border-color: var(--control-border-disabled);
+}
+
+
+.data-health-bar {
+  margin-top: calc(var(--space-3) * -1);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  color: var(--fg-tertiary);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+}
+
+.data-health-bar__summary {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1_5);
+}
+
+.data-health-bar__summary strong {
+  color: var(--fg-secondary);
+  font-weight: 600;
+}
+
+.data-state-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-full);
+  background: var(--neutral-500);
+}
+
+.data-state-dot.is-fresh { background: var(--data-state-fresh); }
+.data-state-dot.is-info { background: var(--data-state-info); }
+.data-state-dot.is-attention { background: var(--data-state-attention); }
+.data-state-dot.is-critical { background: var(--data-state-critical); }
+
+.data-health-details {
+  position: relative;
+  min-width: 0;
+}
+
+.data-health-details > summary {
+  min-height: 32px;
+  padding: 0 var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  color: var(--fg-brand);
+  border-radius: var(--radius-control);
+  font-weight: 650;
+  cursor: pointer;
+  list-style: none;
+}
+
+.data-health-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.data-health-details > summary:hover {
+  background: var(--control-bg-hover);
+}
+
+.data-health-panel {
+  width: min(420px, calc(100vw - 32px));
+  margin-top: var(--space-2);
+  padding: var(--space-3);
+  background: var(--surface-default);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-container-sm);
+  box-shadow: var(--shadow-low);
+}
+
+.data-health-panel__note {
+  margin: 0 0 var(--space-3);
+  color: var(--fg-tertiary);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+}
+
+.data-source-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.data-source-row {
+  min-height: 36px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: center;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.data-source-row:first-child {
+  border-top: 0;
+}
+
+.data-source-row dt {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--fg-primary);
+  font-weight: 600;
+}
+
+.data-source-row dd {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--fg-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.data-source-row dd > span {
+  color: var(--fg-secondary);
+}
+
+.data-state-chip {
+  min-height: 24px;
+  padding: 0 var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border-radius: var(--radius-tag);
+  color: var(--fg-secondary);
+  background: var(--data-state-neutral-bg);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 650;
+}
+
+.data-state-chip.is-estimated {
+  color: var(--data-state-info);
+  background: var(--blue-50);
+}
+
+.data-state-chip.is-attention {
+  color: var(--data-state-attention);
+  background: var(--data-state-attention-bg);
+}
+
+.data-state-chip.is-critical {
+  color: var(--data-state-critical);
+  background: var(--data-state-critical-bg);
+}
+
+.data-state-notice {
+  padding: var(--space-3);
+  display: grid;
+  gap: var(--space-1);
+  border-radius: var(--radius-control);
+  color: var(--fg-secondary);
+  background: var(--surface-subtle);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+}
+
+.data-state-notice strong {
+  color: var(--fg-primary);
+  font-weight: 650;
+}
+
+.data-state-notice.is-attention {
+  color: #6A4B16;
+  background: var(--data-state-attention-bg);
+}
+
+.data-state-notice.is-critical {
+  color: #7A271A;
+  background: var(--data-state-critical-bg);
+}
+
+.data-state-empty {
+  min-height: 180px;
+  padding: var(--space-6);
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-2);
+  color: var(--fg-secondary);
+}
+
+.data-state-empty strong {
+  color: var(--fg-primary);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+}
+
+.data-state-empty p {
+  max-width: 420px;
+  margin: 0;
+  font-size: var(--type-supporting-size);
+  line-height: var(--type-supporting-line);
+}
+
+.skeleton-block {
+  overflow: hidden;
+  position: relative;
+  background: var(--neutral-100);
+  border-radius: var(--radius-1);
+}
+
+.skeleton-block::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.72), transparent);
+  animation: skeleton-wave 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-wave {
+  100% { transform: translateX(100%); }
+}
+
+.data-refreshing {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1_5);
+  color: var(--fg-tertiary);
+}
+
+.data-refreshing__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--neutral-300);
+  border-top-color: var(--blue-700);
+  border-radius: 50%;
+  animation: state-spin .8s linear infinite;
+}
+
+@keyframes state-spin {
+  to { transform: rotate(360deg); }
 }
 
 .summary-banner {
@@ -1779,6 +2027,18 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (max-width: 639px) {
+  .data-health-bar {
+    display: grid;
+  }
+
+  .data-health-details > summary {
+    padding-left: 0;
+  }
+
+  .data-health-panel {
+    width: 100%;
+  }
+
   .kpi-grid > .kpi-card {
     grid-column: 1 / -1;
   }
@@ -1846,6 +2106,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .skeleton-block::after {
+    display: none;
+  }
+
+  .data-refreshing__spinner {
+    animation: none;
+    border-color: var(--neutral-300);
+    border-top-color: var(--blue-700);
   }
 }
 
@@ -1915,6 +2185,41 @@ button, a { -webkit-tap-highlight-color: transparent; }
           <button class="icon-button" type="button" aria-label="내보내기"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10"/><path d="m8.5 10.5 3.5 3.5 3.5-3.5"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></button>
         </div>
       </header>
+
+      <div class="data-health-bar" aria-label="샘플 데이터 상태">
+        <div class="data-health-bar__summary">
+          <span class="data-state-dot is-fresh" aria-hidden="true"></span>
+          <span><strong>샘플 데이터</strong></span>
+          <span aria-hidden="true">·</span>
+          <span>4개 플랫폼 포함</span>
+          <span aria-hidden="true">·</span>
+          <span>갱신 시각 예시 2026. 11. 7. 00:30</span>
+        </div>
+        <details class="data-health-details">
+          <summary>데이터 상태 보기</summary>
+          <div class="data-health-panel">
+            <p class="data-health-panel__note">아래 상태와 시각은 실제 연동값이 아닌 디자인 시스템 검증용 예시입니다.</p>
+            <dl class="data-source-list">
+              <div class="data-source-row">
+                <dt><span class="data-state-dot is-fresh" aria-hidden="true"></span>Spotify</dt>
+                <dd><span>최신</span><time datetime="2026-11-07T00:30:00+09:00">00:30</time></dd>
+              </div>
+              <div class="data-source-row">
+                <dt><span class="data-state-dot is-fresh" aria-hidden="true"></span>YouTube Music</dt>
+                <dd><span>최신</span><time datetime="2026-11-07T00:28:00+09:00">00:28</time></dd>
+              </div>
+              <div class="data-source-row">
+                <dt><span class="data-state-dot is-fresh" aria-hidden="true"></span>Apple Music</dt>
+                <dd><span>최신</span><time datetime="2026-11-07T00:26:00+09:00">00:26</time></dd>
+              </div>
+              <div class="data-source-row">
+                <dt><span class="data-state-dot is-fresh" aria-hidden="true"></span>Melon</dt>
+                <dd><span>최신</span><time datetime="2026-11-07T00:24:00+09:00">00:24</time></dd>
+              </div>
+            </dl>
+          </div>
+        </details>
+      </div>
 
       <section class="summary-banner" aria-labelledby="summaryTitle">
         <div class="summary-banner__icon" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8c.6 3.8 2.4 5.6 6.2 6.2-3.8.6-5.6 2.4-6.2 6.2-.6-3.8-2.4-5.6-6.2-6.2 3.8-.6 5.6-2.4 6.2-6.2Z"/><path d="M18.2 16.2c.2 1.5 1 2.3 2.5 2.5-1.5.2-2.3 1-2.5 2.5-.2-1.5-1-2.3-2.5-2.5 1.5-.2 2.3-1 2.5-2.5Z"/></svg></div>
