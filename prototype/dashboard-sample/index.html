@@ -14,7 +14,7 @@
         <span>CHASM</span>
       </div>
 
-      <button class="artist-switcher" type="button">
+      <button class="artist-switcher" type="button" aria-label="아티스트 선택: 샘플 아티스트">
         <span class="artist-avatar">ㅁ</span>
         <span class="artist-switcher__copy">
           <strong>샘플 아티스트</strong>
@@ -24,29 +24,29 @@
       </button>
 
       <nav class="nav" aria-label="주요 메뉴">
-        <a class="nav-item is-active" href="#overview">
+        <a class="nav-item is-active" href="#overview" aria-label="대시보드">
           <span class="nav-icon">⌂</span><span>대시보드</span>
         </a>
-        <a class="nav-item" href="#music">
+        <a class="nav-item" href="#music" aria-label="음원 성과">
           <span class="nav-icon">♪</span><span>음원 성과</span>
         </a>
-        <a class="nav-item" href="#audience">
+        <a class="nav-item" href="#audience" aria-label="오디언스">
           <span class="nav-icon">◉</span><span>오디언스</span>
         </a>
-        <a class="nav-item" href="#content">
+        <a class="nav-item" href="#content" aria-label="콘텐츠">
           <span class="nav-icon">▣</span><span>콘텐츠</span>
         </a>
-        <a class="nav-item" href="#events">
+        <a class="nav-item" href="#events" aria-label="이벤트">
           <span class="nav-icon">□</span><span>이벤트</span>
         </a>
-        <a class="nav-item" href="#reports">
+        <a class="nav-item" href="#reports" aria-label="리포트">
           <span class="nav-icon">≡</span><span>리포트</span>
         </a>
       </nav>
 
       <div class="sidebar-bottom">
-        <a class="nav-item" href="#upload"><span class="nav-icon">⇧</span><span>데이터 업로드</span></a>
-        <a class="nav-item" href="#settings"><span class="nav-icon">⚙</span><span>설정</span></a>
+        <a class="nav-item" href="#upload" aria-label="데이터 업로드"><span class="nav-icon">⇧</span><span>데이터 업로드</span></a>
+        <a class="nav-item" href="#settings" aria-label="설정"><span class="nav-icon">⚙</span><span>설정</span></a>
       </div>
     </aside>
 
@@ -84,7 +84,7 @@
         <article class="kpi-card">
           <div class="kpi-card__head">
             <span>전체 스트리밍</span>
-            <button class="info" type="button" data-tip="합산 가능한 DSP의 재생 수만 포함한 샘플 지표입니다.">i</button>
+            <button class="info" type="button" aria-label="전체 스트리밍 지표 설명" data-tip="합산 가능한 DSP의 재생 수만 포함한 샘플 지표입니다.">i</button>
           </div>
           <div class="kpi-card__value">2,498만 <small>회</small></div>
           <div class="metric-context"><span class="delta neutral-up">↑ 18.4%</span><span>이전 3개월 대비</span></div>
@@ -95,7 +95,7 @@
         </article>
 
         <article class="kpi-card">
-          <div class="kpi-card__head"><span>성장 기여 플랫폼</span><button class="info" type="button" data-tip="전체 증가량에서 각 플랫폼이 차지한 비중을 비교합니다.">i</button></div>
+          <div class="kpi-card__head"><span>성장 기여 플랫폼</span><button class="info" type="button" aria-label="성장 기여 플랫폼 지표 설명" data-tip="전체 증가량에서 각 플랫폼이 차지한 비중을 비교합니다.">i</button></div>
           <div class="kpi-card__value text-value">Spotify</div>
           <div class="metric-context"><span class="delta neutral-up">증가분의 46%</span><span>가장 큰 기여</span></div>
           <div class="platform-mini">
@@ -104,14 +104,14 @@
         </article>
 
         <article class="kpi-card">
-          <div class="kpi-card__head"><span>상승 중인 곡</span><button class="info" type="button" data-tip="최근 기간의 추세가 이전 기간보다 개선된 곡입니다.">i</button></div>
+          <div class="kpi-card__head"><span>상승 중인 곡</span><button class="info" type="button" aria-label="상승 중인 곡 지표 설명" data-tip="최근 기간의 추세가 이전 기간보다 개선된 곡입니다.">i</button></div>
           <div class="kpi-card__value">3 <small>곡</small></div>
           <div class="metric-context"><span class="delta neutral-up">+1곡</span><span>이전 기간 대비</span></div>
           <div class="mini-track-list"><span>늦은 여름</span><span>그날의 우리</span><span>지금, 여기</span></div>
         </article>
 
         <article class="kpi-card">
-          <div class="kpi-card__head"><span>SNS 신규 팔로워</span><button class="info" type="button" data-tip="YouTube와 Instagram 신규 팔로워의 샘플 합산입니다.">i</button></div>
+          <div class="kpi-card__head"><span>SNS 신규 팔로워</span><button class="info" type="button" aria-label="SNS 신규 팔로워 지표 설명" data-tip="YouTube와 Instagram 신규 팔로워의 샘플 합산입니다.">i</button></div>
           <div class="kpi-card__value">4,820 <small>명</small></div>
           <div class="metric-context"><span class="delta neutral-up">↑ 6.1%</span><span>이전 3개월 대비</span></div>
           <svg class="sparkline" viewBox="0 0 160 36" role="img" aria-label="SNS 신규 팔로워 추이">
@@ -130,8 +130,8 @@
               <p>플랫폼 간 절대값보다 변화의 방향과 이벤트 전후 흐름을 함께 봅니다.</p>
             </div>
             <div class="segmented" role="group" aria-label="집계 단위">
-              <button class="is-selected" type="button" data-granularity="day">일간</button>
-              <button type="button" data-granularity="week">주간</button>
+              <button class="is-selected" type="button" data-granularity="day" aria-pressed="true">일간</button>
+              <button type="button" data-granularity="week" aria-pressed="false">주간</button>
             </div>
           </div>
 
