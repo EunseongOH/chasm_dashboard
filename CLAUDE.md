@@ -13,6 +13,7 @@ Read these documents first:
 7. `docs/design-system/05-typography-and-card-anatomy.md`
 8. `docs/design-system/06-surface-border-elevation.md`
 9. `docs/design-system/07-layout-and-grid.md`
+10. `docs/design-system/08-interaction-states-and-controls.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -80,6 +81,26 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Interaction states and controls
+
+Follow `docs/design-system/08-interaction-states-and-controls.md`.
+
+Key rules:
+- Treat Default, Hover, Pressed, Focus-visible, Selected, Disabled, and Loading as distinct states.
+- Focus and Selected must never be conflated.
+- Use the 2px blue-700 external focus ring; do not remove focus outlines.
+- Default controls are 40px high; compact dashboard controls are 32px high.
+- Icon-only controls need an accessible name and at least a 32px target; prefer 40px.
+- Primary actions are limited to the most important action in the current scope.
+- Tabs navigate views; Segmented controls switch modes within the same context.
+- Select changes a persistent value; Menu presents actions.
+- Reuse shared control tokens/classes before inventing new per-component states.
+- Disabled controls should use explicit disabled tokens and explain unavailable prerequisites when useful.
+- Verify keyboard interaction for custom controls.
+
+Design-system interaction lab:
+`prototype/design-system-lab/interaction-controls.html`
 
 ## Layout and grid
 
