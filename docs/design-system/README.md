@@ -18,6 +18,22 @@
    - 토큰 구조
    - SEED / Fluent / Polaris 참고 원칙
 
+3. `02-dashboard-ui-sample.md`
+   - 코드 기반 Dashboard UI sample의 목적
+   - 음악 데이터 특성을 고려한 정보 구조
+   - 실제 화면에서 검증할 컬러·KPI·Insight·Event 규칙
+   - Prototype에서 다음 단계로 가져갈 질문
+
+## 코드 프로토타입
+
+`prototype/dashboard-sample/`
+
+- `index.html`
+- `styles.css`
+- `app.js`
+
+외부 라이브러리 없이 실행 가능한 초기 UI sample입니다. 현재 목적은 제품 코드 확정이 아니라 디자인 시스템과 Visualization Grammar를 실제 데이터 화면 맥락에서 검증하는 것입니다.
+
 ## 상태 표기
 
 - **Stable**: 넓게 적용해도 되는 확정 원칙
@@ -35,6 +51,7 @@
 - 지표별 반올림·축약 허용 규칙: 실제 Metric 정의 단계에서 결정
 - 컬러 구조: **Stable**
 - 컬러 값: **Proposed v0.1**
+- Dashboard UI sample: **Proposed v0.1**
 - Data State 정의: DSP 스키마/수집 주기 확인 후 **Deferred**
 
 ## 작업 원칙
