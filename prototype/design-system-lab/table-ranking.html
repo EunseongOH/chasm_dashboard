@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHASM Design System Lab — Table & Ranking</title>
+  <link rel="stylesheet" href="../dashboard-sample/styles.css" />
+  <style>
+    body { padding: 32px; }
+    .lab { max-width: 1320px; margin: 0 auto; }
+    .lab-head { margin-bottom: 32px; }
+    .lab-head h1 { margin: 4px 0 6px; font-size: 28px; line-height: 36px; }
+    .lab-head p { margin: 0; max-width: 860px; color: var(--fg-secondary); }
+    .lab-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .lab-card {
+      min-width: 0;
+      overflow: hidden;
+      background: var(--surface-default);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
+    }
+    .lab-card--wide { grid-column: 1 / -1; }
+    .lab-card__head { padding: 20px 20px 0; }
+    .lab-card__head h2 { margin: 2px 0 0; font-size: 16px; line-height: 24px; }
+    .lab-card__head p { margin: 0; color: var(--fg-tertiary); font-size: 13px; line-height: 20px; }
+    .lab-card__body { padding: 20px; }
+    .case-tag {
+      display: inline-flex;
+      color: var(--fg-tertiary);
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: .06em;
+    }
+
+    .compact-table tbody td { height: var(--table-row-compact); }
+    .standard-table tbody td { height: var(--table-row-standard); }
+    .table-scroll { overflow-x: auto; }
+    .wide-matrix { min-width: 900px; }
+    .wide-matrix th:first-child,
+    .wide-matrix td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: var(--surface-default);
+      box-shadow: 1px 0 0 var(--border-subtle);
+    }
+    .wide-matrix thead th:first-child {
+      background: var(--table-header-bg);
+      z-index: 2;
+    }
+
+    .ranking-demo { padding: 20px; }
+    .ranking-change-wrap {
+      display: inline-flex;
+      min-width: 48px;
+      justify-content: flex-end;
+    }
+
+    .narrow-demo {
+      width: min(100%, 380px);
+      margin: 0 auto;
+      padding: 12px;
+      background: var(--surface-canvas);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-container-sm);
+    }
+    .narrow-list {
+      display: grid;
+      gap: 0;
+      overflow: hidden;
+      background: var(--surface-default);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-container-sm);
+    }
+    .narrow-row {
+      padding: 14px 16px;
+      display: grid;
+      gap: 10px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .narrow-row:first-child { border-top: 0; }
+    .narrow-primary { display: flex; gap: 10px; align-items: center; min-width: 0; }
+    .narrow-copy { min-width: 0; display: grid; }
+    .narrow-copy strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+      line-height: 20px;
+    }
+    .narrow-copy small { color: var(--fg-tertiary); font-size: 12px; line-height: 16px; }
+    .narrow-metrics {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .narrow-metrics strong { font-variant-numeric: tabular-nums; font-size: 14px; }
+    .narrow-metrics span { color: var(--fg-secondary); font-size: 12px; font-weight: 600; }
+
+    .table-toolbar {
+      min-height: 48px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--surface-default);
+    }
+    .toolbar-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .selection-count { color: var(--fg-secondary); font-size: 13px; font-weight: 600; }
+    .table-checkbox { width: 18px; height: 18px; accent-color: var(--blue-700); }
+    .selection-table th:first-child,
+    .selection-table td:first-child { width: 48px; text-align: center; }
+
+    .pagination-demo {
+      min-height: 48px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--fg-secondary);
+      font-size: 12px;
+    }
+    .pagination-actions { display: flex; gap: 6px; }
+
+    .sort-button[aria-pressed="true"] .sort-icon { color: var(--fg-brand); }
+    .sort-button .sort-icon::before { content: "↕"; }
+    th[aria-sort="ascending"] .sort-icon::before { content: "↑"; }
+    th[aria-sort="descending"] .sort-icon::before { content: "↓"; }
+
+    @media (max-width: 900px) {
+      body { padding: 20px; }
+      .lab-grid { grid-template-columns: 1fr; }
+      .lab-card--wide { grid-column: auto; }
+    }
+    @media (max-width: 640px) {
+      body { padding: 16px; }
+      .lab-card__head { padding: 16px 16px 0; }
+      .lab-card__body, .ranking-demo { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="lab">
+    <header class="lab-head">
+      <span class="section-kicker">DESIGN SYSTEM LAB</span>
+      <h1>Table & Ranking</h1>
+      <p>정확한 데이터 조회와 빠른 Top-N 파악을 분리해 검증합니다. 모든 수치는 UI 검증용 dummy data입니다.</p>
+    </header>
+
+    <div class="lab-grid">
+      <section class="lab-card lab-card--wide">
+        <div class="lab-card__head">
+          <span class="case-tag">CASE 01 · RICH RESOURCE TABLE</span>
+          <h2>곡 성과 · artwork + metadata</h2>
+          <p>곡 identity는 좌측, exact numeric value와 delta는 우측 정렬합니다. Rich row는 64px입니다.</p>
+        </div>
+        <div class="table-shell">
+          <table class="data-table resource-table" id="sortableTrackTable">
+            <caption class="sr-only">곡별 성과 비교</caption>
+            <colgroup>
+              <col class="resource-col" />
+              <col class="metric-col" />
+              <col class="delta-col" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col">곡</th>
+                <th scope="col" class="cell-number" aria-sort="descending">
+                  <button class="sort-button" type="button" data-sort="streams" aria-pressed="true">
+                    전체 스트리밍 <span class="sort-icon" aria-hidden="true"></span>
+                  </button>
+                </th>
+                <th scope="col" class="cell-delta">
+                  <button class="sort-button" type="button" data-sort="delta" aria-pressed="false">
+                    최근 변화 <span class="sort-icon" aria-hidden="true"></span>
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-streams="4832101" data-delta="36.8">
+                <td><div class="track-name"><span class="cover c1" aria-hidden="true"></span><span><strong>아주 오래된 계절의 끝에서 다시 만난 우리</strong><small>싱글 · 2026. 9. 18.</small></span></div></td>
+                <td class="numeric cell-number">4,832,101</td>
+                <td class="delta neutral-up cell-delta">↑ 36.8%</td>
+              </tr>
+              <tr data-streams="3214987" data-delta="12.1">
+                <td><div class="track-name"><span class="cover c2" aria-hidden="true"></span><span><strong>그날의 우리</strong><small>EP · 2026. 5. 03.</small></span></div></td>
+                <td class="numeric cell-number">3,214,987</td>
+                <td class="delta neutral-up cell-delta">↑ 12.1%</td>
+              </tr>
+              <tr data-streams="2976430" data-delta="8.4">
+                <td><div class="track-name"><span class="cover c3" aria-hidden="true"></span><span><strong>지금, 여기</strong><small>싱글 · 2025. 11. 21.</small></span></div></td>
+                <td class="numeric cell-number">2,976,430</td>
+                <td class="delta neutral-up cell-delta">↑ 8.4%</td>
+              </tr>
+              <tr data-streams="1982771" data-delta="-2.3">
+                <td><div class="track-name"><span class="cover c4" aria-hidden="true"></span><span><strong>안녕, 또 안녕</strong><small>EP · 2025. 4. 11.</small></span></div></td>
+                <td class="numeric cell-number">1,982,771</td>
+                <td class="delta cell-delta">↓ 2.3%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <div class="lab-card__head">
+          <span class="case-tag">CASE 02 · NUMERIC TABLE</span>
+          <h2>숫자 중심 · Compact density</h2>
+          <p>정확한 세로 비교가 핵심인 경우 40px row와 tabular numeral을 사용합니다.</p>
+        </div>
+        <div class="table-shell">
+          <table class="data-table compact-table">
+            <caption class="sr-only">국가별 청취자 데이터</caption>
+            <thead>
+              <tr>
+                <th scope="col">국가</th>
+                <th scope="col" class="cell-number">청취자</th>
+                <th scope="col" class="cell-number">스트리밍</th>
+                <th scope="col" class="cell-delta">변화</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>대한민국</td><td class="cell-number">84,291</td><td class="cell-number">391,248</td><td class="cell-delta">↑ 8.1%</td></tr>
+              <tr><td>일본</td><td class="cell-number">24,882</td><td class="cell-number">126,470</td><td class="cell-delta">↑ 3.4%</td></tr>
+              <tr><td>미국</td><td class="cell-number">18,420</td><td class="cell-number">92,113</td><td class="cell-delta">↓ 1.2%</td></tr>
+              <tr><td>대만</td><td class="cell-number">9,582</td><td class="cell-number">44,620</td><td class="cell-delta">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <div class="lab-card__head">
+          <span class="case-tag">CASE 03 · RANKING PREVIEW</span>
+          <h2>Top 5 · 빠른 scan</h2>
+          <p>한 metric 기준 상위 항목을 보는 요약 모듈은 table보다 ranking list를 우선합니다.</p>
+        </div>
+        <div class="ranking-demo">
+          <div class="ranking-list">
+            <div class="ranking-row">
+              <span class="ranking-rank">1</span><span class="ranking-label">늦은 여름</span><span class="ranking-value">483만</span>
+              <span class="ranking-bar"><span style="--rank-width:100%"></span></span>
+            </div>
+            <div class="ranking-row">
+              <span class="ranking-rank">2</span><span class="ranking-label">그날의 우리</span><span class="ranking-value">321만</span>
+              <span class="ranking-bar"><span style="--rank-width:66%"></span></span>
+            </div>
+            <div class="ranking-row">
+              <span class="ranking-rank">3</span><span class="ranking-label">지금, 여기</span><span class="ranking-value">298만</span>
+              <span class="ranking-bar"><span style="--rank-width:62%"></span></span>
+            </div>
+            <div class="ranking-row">
+              <span class="ranking-rank">4</span><span class="ranking-label">안녕, 또 안녕</span><span class="ranking-value">198만</span>
+              <span class="ranking-bar"><span style="--rank-width:41%"></span></span>
+            </div>
+            <div class="ranking-row">
+              <span class="ranking-rank">5</span><span class="ranking-label">먼 곳의 편지</span><span class="ranking-value">144만</span>
+              <span class="ranking-bar"><span style="--rank-width:30%"></span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <div class="lab-card__head">
+          <span class="case-tag">CASE 04 · RANK CHANGE</span>
+          <h2>순위 변화 ≠ metric 변화</h2>
+          <p>순위 숫자는 작아질수록 상승이므로 일반 delta formatter를 그대로 사용하지 않습니다.</p>
+        </div>
+        <div class="table-shell">
+          <table class="data-table standard-table">
+            <caption class="sr-only">현재 순위와 이전 기간 대비 순위 변화</caption>
+            <thead><tr><th scope="col" class="cell-rank">순위</th><th scope="col">곡</th><th scope="col" class="cell-number">변화</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-rank">1</td><td>늦은 여름</td><td class="cell-number"><span class="rank-change">↑ 2</span></td></tr>
+              <tr><td class="cell-rank">2</td><td>그날의 우리</td><td class="cell-number"><span class="rank-change">—</span></td></tr>
+              <tr><td class="cell-rank">3</td><td>지금, 여기</td><td class="cell-number"><span class="rank-change">↓ 1</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <div class="lab-card__head">
+          <span class="case-tag">CASE 05 · NARROW REFLOW</span>
+          <h2>P0–P3 column priority</h2>
+          <p>작은 화면에서는 table을 squeeze하지 않고 identity와 핵심 metric 중심의 list item으로 재구성합니다.</p>
+        </div>
+        <div class="lab-card__body">
+          <div class="narrow-demo">
+            <div class="narrow-list">
+              <div class="narrow-row">
+                <div class="narrow-primary">
+                  <span class="cover c1" aria-hidden="true"></span>
+                  <span class="narrow-copy"><strong>아주 오래된 계절의 끝에서 다시 만난 우리</strong><small>싱글 · 2026. 9. 18.</small></span>
+                </div>
+                <div class="narrow-metrics"><strong>4,832,101</strong><span>↑ 36.8%</span></div>
+              </div>
+              <div class="narrow-row">
+                <div class="narrow-primary">
+                  <span class="cover c2" aria-hidden="true"></span>
+                  <span class="narrow-copy"><strong>그날의 우리</strong><small>EP · 2026. 5. 03.</small></span>
+                </div>
+                <div class="narrow-metrics"><strong>3,214,987</strong><span>↑ 12.1%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <div class="lab-card__head">
+          <span class="case-tag">CASE 06 · SELECTION</span>
+          <h2>선택은 action이 있을 때만</h2>
+          <p>분석 table에 checkbox를 습관적으로 넣지 않고, bulk action이 실제로 있을 때만 사용합니다.</p>
+        </div>
+        <div class="table-toolbar">
+          <span class="selection-count" id="selectionCount">0개 선택</span>
+          <div class="toolbar-group">
+            <button class="button button--secondary button--compact" id="compareSelected" disabled>비교하기</button>
+          </div>
+        </div>
+        <div class="table-shell">
+          <table class="data-table selection-table compact-table">
+            <caption class="sr-only">비교할 곡 선택</caption>
+            <thead><tr><th scope="col"><span class="sr-only">선택</span></th><th scope="col">곡</th><th scope="col" class="cell-number">스트리밍</th></tr></thead>
+            <tbody>
+              <tr><td><input class="table-checkbox" type="checkbox" aria-label="늦은 여름 선택" /></td><td>늦은 여름</td><td class="cell-number">4,832,101</td></tr>
+              <tr><td><input class="table-checkbox" type="checkbox" aria-label="그날의 우리 선택" /></td><td>그날의 우리</td><td class="cell-number">3,214,987</td></tr>
+              <tr><td><input class="table-checkbox" type="checkbox" aria-label="지금, 여기 선택" /></td><td>지금, 여기</td><td class="cell-number">2,976,430</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <div class="lab-card__head">
+          <span class="case-tag">CASE 07 · WIDE COMPARISON MATRIX</span>
+          <h2>여러 exact metric · Horizontal overflow 허용</h2>
+          <p>여러 metric을 동시에 봐야 하는 detail workspace에서는 reflow보다 horizontal scroll이 정직할 수 있습니다. 첫 identity column은 sticky를 검토합니다.</p>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table compact-table wide-matrix">
+            <caption class="sr-only">곡별 다중 성과 지표 비교</caption>
+            <thead>
+              <tr>
+                <th scope="col">곡</th>
+                <th scope="col" class="cell-number">Streams</th>
+                <th scope="col" class="cell-number">Listeners</th>
+                <th scope="col" class="cell-number">Saves</th>
+                <th scope="col" class="cell-number">Save rate</th>
+                <th scope="col" class="cell-number">Playlist adds</th>
+                <th scope="col" class="cell-number">Followers</th>
+                <th scope="col" class="cell-number">최근 변화</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>늦은 여름</td><td class="cell-number">4,832,101</td><td class="cell-number">841,291</td><td class="cell-number">126,441</td><td class="cell-number">15.0%</td><td class="cell-number">1,482</td><td class="cell-number">18,410</td><td class="cell-number">↑ 36.8%</td></tr>
+              <tr><td>그날의 우리</td><td class="cell-number">3,214,987</td><td class="cell-number">602,184</td><td class="cell-number">94,122</td><td class="cell-number">15.6%</td><td class="cell-number">981</td><td class="cell-number">12,840</td><td class="cell-number">↑ 12.1%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-demo">
+          <span>1–20 / 총 84곡</span>
+          <div class="pagination-actions">
+            <button class="icon-button" type="button" aria-label="이전 페이지" disabled>←</button>
+            <button class="icon-button" type="button" aria-label="다음 페이지">→</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const table = document.getElementById('sortableTrackTable');
+    const tbody = table.querySelector('tbody');
+    const sortButtons = [...table.querySelectorAll('[data-sort]')];
+
+    sortButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const th = button.closest('th');
+        const key = button.dataset.sort;
+        const current = th.getAttribute('aria-sort');
+        const direction = current === 'descending' ? 'ascending' : 'descending';
+
+        table.querySelectorAll('th[aria-sort]').forEach((header) => header.removeAttribute('aria-sort'));
+        sortButtons.forEach((item) => item.setAttribute('aria-pressed', 'false'));
+
+        th.setAttribute('aria-sort', direction);
+        button.setAttribute('aria-pressed', 'true');
+
+        const rows = [...tbody.querySelectorAll('tr')].sort((a, b) => {
+          const av = Number(a.dataset[key]);
+          const bv = Number(b.dataset[key]);
+          return direction === 'ascending' ? av - bv : bv - av;
+        });
+
+        rows.forEach((row) => tbody.appendChild(row));
+      });
+    });
+
+    const checks = [...document.querySelectorAll('.table-checkbox')];
+    const count = document.getElementById('selectionCount');
+    const action = document.getElementById('compareSelected');
+
+    function updateSelection() {
+      const selected = checks.filter((check) => check.checked).length;
+      count.textContent = selected + '개 선택';
+      action.disabled = selected === 0;
+    }
+
+    checks.forEach((check) => check.addEventListener('change', updateSelection));
+  </script>
+</body>
+</html>
