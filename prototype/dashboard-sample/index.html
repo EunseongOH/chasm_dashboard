@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <a class="skip-link" href="#mainContent">본문으로 건너뛰기</a>
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
@@ -24,7 +25,7 @@
       </button>
 
       <nav class="nav" aria-label="주요 메뉴">
-        <a class="nav-item is-active" href="#overview" aria-label="대시보드">
+        <a class="nav-item is-active" href="#overview" aria-label="대시보드" aria-current="page">
           <span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg></span><span>대시보드</span>
         </a>
         <a class="nav-item" href="#music" aria-label="음원 성과">
@@ -50,7 +51,7 @@
       </div>
     </aside>
 
-    <main class="main">
+    <main class="main" id="mainContent" tabindex="-1">
       <header class="page-header" id="overview">
         <div>
           <p class="eyebrow">ARTIST PERFORMANCE</p>
@@ -77,14 +78,14 @@
           <h2 id="summaryTitle">신곡 발매 이후 스트리밍이 발매 전 4주 평균보다 높은 수준을 유지하고 있습니다.</h2>
           <p>Spotify와 YouTube Music의 증가분이 크고, 〈늦은 여름〉이 최근 스트리밍 증가분의 38%를 차지합니다.</p>
         </div>
-        <button class="text-action" type="button">근거 보기 <span>→</span></button>
+        <button class="text-action" id="summaryEvidenceButton" type="button">근거 보기 <span aria-hidden="true">→</span></button>
       </section>
 
       <section class="kpi-grid" aria-label="핵심 성과">
         <article class="kpi-card">
           <div class="kpi-card__head">
             <span>전체 스트리밍</span>
-            <button class="info" type="button" aria-label="전체 스트리밍 지표 설명" data-tip="합산 가능한 DSP의 재생 수만 포함한 샘플 지표입니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button>
+            <button class="info" type="button" aria-label="전체 스트리밍 지표 설명" aria-describedby="help-total-streams" data-tip="합산 가능한 DSP의 재생 수만 포함한 샘플 지표입니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button>
           </div>
           <div class="kpi-card__value">2,498만 <small>회</small></div>
           <div class="metric-context"><span class="delta neutral-up">↑ 18.4%</span><span>이전 3개월 대비</span></div>
@@ -92,32 +93,36 @@
             <path class="spark-area" d="M0 31 L16 30 L32 27 L48 28 L64 23 L80 22 L96 20 L112 22 L128 15 L144 13 L160 5 L160 36 L0 36 Z"></path>
             <path class="spark-line" d="M0 31 L16 30 L32 27 L48 28 L64 23 L80 22 L96 20 L112 22 L128 15 L144 13 L160 5"></path>
           </svg>
+        <span class="sr-only" id="help-total-streams">합산 가능한 DSP의 재생 수만 포함한 샘플 지표입니다.</span>
         </article>
 
         <article class="kpi-card">
-          <div class="kpi-card__head"><span>스트리밍 증가 기여</span><button class="info" type="button" aria-label="스트리밍 증가 기여 지표 설명" data-tip="전체 증가량에서 각 플랫폼이 차지한 비중을 비교합니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button></div>
+          <div class="kpi-card__head"><span>스트리밍 증가 기여</span><button class="info" type="button" aria-label="스트리밍 증가 기여 지표 설명" aria-describedby="help-platform-contribution" data-tip="전체 증가량에서 각 플랫폼이 차지한 비중을 비교합니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button></div>
           <div class="kpi-card__value text-value">Spotify</div>
           <div class="metric-context"><span class="delta neutral-up">증가분의 46%</span><span>가장 큰 비중</span></div>
           <div class="platform-mini">
             <span style="--w:46%"></span><span style="--w:24%"></span><span style="--w:18%"></span><span style="--w:12%"></span>
           </div>
+        <span class="sr-only" id="help-platform-contribution">전체 증가량에서 각 플랫폼이 차지한 비중을 비교합니다.</span>
         </article>
 
         <article class="kpi-card">
-          <div class="kpi-card__head"><span>스트리밍 증가 곡</span><button class="info" type="button" aria-label="상승 중인 곡 지표 설명" data-tip="최근 기간 스트리밍이 이전 기간보다 증가한 곡입니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button></div>
+          <div class="kpi-card__head"><span>스트리밍 증가 곡</span><button class="info" type="button" aria-label="상승 중인 곡 지표 설명" aria-describedby="help-increasing-tracks" data-tip="최근 기간 스트리밍이 이전 기간보다 증가한 곡입니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button></div>
           <div class="kpi-card__value">3 <small>곡</small></div>
           <div class="metric-context"><span class="delta neutral-up">+1곡</span><span>이전 기간 대비</span></div>
           <div class="mini-track-list"><span>늦은 여름</span><span>그날의 우리</span><span>지금, 여기</span></div>
+        <span class="sr-only" id="help-increasing-tracks">최근 기간 스트리밍이 이전 기간보다 증가한 곡입니다.</span>
         </article>
 
         <article class="kpi-card">
-          <div class="kpi-card__head"><span>SNS 신규 팔로워</span><button class="info" type="button" aria-label="SNS 신규 팔로워 지표 설명" data-tip="YouTube와 Instagram 신규 팔로워의 샘플 합산입니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button></div>
+          <div class="kpi-card__head"><span>SNS 신규 팔로워</span><button class="info" type="button" aria-label="SNS 신규 팔로워 지표 설명" aria-describedby="help-social-followers" data-tip="YouTube와 Instagram 신규 팔로워의 샘플 합산입니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button></div>
           <div class="kpi-card__value">4,820 <small>명</small></div>
           <div class="metric-context"><span class="delta neutral-up">↑ 6.1%</span><span>이전 3개월 대비</span></div>
           <svg class="sparkline" viewBox="0 0 160 36" role="img" aria-label="SNS 신규 팔로워 추이">
             <path class="spark-area" d="M0 27 L16 26 L32 25 L48 26 L64 24 L80 19 L96 21 L112 17 L128 16 L144 11 L160 9 L160 36 L0 36 Z"></path>
             <path class="spark-line" d="M0 27 L16 26 L32 25 L48 26 L64 24 L80 19 L96 21 L112 17 L128 16 L144 11 L160 9"></path>
           </svg>
+          <span class="sr-only" id="help-social-followers">YouTube와 Instagram 신규 팔로워의 샘플 합산입니다.</span>
         </article>
       </section>
 
@@ -126,7 +131,7 @@
           <div class="card-header">
             <div>
               <span class="section-kicker">TREND</span>
-              <h2>플랫폼별 스트리밍 추이</h2>
+              <h2 id="musicTitle" class="focus-target" tabindex="-1">플랫폼별 스트리밍 추이</h2>
               <p>플랫폼 간 절대값보다 변화의 방향과 이벤트 전후 흐름을 함께 봅니다.</p>
             </div>
             <div class="segmented" role="group" aria-label="집계 단위">
@@ -141,8 +146,28 @@
           </div>
 
           <div class="chart-wrap">
-            <svg id="trendChart" class="trend-chart" viewBox="0 0 820 330" role="img" aria-label="플랫폼별 스트리밍 추이 차트"></svg>
+            <p class="sr-only" id="trendChartSummary">9월 18일 신곡 발매 직후 모든 플랫폼의 스트리밍이 증가했고, Spotify의 증가폭이 가장 큽니다.</p>
+            <svg id="trendChart" class="trend-chart" viewBox="0 0 820 330" role="img" aria-label="플랫폼별 스트리밍 추이 차트" aria-describedby="trendChartSummary"></svg>
           </div>
+
+          <details class="chart-data-details">
+            <summary>차트 데이터 표로 보기</summary>
+            <div class="table-shell">
+              <table class="data-table compact-table chart-data-table">
+                <caption class="sr-only">플랫폼별 스트리밍 추이 차트 데이터</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">기간</th>
+                    <th scope="col" class="cell-number">Spotify</th>
+                    <th scope="col" class="cell-number">YouTube Music</th>
+                    <th scope="col" class="cell-number">Apple Music</th>
+                    <th scope="col" class="cell-number">Melon</th>
+                  </tr>
+                </thead>
+                <tbody id="trendDataBody"></tbody>
+              </table>
+            </div>
+          </details>
         </article>
 
         <aside class="card insight-panel" aria-labelledby="insightTitle">
@@ -249,7 +274,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr id="track-late-summer">
+                <tr id="track-late-summer" class="focus-target" tabindex="-1">
                   <td>
                     <div class="track-name">
                       <span class="cover c1" aria-hidden="true"></span>
@@ -333,7 +358,8 @@
     </main>
   </div>
 
-  <div class="tooltip" id="tooltip" role="tooltip"></div>
+  <div class="tooltip" id="tooltip" aria-hidden="true"></div>
+  <div class="sr-only" id="statusAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div>
   <script src="./app.js"></script>
 </body>
 </html>
