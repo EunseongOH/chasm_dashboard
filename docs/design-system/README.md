@@ -128,6 +128,32 @@
    - nested padding 누적 방지
    - role-based semantic inset token
 
+21. `20-component-inventory-and-token-audit.md`
+   - Shared / Dashboard-specific / Lab-only / Deferred 컴포넌트 분류
+   - Palette → Semantic → Component → Reserved token hierarchy
+   - legacy alias / raw value / dead token audit
+   - 새 컴포넌트 Shared 승격 Definition of Done
+   - Design System Explorer 구축 요구사항
+
+22. `component-inventory.json`
+   - Claude Code/Explorer가 읽을 수 있는 machine-readable 컴포넌트 registry
+   - component id / category / source doc / implementation / status
+
+## Component Registry
+
+`docs/design-system/component-inventory.json`
+
+새 컴포넌트를 만들기 전에 먼저 registry에서 같은 역할의 Shared component가 있는지 확인합니다.
+
+현재 audit 기준:
+- 총 60개 design-system item
+- Shared 46
+- Dashboard-specific 7
+- Lab-only / Proposed 2
+- Deferred 5
+
+`20-component-inventory-and-token-audit.md`가 token/component 정리 기준과 승격 조건을 설명합니다.
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
