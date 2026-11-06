@@ -160,7 +160,21 @@
   --shadow-mid: 0 2px 10px rgba(0, 0, 0, .10);
   --shadow-high: 0 4px 16px rgba(0, 0, 0, .12);
 
+  --chart-grid-major: var(--neutral-200);
+  --chart-grid-minor: var(--neutral-100);
+  --chart-axis-line: var(--neutral-300);
+  --chart-axis-text: var(--neutral-500);
+  --chart-reference: var(--neutral-500);
 
+  --chart-line-standard: 2px;
+  --chart-line-emphasis: 2.75px;
+  --chart-line-muted: 1.5px;
+
+  --chart-marker-small: 4px;
+  --chart-marker-hit-target: 20px;
+
+  --chart-opacity-muted: .32;
+  --chart-opacity-area: .12;
 }
 
 * { box-sizing: border-box; }
@@ -876,15 +890,15 @@ button, a { -webkit-tap-highlight-color: transparent; }
   display: block;
   overflow: visible;
 }
-.chart-grid { stroke: var(--neutral-200); stroke-width: 1; }
+.chart-grid { stroke: var(--chart-grid-major); stroke-width: 1; }
 .chart-axis-text {
-  fill: var(--fg-tertiary);
+  fill: var(--chart-axis-text);
   font-size: 11px;
   font-family: inherit;
 }
 .chart-series {
   fill: none;
-  stroke-width: 2.2;
+  stroke-width: var(--chart-line-standard);
   stroke-linejoin: round;
   stroke-linecap: round;
 }
