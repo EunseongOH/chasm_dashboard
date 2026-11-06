@@ -1,10 +1,10 @@
 const colors = {
   blue: "#1393FD",
-  teal: "#2EAD75",
+  teal: "#278F63",
   purple: "#9D6ADE",
-  amber: "#D99A13",
+  amber: "#B7790D",
   grid: "#E5EAF0",
-  text: "#7C8796",
+  text: "#5E6978",
   textStrong: "#46515F",
   event: "#AAB4C0",
 };
@@ -43,9 +43,11 @@ const series = [
 ];
 
 let granularity = "day";
+let visibleSeries = new Set(series.map((item) => item.key));
 
 const svg = document.getElementById("trendChart");
 const legend = document.getElementById("legend");
+const trendDataHead = document.getElementById("trendDataHead");
 const trendDataBody = document.getElementById("trendDataBody");
 const trendChartSummary = document.getElementById("trendChartSummary");
 const statusAnnouncer = document.getElementById("statusAnnouncer");
@@ -72,22 +74,30 @@ function scrollAndFocus(target) {
 }
 
 function renderChartDataTable(data) {
-  if (!trendDataBody) return;
+  if (!trendDataBody || !trendDataHead) return;
+
+  const activeSeries = series.filter((item) => visibleSeries.has(item.key));
+
+  trendDataHead.innerHTML = `
+    <th scope="col">기간</th>
+    ${activeSeries.map((item) => `<th scope="col" class="cell-number">${item.label}</th>`).join("")}
+  `;
 
   trendDataBody.innerHTML = data.map((row) => `
     <tr>
       <th scope="row">${row.label}</th>
-      <td class="cell-number">${(row.spotify * 1000).toLocaleString("ko-KR")}</td>
-      <td class="cell-number">${(row.youtube * 1000).toLocaleString("ko-KR")}</td>
-      <td class="cell-number">${(row.apple * 1000).toLocaleString("ko-KR")}</td>
-      <td class="cell-number">${(row.melon * 1000).toLocaleString("ko-KR")}</td>
+      ${activeSeries.map((item) => `<td class="cell-number">${(row[item.key] * 1000).toLocaleString("ko-KR")}</td>`).join("")}
     </tr>
   `).join("");
 
   if (trendChartSummary) {
+    const platformText = activeSeries.length === series.length
+      ? "모든 플랫폼"
+      : activeSeries.map((item) => item.label).join(", ");
+
     trendChartSummary.textContent = granularity === "day"
-      ? "9월 18일 신곡 발매 직후 모든 플랫폼의 스트리밍이 증가했고, Spotify의 증가폭이 가장 큽니다."
-      : "9월 3주에 모든 플랫폼의 스트리밍이 이전 주보다 크게 증가했고, Spotify의 증가폭이 가장 큽니다.";
+      ? `9월 18일 신곡 발매 직후 선택한 ${platformText}에서 스트리밍 변화가 나타납니다. 정확한 값은 데이터 표에서 확인할 수 있습니다.`
+      : `주간 보기에서 선택한 ${platformText}의 스트리밍 변화를 비교합니다. 정확한 값은 데이터 표에서 확인할 수 있습니다.`;
   }
 }
 
@@ -99,7 +109,7 @@ function svgEl(name, attrs = {}) {
 
 function renderLegend() {
   legend.innerHTML = "";
-  series.forEach((item) => {
+  series.filter((item) => visibleSeries.has(item.key)).forEach((item) => {
     const node = document.createElement("span");
     node.className = "legend-item";
     node.innerHTML = `<span class="legend-line" style="--legend-color:${item.color}"></span><span>${item.label}</span>`;
@@ -219,7 +229,7 @@ function renderChart() {
     svg.appendChild(concertText);
   }
 
-  series.forEach((item) => {
+  series.filter((item) => visibleSeries.has(item.key)).forEach((item) => {
     const points = data.map((row, index) => `${x(index)},${y(row[item.key])}`).join(" ");
     const path = svgEl("polyline", {
       points,
@@ -267,6 +277,98 @@ function attachChartTooltips() {
     hit.addEventListener("mouseleave", scheduleTooltipHide);
   });
 }
+
+const platformFilter = document.getElementById("platformFilter");
+const platformFilterSummary = document.getElementById("platformFilterSummary");
+const platformCheckboxes = [...document.querySelectorAll("[data-platform-key]")];
+const platformApply = document.getElementById("platformApply");
+const platformDraftReset = document.getElementById("platformDraftReset");
+const platformFilterReset = document.getElementById("platformFilterReset");
+const platformFilterError = document.getElementById("platformFilterError");
+const chartFilterSummary = document.getElementById("chartFilterSummary");
+const platformFilterChips = document.getElementById("platformFilterChips");
+
+function syncPlatformDraftToApplied() {
+  platformCheckboxes.forEach((checkbox) => {
+    checkbox.checked = visibleSeries.has(checkbox.dataset.platformKey);
+  });
+  platformFilterError.hidden = true;
+}
+
+function renderPlatformFilterState() {
+  const active = series.filter((item) => visibleSeries.has(item.key));
+  const isDefault = active.length === series.length;
+
+  platformFilterSummary.textContent = isDefault ? "플랫폼 전체" : `플랫폼 ${active.length}개`;
+  chartFilterSummary.hidden = isDefault;
+  platformFilterChips.innerHTML = "";
+
+  if (!isDefault) {
+    active.forEach((item) => {
+      const chip = document.createElement("span");
+      chip.className = "filter-chip";
+      chip.innerHTML = `<span>${item.label}</span><button type="button" data-remove-platform="${item.key}" aria-label="${item.label} 플랫폼 필터 제거">×</button>`;
+      platformFilterChips.appendChild(chip);
+    });
+  }
+}
+
+function applyVisibleSeries(nextKeys, announcement) {
+  visibleSeries = new Set(nextKeys);
+  renderLegend();
+  renderChart();
+  renderPlatformFilterState();
+  syncPlatformDraftToApplied();
+  if (announcement) announce(announcement);
+}
+
+platformFilter?.addEventListener("toggle", () => {
+  if (platformFilter.open) {
+    syncPlatformDraftToApplied();
+  } else {
+    syncPlatformDraftToApplied();
+  }
+});
+
+platformApply?.addEventListener("click", () => {
+  const next = platformCheckboxes
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.dataset.platformKey);
+
+  if (next.length === 0) {
+    platformFilterError.hidden = false;
+    return;
+  }
+
+  applyVisibleSeries(next, `플랫폼 ${next.length}개를 차트에 적용했습니다.`);
+  platformFilter.open = false;
+});
+
+platformDraftReset?.addEventListener("click", () => {
+  platformCheckboxes.forEach((checkbox) => {
+    checkbox.checked = true;
+  });
+  platformFilterError.hidden = true;
+});
+
+platformFilterReset?.addEventListener("click", () => {
+  applyVisibleSeries(series.map((item) => item.key), "플랫폼 필터를 초기화했습니다.");
+});
+
+platformFilterChips?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-remove-platform]");
+  if (!button) return;
+
+  const key = button.dataset.removePlatform;
+  const next = [...visibleSeries].filter((item) => item !== key);
+
+  if (next.length === 0) {
+    applyVisibleSeries(series.map((item) => item.key), "플랫폼 필터를 초기화했습니다.");
+    return;
+  }
+
+  applyVisibleSeries(next, "플랫폼 필터를 변경했습니다.");
+});
 
 const segmentedButtons = [...document.querySelectorAll(".segmented button")];
 
@@ -393,12 +495,184 @@ document.getElementById("summaryEvidenceButton")?.addEventListener("click", () =
   if (insightItems[0]) activateInsight(insightItems[0]);
 });
 
-document.getElementById("periodSelect").addEventListener("change", (event) => {
-  const is30 = event.target.value === "30";
-  const range = is30 ? "2026. 10. 2. – 10. 31." : "2026. 8. 1. – 10. 31.";
-  document.querySelector(".date-control").textContent = range;
-  announce(`조회 기간을 ${event.target.options[event.target.selectedIndex].text}로 변경했습니다. 적용 기간은 ${range}입니다.`);
+const mainContent = document.getElementById("mainContent");
+const periodSelect = document.getElementById("periodSelect");
+const comparisonSelect = document.getElementById("comparisonSelect");
+const dateRangeControl = document.getElementById("dateRangeControl");
+const dateRangeSummary = document.getElementById("dateRangeSummary");
+const dateStart = document.getElementById("dateStart");
+const dateEnd = document.getElementById("dateEnd");
+const dateApplyButton = document.getElementById("dateApplyButton");
+const dateCancelButton = document.getElementById("dateCancelButton");
+const dateRangeError = document.getElementById("dateRangeError");
+const queryContextSummary = document.getElementById("queryContextSummary");
+const queryResetButton = document.getElementById("queryResetButton");
+
+const queryPresets = {
+  "90": { label: "최근 3개월", start: "2026-08-01", end: "2026-10-31", comparisonLabel: "이전 3개월 대비" },
+  "30": { label: "최근 30일", start: "2026-10-02", end: "2026-10-31", comparisonLabel: "이전 30일 대비" }
+};
+
+const defaultQuery = {
+  period: "90",
+  start: queryPresets["90"].start,
+  end: queryPresets["90"].end,
+  comparison: "previous"
+};
+
+let appliedQuery = { ...defaultQuery };
+
+function formatDateKo(value) {
+  const [year, month, day] = value.split("-").map(Number);
+  return `${year}. ${month}. ${day}.`;
+}
+
+function sameAsDefaultQuery() {
+  return appliedQuery.period === defaultQuery.period
+    && appliedQuery.start === defaultQuery.start
+    && appliedQuery.end === defaultQuery.end
+    && appliedQuery.comparison === defaultQuery.comparison;
+}
+
+function renderQueryState() {
+  periodSelect.value = appliedQuery.period;
+  comparisonSelect.value = appliedQuery.comparison;
+  dateStart.value = appliedQuery.start;
+  dateEnd.value = appliedQuery.end;
+  dateRangeSummary.textContent = `${formatDateKo(appliedQuery.start)} – ${formatDateKo(appliedQuery.end)}`;
+
+  const periodLabel = appliedQuery.period === "custom"
+    ? "사용자 지정"
+    : queryPresets[appliedQuery.period].label;
+  const comparisonText = appliedQuery.comparison === "previous"
+    ? "이전 동일 기간과 비교"
+    : "비교 없음";
+
+  queryContextSummary.textContent = `${periodLabel} · ${comparisonText}`;
+  queryResetButton.hidden = sameAsDefaultQuery();
+  mainContent.classList.toggle("comparison-off", appliedQuery.comparison === "none");
+
+  const comparisonLabel = appliedQuery.period === "custom"
+    ? "이전 동일 기간 대비"
+    : queryPresets[appliedQuery.period].comparisonLabel;
+
+  document.querySelectorAll("[data-period-comparison-label]").forEach((node) => {
+    node.textContent = comparisonLabel;
+  });
+}
+
+periodSelect.addEventListener("change", () => {
+  const value = periodSelect.value;
+
+  if (value === "custom") {
+    dateStart.value = appliedQuery.start;
+    dateEnd.value = appliedQuery.end;
+    dateRangeControl.open = true;
+    announce("사용자 지정 날짜를 선택하세요. 날짜 적용 전까지 기존 조회 조건이 유지됩니다.");
+    return;
+  }
+
+  const preset = queryPresets[value];
+  appliedQuery = {
+    ...appliedQuery,
+    period: value,
+    start: preset.start,
+    end: preset.end
+  };
+  renderQueryState();
+  announce(`조회 기간을 ${preset.label}로 변경했습니다. 적용 기간은 ${formatDateKo(preset.start)}부터 ${formatDateKo(preset.end)}까지입니다.`);
 });
+
+comparisonSelect.addEventListener("change", () => {
+  appliedQuery = { ...appliedQuery, comparison: comparisonSelect.value };
+  renderQueryState();
+  announce(comparisonSelect.value === "none"
+    ? "비교 기준을 사용하지 않습니다."
+    : "이전 동일 기간과 비교합니다.");
+});
+
+dateApplyButton.addEventListener("click", () => {
+  const start = dateStart.value;
+  const end = dateEnd.value;
+
+  if (!start || !end) {
+    dateRangeError.textContent = "시작일과 종료일을 모두 입력하세요.";
+    dateRangeError.hidden = false;
+    return;
+  }
+
+  if (start > end) {
+    dateRangeError.textContent = "종료일은 시작일보다 빠를 수 없습니다.";
+    dateRangeError.hidden = false;
+    return;
+  }
+
+  dateRangeError.hidden = true;
+  appliedQuery = {
+    ...appliedQuery,
+    period: "custom",
+    start,
+    end
+  };
+  renderQueryState();
+  dateRangeControl.open = false;
+  announce(`사용자 지정 기간을 ${formatDateKo(start)}부터 ${formatDateKo(end)}까지로 적용했습니다.`);
+});
+
+dateCancelButton.addEventListener("click", () => {
+  dateRangeError.hidden = true;
+  renderQueryState();
+  dateRangeControl.open = false;
+});
+
+queryResetButton.addEventListener("click", () => {
+  appliedQuery = { ...defaultQuery };
+  renderQueryState();
+  announce("조회 조건을 초기화했습니다.");
+});
+
+const trackSearchInput = document.getElementById("trackSearchInput");
+const trackSearchClear = document.getElementById("trackSearchClear");
+const trackSearchCount = document.getElementById("trackSearchCount");
+const trackSearchStatus = document.getElementById("trackSearchStatus");
+const trackSearchEmpty = document.getElementById("trackSearchEmpty");
+const trackRows = [...document.querySelectorAll(".resource-table tbody tr[data-track-name]")];
+
+function updateTrackSearch() {
+  const query = trackSearchInput.value.trim().toLocaleLowerCase("ko-KR");
+  let visibleCount = 0;
+
+  trackRows.forEach((row) => {
+    const name = row.dataset.trackName.toLocaleLowerCase("ko-KR");
+    const matches = !query || name.includes(query);
+    row.hidden = !matches;
+    if (matches) visibleCount += 1;
+  });
+
+  trackSearchClear.hidden = query.length === 0;
+  trackSearchEmpty.hidden = visibleCount !== 0;
+  trackSearchCount.textContent = `${visibleCount}곡`;
+
+  if (query) {
+    trackSearchStatus.textContent = visibleCount === 0
+      ? "검색어와 일치하는 곡이 없습니다."
+      : `${visibleCount}개의 곡을 찾았습니다.`;
+  } else {
+    trackSearchStatus.textContent = "곡명 검색을 초기화했습니다.";
+  }
+}
+
+trackSearchInput.addEventListener("input", updateTrackSearch);
+trackSearchClear.addEventListener("click", () => {
+  trackSearchInput.value = "";
+  updateTrackSearch();
+  trackSearchInput.focus();
+});
+
+renderQueryState();
+renderPlatformFilterState();
+syncPlatformDraftToApplied();
+updateTrackSearch();
 
 renderLegend();
 renderChart();
