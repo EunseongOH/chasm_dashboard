@@ -2,6 +2,8 @@
 
 > 상태: Proposed v0.1  
 > 목적: 데이터가 많은 화면에서도 관계가 명확하고, 카드 안의 카드가 과도하게 둥글거나 답답해 보이지 않도록 여백과 모서리 규칙을 통일한다.
+>
+> 박스 역할별 내부 inset, icon↔text, body↔action, nested padding 규칙은 `19-content-spacing-and-inset-system.md`를 source of truth로 사용한다. 이 문서는 primitive scale와 radius를 담당한다.
 
 ## 1. 참고 시스템에서 가져온 원칙
 
