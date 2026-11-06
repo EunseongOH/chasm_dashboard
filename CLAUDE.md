@@ -23,6 +23,8 @@ Read these documents first:
 17. `docs/design-system/15-data-state-system.md`
 18. `docs/design-system/16-filter-search-date-query-system.md`
 19. `docs/design-system/17-navigation-and-information-architecture.md`
+20. `docs/design-system/18-feedback-notification-confirmation.md`
+21. `docs/design-system/19-content-spacing-and-inset-system.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -90,6 +92,45 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Content spacing and inset system
+
+Follow `docs/design-system/19-content-spacing-and-inset-system.md`.
+
+Key rules:
+- Distinguish outer spacing, container inset, internal stack gap, inline gap, and action separation.
+- Choose inset by semantic role before choosing a primitive spacing number.
+- Current role ladder: Tag 2/6, Tooltip 8/10, Dense row 10/12, Notice 12/16, Panel 16, Compact card 16, Standard card 20, Spacious empty/dialog 24.
+- Parent layout owns sibling spacing. Avoid arbitrary child margin accumulation.
+- Nested surfaces must not repeat the same padding role; check total edge-to-text distance.
+- Notice/callout horizontal inset is generally larger than vertical inset for Korean text readability.
+- Edge-to-edge table/list bodies may be flush inside a card while headers keep card alignment; do not wrap tables in redundant card padding.
+- Responsive layouts reduce page gutters first; preserve component anatomy/inset where possible.
+- Use semantic inset tokens for shared container roles rather than scattered raw padding values.
+- New boxes must pass the “is a box actually necessary?” check before receiving background, border, radius, and padding.
+
+Design-system spacing lab:
+`prototype/design-system-lab/content-spacing-inset.html`
+
+## Feedback, notification and confirmation system
+
+Follow `docs/design-system/18-feedback-notification-confirmation.md`.
+
+Key rules:
+- Feedback status (info/success/warning/error) and feedback surface (inline/toast/callout/message bar/dialog) are separate concepts.
+- Match disruptiveness to urgency and scope. Local problems stay local.
+- Toast is for short post-action feedback, not persistent data-quality or recovery problems.
+- Inline notification stays near the affected card/form/section and does not auto-dismiss.
+- Callout is contextual information that loads with content and is normally persistent/non-dismissible.
+- Page message bars are only for states that affect multiple modules or the whole page.
+- Semantic feedback colors must never be reused as metric direction/evaluation colors.
+- Destructive/irreversible actions use explicit confirmation copy naming the object/action and consequence; avoid generic “확인”.
+- Actionable toasts do not auto-dismiss. Undo is allowed only when the product truly guarantees rollback.
+- Dialogs require accessible title, focus containment, dismissal policy, and trigger focus return.
+- The current dashboard export control shows a prototype feedback example only; it does not perform a real export.
+
+Design-system feedback lab:
+`prototype/design-system-lab/feedback-notification.html`
 
 ## Navigation and information architecture system
 
