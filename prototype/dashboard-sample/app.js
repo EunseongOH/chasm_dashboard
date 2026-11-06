@@ -222,28 +222,56 @@ function attachChartTooltips() {
   });
 }
 
-document.querySelectorAll(".segmented button").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".segmented button").forEach((item) => item.classList.remove("is-selected"));
-    button.classList.add("is-selected");
-    granularity = button.dataset.granularity;
-    renderChart();
+const segmentedButtons = [...document.querySelectorAll(".segmented button")];
+
+function selectGranularity(button) {
+  segmentedButtons.forEach((item) => {
+    const selected = item === button;
+    item.classList.toggle("is-selected", selected);
+    item.setAttribute("aria-pressed", String(selected));
+  });
+
+  granularity = button.dataset.granularity;
+  renderChart();
+}
+
+segmentedButtons.forEach((button, index) => {
+  button.addEventListener("click", () => selectGranularity(button));
+
+  button.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+
+    event.preventDefault();
+    const direction = event.key === "ArrowRight" ? 1 : -1;
+    const nextIndex = (index + direction + segmentedButtons.length) % segmentedButtons.length;
+    segmentedButtons[nextIndex].focus();
   });
 });
 
 const tooltip = document.getElementById("tooltip");
 
-document.querySelectorAll(".info").forEach((button) => {
-  button.addEventListener("mouseenter", (event) => {
-    tooltip.textContent = event.currentTarget.dataset.tip;
-    tooltip.classList.add("is-visible");
-    const rect = event.currentTarget.getBoundingClientRect();
-    tooltip.style.left = `${rect.left + rect.width / 2}px`;
-    tooltip.style.top = `${rect.top - 8}px`;
-  });
+function showInfoTooltip(button) {
+  tooltip.textContent = button.dataset.tip;
+  tooltip.classList.add("is-visible");
+  const rect = button.getBoundingClientRect();
+  tooltip.style.left = `${rect.left + rect.width / 2}px`;
+  tooltip.style.top = `${rect.top - 8}px`;
+}
 
-  button.addEventListener("mouseleave", () => {
-    tooltip.classList.remove("is-visible");
+function hideInfoTooltip() {
+  tooltip.classList.remove("is-visible");
+}
+
+document.querySelectorAll(".info").forEach((button) => {
+  button.addEventListener("mouseenter", () => showInfoTooltip(button));
+  button.addEventListener("mouseleave", hideInfoTooltip);
+  button.addEventListener("focus", () => showInfoTooltip(button));
+  button.addEventListener("blur", hideInfoTooltip);
+  button.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      hideInfoTooltip();
+      button.blur();
+    }
   });
 });
 
