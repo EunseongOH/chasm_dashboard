@@ -364,6 +364,8 @@ Tabs와 Segmented를 외형만 보고 바꿔 쓰지 않는다.
 
 ---
 
+> Filter/Search/Date/Query의 제품 의미·scope·적용 방식은 `16-filter-search-date-query-system.md`를 따른다. 이 문서는 개별 control의 interaction state를 정의한다.
+
 # 9. Filter Chip
 
 Filter chip은 현재 data subset을 변경한다.
