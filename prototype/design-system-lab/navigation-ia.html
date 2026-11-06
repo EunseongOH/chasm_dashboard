@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHASM Design System Lab — Navigation & IA</title>
+  <link rel="stylesheet" href="../dashboard-sample/styles.css" />
+  <style>
+    body { padding: 32px; }
+    .lab { max-width: 1260px; margin: 0 auto; }
+    .lab-head { margin-bottom: 32px; }
+    .lab-head h1 { margin: 4px 0 6px; font-size: 28px; line-height: 36px; }
+    .lab-head p { margin: 0; max-width: 940px; color: var(--fg-secondary); }
+    .lab-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .lab-card {
+      min-width:0; padding:20px; background:var(--surface-default);
+      border:1px solid var(--border-default); border-radius:var(--radius-card);
+    }
+    .lab-card--wide { grid-column:1/-1; }
+    .case-tag { display:inline-flex; color:var(--fg-tertiary); font-size:11px; line-height:16px; font-weight:700; letter-spacing:.06em; }
+    .lab-card h2 { margin:2px 0 0; font-size:16px; line-height:24px; }
+    .lab-card > p { margin:0 0 16px; color:var(--fg-tertiary); font-size:13px; line-height:20px; }
+
+    .ia-shell { display:grid; grid-template-columns:232px minmax(0,1fr); min-height:520px; overflow:hidden; border:1px solid var(--border-default); border-radius:var(--radius-container-sm); }
+    .ia-sidebar { padding:18px 14px; display:flex; flex-direction:column; background:#fff; border-right:1px solid var(--border-default); }
+    .ia-brand { display:flex; align-items:center; gap:8px; padding:0 8px; font-weight:800; }
+    .ia-brand img { width:22px; height:22px; }
+    .ia-context { margin:18px 0 14px; padding:10px 12px; display:flex; align-items:center; gap:10px; border:1px solid var(--border-default); border-radius:12px; background:#fff; }
+    .ia-avatar { width:32px; height:32px; display:grid; place-items:center; color:#fff; background:linear-gradient(135deg,#24354c,#7ea8c8); border-radius:8px; font-weight:700; }
+    .ia-context-copy { min-width:0; display:grid; }
+    .ia-context-copy strong { font-size:13px; line-height:18px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ia-context-copy small { color:var(--fg-tertiary); font-size:11px; line-height:16px; }
+    .ia-nav { display:grid; gap:4px; }
+    .ia-nav-label { padding:4px 10px; color:var(--fg-tertiary); font-size:10px; font-weight:700; letter-spacing:.06em; }
+    .ia-nav button { min-height:40px; padding:0 10px; display:flex; align-items:center; gap:9px; color:var(--fg-secondary); background:transparent; border:0; border-radius:8px; text-align:left; font:inherit; cursor:pointer; }
+    .ia-nav button:hover { background:var(--control-bg-hover); }
+    .ia-nav button[aria-current="page"] { color:var(--blue-700); background:var(--blue-50); font-weight:650; }
+    .ia-nav button:disabled { color:var(--control-fg-disabled); cursor:default; }
+    .ia-nav .ui-icon { width:18px; height:18px; }
+    .ia-utility { margin-top:auto; padding-top:12px; border-top:1px solid var(--border-subtle); }
+    .ia-main { padding:26px; background:var(--surface-canvas); }
+    .ia-main h3 { margin:2px 0 4px; font-size:24px; line-height:32px; }
+    .ia-main p { margin:0; color:var(--fg-secondary); }
+    .ia-page-sample { margin-top:22px; padding:20px; background:#fff; border:1px solid var(--border-default); border-radius:16px; }
+    .ia-page-sample strong { display:block; font-size:14px; }
+    .ia-page-sample span { color:var(--fg-tertiary); font-size:12px; }
+
+    .hierarchy-flow { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+    .hierarchy-node { min-height:100px; padding:14px; display:grid; align-content:start; gap:5px; background:var(--surface-subtle); border-radius:var(--radius-control); }
+    .hierarchy-node strong { font-size:13px; }
+    .hierarchy-node span { color:var(--fg-tertiary); font-size:12px; line-height:16px; }
+
+    .breadcrumb-demo { display:grid; gap:14px; }
+    .breadcrumb { display:flex; align-items:center; flex-wrap:nowrap; gap:8px; overflow-x:auto; white-space:nowrap; }
+    .breadcrumb a { color:var(--fg-brand); text-decoration:none; font-size:12px; }
+    .breadcrumb span { color:var(--fg-tertiary); font-size:12px; }
+    .detail-header { padding:16px 0 0; }
+    .detail-header h3 { margin:3px 0 4px; font-size:22px; line-height:30px; }
+    .detail-header p { margin:0; color:var(--fg-secondary); }
+    .back-note { padding:12px 14px; display:grid; grid-template-columns:110px 1fr; gap:10px; background:var(--surface-subtle); border-radius:var(--radius-control); font-size:12px; }
+    .back-note strong { color:var(--fg-primary); }
+    .back-note span { color:var(--fg-secondary); }
+
+    .tabs-demo { display:grid; gap:14px; }
+    .page-tabs { display:flex; gap:18px; border-bottom:1px solid var(--border-default); }
+    .page-tab { min-height:38px; padding:0 2px; color:var(--fg-secondary); background:transparent; border:0; border-bottom:2px solid transparent; font:inherit; font-size:13px; font-weight:600; cursor:pointer; }
+    .page-tab[aria-selected="true"] { color:var(--blue-700); border-bottom-color:var(--blue-700); }
+    .tab-panel { min-height:94px; padding:14px; background:var(--surface-subtle); border-radius:var(--radius-control); color:var(--fg-secondary); font-size:13px; }
+
+    .context-demo { display:grid; grid-template-columns:260px minmax(0,1fr); gap:14px; }
+    .context-switch { padding:14px; border:1px solid var(--border-default); border-radius:var(--radius-container-sm); }
+    .context-switch h3 { margin:0 0 10px; font-size:13px; }
+    .artist-option { width:100%; min-height:44px; padding:8px 10px; display:flex; align-items:center; gap:10px; color:var(--fg-secondary); background:transparent; border:0; border-radius:8px; text-align:left; font:inherit; cursor:pointer; }
+    .artist-option:hover { background:var(--control-bg-hover); }
+    .artist-option[aria-pressed="true"] { color:var(--blue-700); background:var(--blue-50); }
+    .context-result { padding:18px; display:grid; align-content:start; gap:8px; background:var(--surface-subtle); border-radius:var(--radius-container-sm); }
+    .context-result strong { font-size:18px; }
+    .context-result span { color:var(--fg-secondary); }
+    .context-loading { display:grid; gap:8px; }
+    .context-loading span:nth-child(1){width:42%;height:12px}
+    .context-loading span:nth-child(2){width:64%;height:28px}
+    .context-loading span:nth-child(3){width:54%;height:12px}
+
+    .rail-demo-wrap { display:grid; grid-template-columns:72px minmax(0,1fr); min-height:300px; border:1px solid var(--border-default); border-radius:var(--radius-container-sm); overflow:hidden; }
+    .rail-demo { padding:14px 10px; display:grid; align-content:start; justify-items:center; gap:6px; background:#fff; border-right:1px solid var(--border-default); }
+    .rail-btn { width:48px; height:48px; display:grid; place-items:center; color:var(--icon-fg-default); background:transparent; border:0; border-radius:8px; cursor:pointer; position:relative; }
+    .rail-btn:hover,.rail-btn:focus-visible { background:var(--control-bg-hover); }
+    .rail-btn[aria-current="page"] { color:var(--blue-700); background:var(--blue-50); }
+    .rail-tip { position:absolute; left:56px; top:50%; transform:translateY(-50%); z-index:4; padding:6px 8px; color:#fff; background:var(--neutral-900); border-radius:6px; font-size:11px; white-space:nowrap; opacity:0; pointer-events:none; }
+    .rail-btn:hover .rail-tip,.rail-btn:focus-visible .rail-tip { opacity:1; }
+    .rail-content { padding:18px; color:var(--fg-secondary); }
+
+    .mobile-demo { width:320px; max-width:100%; margin:0 auto; border:1px solid var(--border-default); border-radius:14px; overflow:hidden; background:#fff; }
+    .mobile-bar { min-height:58px; padding:0 12px; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--border-default); }
+    .mobile-bar strong { font-size:14px; }
+    .mobile-menu-btn { width:40px; height:40px; margin-left:auto; display:grid; place-items:center; background:transparent; border:0; border-radius:8px; cursor:pointer; }
+    .mobile-panel { padding:12px; display:grid; gap:6px; }
+    .mobile-panel[hidden] { display:none; }
+    .mobile-context { padding:10px; margin-bottom:8px; background:var(--surface-subtle); border-radius:10px; font-size:12px; }
+    .mobile-link { min-height:40px; padding:0 10px; display:flex; align-items:center; border-radius:8px; color:var(--fg-secondary); }
+    .mobile-link.is-current { color:var(--blue-700); background:var(--blue-50); font-weight:650; }
+
+    .drill-grid { display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; }
+    .drill-card { padding:16px; border:1px solid var(--border-default); border-radius:var(--radius-container-sm); }
+    .drill-card strong { display:block; font-size:14px; }
+    .drill-card span { color:var(--fg-tertiary); font-size:12px; }
+    .drill-arrow { color:var(--fg-tertiary); }
+
+    .long-name-box { max-width:300px; padding:12px; border:1px solid var(--border-default); border-radius:var(--radius-control); }
+    .long-name-box strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+    .long-name-box span { color:var(--fg-tertiary); font-size:12px; }
+
+    @media(max-width:900px){
+      body{padding:20px}
+      .lab-grid{grid-template-columns:1fr}
+      .lab-card--wide{grid-column:auto}
+      .ia-shell{grid-template-columns:72px minmax(0,1fr)}
+      .ia-sidebar .ia-brand span,.ia-context-copy,.ia-nav button span:not(.nav-icon),.ia-nav-label{display:none}
+      .ia-context{padding:8px;justify-content:center}
+      .ia-nav button{width:48px;padding:0;justify-content:center}
+      .context-demo{grid-template-columns:1fr}
+      .hierarchy-flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media(max-width:560px){
+      body{padding:16px}
+      .lab-card{padding:16px}
+      .hierarchy-flow,.drill-grid{grid-template-columns:1fr}
+      .drill-arrow{transform:rotate(90deg);justify-self:center}
+      .back-note{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#labMain">본문으로 건너뛰기</a>
+  <main class="lab" id="labMain" tabindex="-1">
+    <header class="lab-head">
+      <span class="section-kicker">DESIGN SYSTEM LAB</span>
+      <h1>Navigation & Information Architecture</h1>
+      <p>Product, Artist Context, Primary Section, Detail의 계층을 분리하고 sidebar, breadcrumb, tabs, drill-down, mobile menu가 서로 다른 역할을 갖도록 검증합니다.</p>
+    </header>
+
+    <div class="lab-grid">
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 01 · FULL SIDEBAR</span>
+        <h2>Artist Context와 Primary Navigation을 분리</h2>
+        <p>Primary 분석 영역과 관리 utility도 같은 계층으로 섞지 않습니다.</p>
+        <div class="ia-shell">
+          <aside class="ia-sidebar">
+            <div class="ia-brand"><img src="../../assets/brand/chasm-logo.svg" alt="" /><span>CHASM</span></div>
+            <div class="ia-context">
+              <span class="ia-avatar">ㅁ</span>
+              <span class="ia-context-copy"><strong>샘플 아티스트</strong><small>Artist context</small></span>
+            </div>
+            <div class="ia-nav" id="iaNav">
+              <span class="ia-nav-label">분석</span>
+              <button aria-current="page" data-page="대시보드"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg><span>대시보드</span></button>
+              <button data-page="음원 성과"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6.8l9-2.1v10.9"/><circle cx="6.7" cy="18.2" r="2.3"/><circle cx="15.7" cy="15.8" r="2.3"/></svg><span>음원 성과</span></button>
+              <button data-page="오디언스"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.8 18.5c.7-3 2.5-4.7 5.2-4.7s4.5 1.7 5.2 4.7"/></svg><span>오디언스</span></button>
+              <button data-page="콘텐츠"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2.5"/><path d="m10 9 5 3-5 3Z"/></svg><span>콘텐츠</span></button>
+              <button data-page="이벤트"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 9.5h16"/></svg><span>이벤트</span></button>
+              <button disabled><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V10M12 19V5M19 19v-6"/></svg><span>리포트</span></button>
+              <div class="ia-utility">
+                <span class="ia-nav-label">관리</span>
+                <button disabled><span>데이터 연결</span></button>
+                <button disabled><span>설정</span></button>
+              </div>
+            </div>
+          </aside>
+          <section class="ia-main">
+            <span class="section-kicker">CURRENT DESTINATION</span>
+            <h3 id="iaPageTitle">대시보드</h3>
+            <p id="iaPageDescription">여러 영역의 주요 변화를 한눈에 확인합니다.</p>
+            <div class="ia-page-sample">
+              <strong>현재 위치는 Sidebar current state + H1으로 전달</strong>
+              <span>Hover나 keyboard focus와 현재 page 상태를 구분합니다.</span>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 02 · IA LAYERS</span>
+        <h2>메뉴 트리 대신 서로 다른 네 층</h2>
+        <p>모든 hierarchy를 sidebar에 중첩하지 않습니다.</p>
+        <div class="hierarchy-flow">
+          <div class="hierarchy-node"><strong>1. Product</strong><span>CHASM<br>제품 전체</span></div>
+          <div class="hierarchy-node"><strong>2. Artist Context</strong><span>샘플 아티스트<br>분석 대상</span></div>
+          <div class="hierarchy-node"><strong>3. Primary Section</strong><span>음원 성과<br>L1 navigation</span></div>
+          <div class="hierarchy-node"><strong>4. Detail</strong><span>늦은 여름<br>곡 drill-down</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 03 · LANDING</span>
+        <h2>Top-level page에는 Breadcrumb 불필요</h2>
+        <p>Sidebar current state와 H1만으로 위치가 충분합니다.</p>
+        <div class="detail-header">
+          <span class="section-kicker">MUSIC PERFORMANCE</span>
+          <h3>음원 성과</h3>
+          <p>곡과 플랫폼의 청취 변화를 확인합니다.</p>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 04 · DETAIL BREADCRUMB</span>
+        <h2>실제 drill-down에서만 hierarchy 표시</h2>
+        <p>Breadcrumb는 page title을 대체하지 않습니다.</p>
+        <div class="breadcrumb-demo">
+          <nav class="breadcrumb" aria-label="현재 위치">
+            <a href="#parent">음원 성과</a>
+            <span aria-hidden="true">/</span>
+            <span>늦은 여름</span>
+          </nav>
+          <div class="detail-header">
+            <h3>늦은 여름</h3>
+            <p>2026. 9. 18. 발매 · 싱글</p>
+          </div>
+          <div class="back-note"><strong>Breadcrumb</strong><span>정보 구조상 부모인 “음원 성과”로 이동</span></div>
+          <div class="back-note"><strong>Browser Back</strong><span>실제로 직전에 보던 검색 결과·대시보드·목록으로 복귀</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 05 · PAGE TABS</span>
+        <h2>같은 L1 안의 related view</h2>
+        <p>Tabs는 sidebar나 filter를 대체하지 않습니다.</p>
+        <div class="tabs-demo">
+          <div class="page-tabs" role="tablist" aria-label="음원 성과 보기">
+            <button class="page-tab" role="tab" aria-selected="true" data-panel="전체">전체</button>
+            <button class="page-tab" role="tab" aria-selected="false" data-panel="곡">곡</button>
+            <button class="page-tab" role="tab" aria-selected="false" data-panel="플랫폼">플랫폼</button>
+          </div>
+          <div class="tab-panel" id="tabPanel">음원 성과의 전체 overview를 표시합니다.</div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 06 · ICON RAIL</span>
+        <h2>Label을 숨기면 대체 wayfinding이 필요</h2>
+        <p>Hover/focus label과 accessible name을 유지하고 current state는 색 하나에만 의존하지 않습니다.</p>
+        <div class="rail-demo-wrap">
+          <div class="rail-demo">
+            <button class="rail-btn" aria-label="대시보드" aria-current="page">
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg>
+              <span class="rail-tip">대시보드</span>
+            </button>
+            <button class="rail-btn" aria-label="음원 성과">
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6.8l9-2.1v10.9"/><circle cx="6.7" cy="18.2" r="2.3"/></svg>
+              <span class="rail-tip">음원 성과</span>
+            </button>
+            <button class="rail-btn" aria-label="오디언스">
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.8 18.5c.7-3 2.5-4.7 5.2-4.7s4.5 1.7 5.2 4.7"/></svg>
+              <span class="rail-tip">오디언스</span>
+            </button>
+          </div>
+          <div class="rail-content">72px rail에서는 공간을 확보하되 navigation 의미는 잃지 않습니다.</div>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 07 · ARTIST CONTEXT TRANSITION</span>
+        <h2>Artist switch는 page navigation이 아니라 전체 분석 context 변경</h2>
+        <p>새 아티스트 이름 아래 이전 아티스트의 데이터를 그대로 보여주지 않습니다.</p>
+        <div class="context-demo">
+          <div class="context-switch">
+            <h3>아티스트 선택</h3>
+            <button class="artist-option" aria-pressed="true" data-artist="샘플 아티스트"><span class="ia-avatar">ㅁ</span><span>샘플 아티스트</span></button>
+            <button class="artist-option" aria-pressed="false" data-artist="두 번째 아티스트"><span class="ia-avatar">ㄷ</span><span>두 번째 아티스트</span></button>
+          </div>
+          <div class="context-result" id="contextResult">
+            <span class="section-kicker">음원 성과</span>
+            <strong>샘플 아티스트</strong>
+            <span>최근 30일 스트리밍 982만 회 · 샘플</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 08 · MOBILE NAVIGATION</span>
+        <h2>숨기는 대신 같은 IA를 menu로 제공</h2>
+        <p>메뉴 button의 expanded state와 현재 page를 유지합니다.</p>
+        <div class="mobile-demo">
+          <div class="mobile-bar">
+            <img src="../../assets/brand/chasm-logo.svg" alt="" width="22" height="22" />
+            <strong>CHASM</strong>
+            <button class="mobile-menu-btn" id="mobileDemoButton" aria-label="메뉴 열기" aria-expanded="false">
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg>
+            </button>
+          </div>
+          <div class="mobile-panel" id="mobileDemoPanel" hidden>
+            <div class="mobile-context">샘플 아티스트 · Artist context</div>
+            <div class="mobile-link is-current">대시보드</div>
+            <div class="mobile-link">음원 성과</div>
+            <div class="mobile-link">오디언스</div>
+            <div class="mobile-link">콘텐츠</div>
+            <div class="mobile-link">이벤트</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 09 · CROSS-PAGE DRILL-DOWN</span>
+        <h2>Overview에서 근거가 있는 상세로</h2>
+        <p>Destination은 entity와 가능한 query context를 함께 전달합니다.</p>
+        <div class="drill-grid">
+          <div class="drill-card"><strong>Dashboard insight</strong><span>〈늦은 여름〉이 증가분의 38%</span></div>
+          <span class="drill-arrow" aria-hidden="true">→</span>
+          <div class="drill-card"><strong>음원 성과 / 늦은 여름</strong><span>관련 기간·곡 근거로 이동</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card lab-card--wide">
+        <span class="case-tag">CASE 10 · DEEP LINK ORIENTATION</span>
+        <h2>이전 화면을 거치지 않아도 현재 위치가 이해되어야 함</h2>
+        <p>직접 URL로 detail을 열어도 Artist context + current L1 + breadcrumb + H1이 orientation을 제공합니다.</p>
+        <div class="hierarchy-flow">
+          <div class="hierarchy-node"><strong>Artist Context</strong><span>샘플 아티스트</span></div>
+          <div class="hierarchy-node"><strong>L1 Current</strong><span>음원 성과</span></div>
+          <div class="hierarchy-node"><strong>Breadcrumb</strong><span>음원 성과 / 늦은 여름</span></div>
+          <div class="hierarchy-node"><strong>H1</strong><span>늦은 여름</span></div>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 11 · LONG NAME</span>
+        <h2>긴 artist/track name</h2>
+        <p>Dense navigation은 ellipsis를 허용하되 detail page의 primary title은 충분히 보여줍니다.</p>
+        <div class="long-name-box">
+          <strong>아주아주긴이름을가진인디아티스트와친구들프로젝트</strong>
+          <span>Sidebar context · ellipsis 허용</span>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <span class="case-tag">CASE 12 · PROTOTYPE VS ROUTE</span>
+        <h2>현재 anchor는 최종 route가 아님</h2>
+        <p>정적 prototype에서는 한 화면의 section anchor로 IA를 검증하지만 실제 앱에서는 page routing으로 교체합니다.</p>
+        <div class="back-note"><strong>Prototype</strong><span>#music · #audience · #events</span></div>
+        <div class="back-note"><strong>Route candidate</strong><span>/artists/:artistId/music · /audience · /events</span></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const descriptions={
+      '대시보드':'여러 영역의 주요 변화를 한눈에 확인합니다.',
+      '음원 성과':'곡과 플랫폼에서 어떤 청취 변화가 있었는지 확인합니다.',
+      '오디언스':'청취자와 관계 변화를 확인합니다.',
+      '콘텐츠':'콘텐츠 활동과 반응을 확인합니다.',
+      '이벤트':'발매·공연·프로모션과 데이터 흐름을 확인합니다.'
+    };
+    document.getElementById('iaNav').addEventListener('click',(event)=>{
+      const button=event.target.closest('[data-page]');
+      if(!button)return;
+      document.querySelectorAll('#iaNav [data-page]').forEach(item=>item.removeAttribute('aria-current'));
+      button.setAttribute('aria-current','page');
+      document.getElementById('iaPageTitle').textContent=button.dataset.page;
+      document.getElementById('iaPageDescription').textContent=descriptions[button.dataset.page]||'';
+    });
+
+    const tabs=[...document.querySelectorAll('.page-tab')];
+    tabs.forEach((tab,index)=>{
+      tab.addEventListener('click',()=>selectTab(tab));
+      tab.addEventListener('keydown',(event)=>{
+        if(!['ArrowLeft','ArrowRight'].includes(event.key))return;
+        event.preventDefault();
+        const dir=event.key==='ArrowRight'?1:-1;
+        const next=tabs[(index+dir+tabs.length)%tabs.length];
+        next.focus();
+      });
+    });
+    function selectTab(tab){
+      tabs.forEach(item=>item.setAttribute('aria-selected',String(item===tab)));
+      document.getElementById('tabPanel').textContent=
+        tab.dataset.panel==='전체'?'음원 성과의 전체 overview를 표시합니다.':
+        tab.dataset.panel==='곡'?'곡 단위 성과와 비교를 표시합니다.':
+        '플랫폼 단위 성과와 차이를 표시합니다.';
+    }
+
+    const contextResult=document.getElementById('contextResult');
+    document.querySelectorAll('.artist-option').forEach(button=>{
+      button.addEventListener('click',()=>{
+        const artist=button.dataset.artist;
+        document.querySelectorAll('.artist-option').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+        contextResult.innerHTML='<div class="context-loading" aria-hidden="true"><span class="skeleton-block"></span><span class="skeleton-block"></span><span class="skeleton-block"></span></div><span class="sr-only">새 아티스트 데이터를 불러오는 중입니다.</span>';
+        setTimeout(()=>{
+          contextResult.innerHTML='<span class="section-kicker">음원 성과</span><strong>'+artist+'</strong><span>'+(artist==='샘플 아티스트'?'최근 30일 스트리밍 982만 회':'최근 30일 스트리밍 314만 회')+' · 샘플</span>';
+        },400);
+      });
+    });
+
+    const mobileBtn=document.getElementById('mobileDemoButton');
+    const mobilePanel=document.getElementById('mobileDemoPanel');
+    mobileBtn.addEventListener('click',()=>{
+      const open=mobileBtn.getAttribute('aria-expanded')!=='true';
+      mobileBtn.setAttribute('aria-expanded',String(open));
+      mobileBtn.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기');
+      mobilePanel.hidden=!open;
+      mobileBtn.querySelector('path').setAttribute('d',open?'m7 7 10 10M17 7 7 17':'M5 7h14M5 12h14M5 17h14');
+    });
+  </script>
+</body>
+</html>
