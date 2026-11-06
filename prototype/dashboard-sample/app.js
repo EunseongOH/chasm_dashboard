@@ -119,7 +119,8 @@ function renderChart() {
       y1: margin.top - 6,
       x2: releaseX,
       y2: margin.top + plotH,
-      class: "chart-event-line"
+      class: "chart-event-line",
+      "data-insight-target": "release"
     }));
 
     const releaseBox = svgEl("rect", {
@@ -128,7 +129,8 @@ function renderChart() {
       width: 70,
       height: 28,
       rx: 7,
-      class: "chart-highlight-box"
+      class: "chart-highlight-box",
+      "data-insight-target": "release"
     });
     svg.appendChild(releaseBox);
 
@@ -136,7 +138,8 @@ function renderChart() {
       x: releaseX,
       y: 25,
       "text-anchor": "middle",
-      class: "chart-highlight-label"
+      class: "chart-highlight-label",
+      "data-insight-target": "release"
     });
     releaseText.textContent = "신곡 발매 9/18";
     svg.appendChild(releaseText);
@@ -273,6 +276,54 @@ document.querySelectorAll(".info").forEach((button) => {
       button.blur();
     }
   });
+});
+
+
+const insightItems = [...document.querySelectorAll(".insight-item[data-link-target]")];
+
+function clearInsightLinks() {
+  insightItems.forEach((item) => item.classList.remove("is-active"));
+  document.querySelectorAll("[data-insight-target].is-linked-highlight")
+    .forEach((item) => item.classList.remove("is-linked-highlight"));
+  document.querySelectorAll(".data-table tr.is-insight-highlight")
+    .forEach((item) => item.classList.remove("is-insight-highlight"));
+}
+
+function activateInsight(item) {
+  clearInsightLinks();
+  item.classList.add("is-active");
+
+  const target = item.dataset.linkTarget;
+
+  if (target === "release") {
+    if (granularity !== "day") {
+      const dayButton = segmentedButtons.find((button) => button.dataset.granularity === "day");
+      if (dayButton) selectGranularity(dayButton);
+    }
+
+    document.querySelectorAll('[data-insight-target="release"]')
+      .forEach((node) => node.classList.add("is-linked-highlight"));
+
+    document.getElementById("music")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  if (target === "late-summer") {
+    const row = document.getElementById("track-late-summer");
+    if (row) {
+      row.classList.add("is-insight-highlight");
+      row.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    return;
+  }
+
+  if (target === "trend") {
+    document.getElementById("music")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
+insightItems.forEach((item) => {
+  item.addEventListener("click", () => activateInsight(item));
 });
 
 document.getElementById("periodSelect").addEventListener("change", (event) => {
