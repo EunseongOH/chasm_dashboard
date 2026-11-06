@@ -413,6 +413,21 @@ button, a { -webkit-tap-highlight-color: transparent; }
   background: var(--control-selected-bg);
   font-weight: 650;
 }
+
+.nav-item.is-disabled {
+  color: var(--control-fg-disabled);
+  cursor: default;
+}
+
+.nav-item.is-disabled:hover,
+.nav-item.is-disabled:active {
+  color: var(--control-fg-disabled);
+  background: transparent;
+}
+
+.nav-item.is-disabled .nav-icon {
+  color: var(--neutral-400);
+}
 .nav-icon {
   width: 22px;
   text-align: center;
