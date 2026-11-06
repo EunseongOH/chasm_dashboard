@@ -401,6 +401,10 @@ Tooltip 내부에 링크/버튼이 필요하면 tooltip이 아니라 popover/dia
 
 ---
 
+## Data State loading/accessibility
+
+Loading, refreshing, stale, partial, error의 visual/behavior grammar는 `15-data-state-system.md`를 따른다. 접근성 측면에서는 loading/sync 상태를 animation만으로 전달하지 않고 필요한 경우 status text/live region을 제공한다.
+
 # 17. Dynamic Status
 
 사용자 action 후 화면 일부가 갱신되는데 focus가 이동하지 않는 경우, 필요한 상태는 assistive technology에도 전달한다.
