@@ -153,29 +153,32 @@
             </div>
           </div>
 
-          <button class="insight-item" type="button">
+          <button class="insight-item" type="button" data-link-target="release" aria-label="발매 전후 스트리밍 변화 근거 보기">
             <span class="insight-icon">↗</span>
             <span class="insight-copy">
-              <strong>신곡 발매 후 전체 스트리밍이 42.3% 증가</strong>
-              <small>발매 전 4주 평균과 비교</small>
+              <span class="insight-kind">비교</span>
+              <strong>전체 스트리밍이 발매 전 4주 평균보다 42.3% 높습니다.</strong>
+              <small>발매 전 4주 평균 대비</small>
             </span>
             <span class="arrow">→</span>
           </button>
 
-          <button class="insight-item" type="button">
+          <button class="insight-item" type="button" data-link-target="late-summer" aria-label="늦은 여름 성장 기여 근거 보기">
             <span class="insight-icon">♪</span>
             <span class="insight-copy">
-              <strong>〈늦은 여름〉이 최근 증가량의 38%를 차지</strong>
-              <small>다른 곡보다 성장 기여가 큼</small>
+              <span class="insight-kind">비교</span>
+              <strong>〈늦은 여름〉이 최근 스트리밍 증가분의 38%를 차지합니다.</strong>
+              <small>최근 기간 증가량 기준</small>
             </span>
             <span class="arrow">→</span>
           </button>
 
-          <button class="insight-item" type="button">
+          <button class="insight-item" type="button" data-link-target="trend" aria-label="Instagram 선행 신호 근거 보기">
             <span class="insight-icon">◎</span>
             <span class="insight-copy">
-              <strong>Instagram 반응 상승이 스트리밍보다 먼저 나타남</strong>
-              <small>인과가 아닌 시계열상 선행 신호</small>
+              <span class="insight-kind insight-kind--signal">신호</span>
+              <strong>Instagram 반응 상승이 스트리밍보다 먼저 나타났습니다.</strong>
+              <small>인과가 아닌 시계열상 선행</small>
             </span>
             <span class="arrow">→</span>
           </button>
@@ -246,7 +249,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr id="track-late-summer">
                   <td>
                     <div class="track-name">
                       <span class="cover c1" aria-hidden="true"></span>
