@@ -1,3 +1,72 @@
+const mobileNavToggle = document.getElementById("mobileNavToggle");
+const sidebar = document.querySelector(".sidebar");
+const artistContextButton = document.getElementById("artistContextButton");
+const artistContextPanel = document.getElementById("artistContextPanel");
+
+function setMobileNav(open, { moveFocus = false } = {}) {
+  if (!mobileNavToggle || !sidebar) return;
+
+  sidebar.classList.toggle("is-mobile-open", open);
+  document.body.classList.toggle("is-nav-open", open);
+  mobileNavToggle.setAttribute("aria-expanded", String(open));
+  mobileNavToggle.setAttribute("aria-label", open ? "주요 메뉴 닫기" : "주요 메뉴 열기");
+
+  const iconPath = mobileNavToggle.querySelector("path");
+  if (iconPath) {
+    iconPath.setAttribute("d", open ? "m7 7 10 10M17 7 7 17" : "M5 7h14M5 12h14M5 17h14");
+  }
+
+  if (open && moveFocus) {
+    window.requestAnimationFrame(() => {
+      sidebar.querySelector(".nav-item:not(.is-disabled)")?.focus();
+    });
+  }
+
+  if (!open && moveFocus) {
+    mobileNavToggle.focus();
+  }
+}
+
+mobileNavToggle?.addEventListener("click", () => {
+  const open = mobileNavToggle.getAttribute("aria-expanded") !== "true";
+  setMobileNav(open, { moveFocus: open });
+});
+
+sidebar?.querySelectorAll(".nav-item[href]").forEach((link) => {
+  link.addEventListener("click", () => {
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      setMobileNav(false);
+    }
+  });
+});
+
+artistContextButton?.addEventListener("click", () => {
+  const open = artistContextButton.getAttribute("aria-expanded") !== "true";
+  artistContextButton.setAttribute("aria-expanded", String(open));
+  if (artistContextPanel) artistContextPanel.hidden = !open;
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+
+  if (artistContextButton?.getAttribute("aria-expanded") === "true") {
+    artistContextButton.setAttribute("aria-expanded", "false");
+    if (artistContextPanel) artistContextPanel.hidden = true;
+    artistContextButton.focus();
+    return;
+  }
+
+  if (mobileNavToggle?.getAttribute("aria-expanded") === "true") {
+    setMobileNav(false, { moveFocus: true });
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth >= 768 && mobileNavToggle?.getAttribute("aria-expanded") === "true") {
+    setMobileNav(false);
+  }
+});
+
 const colors = {
   blue: "#1393FD",
   teal: "#278F63",
