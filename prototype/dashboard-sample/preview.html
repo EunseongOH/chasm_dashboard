@@ -361,7 +361,36 @@ button, a { -webkit-tap-highlight-color: transparent; }
   flex: 0 0 auto;
 }
 
+.mobile-nav-toggle {
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  padding: 0;
+  display: none;
+  place-items: center;
+  color: var(--icon-fg-default);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.mobile-nav-toggle:hover {
+  background: var(--control-bg-hover);
+}
+
+.nav-group-label {
+  padding: var(--space-1) var(--space-3);
+  color: var(--fg-tertiary);
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
 .artist-switcher {
+  position: relative;
   width: 100%;
   margin: var(--space-5) 0 var(--space-4);
   padding: var(--space-2_5) var(--space-3);
@@ -380,6 +409,33 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .artist-switcher:active {
   background: var(--control-bg-pressed);
+}
+
+.artist-context-panel {
+  margin: calc(var(--space-3) * -1) 0 var(--space-4);
+  padding: var(--space-3);
+  display: grid;
+  gap: var(--space-1);
+  color: var(--fg-secondary);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-container-sm);
+}
+
+.artist-context-panel[hidden] {
+  display: none;
+}
+
+.artist-context-panel strong {
+  font-size: var(--type-supporting-size);
+  line-height: var(--type-supporting-line);
+}
+
+.artist-context-panel p {
+  margin: 0;
+  color: var(--fg-tertiary);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
 }
 .artist-avatar {
   width: 34px; height: 34px;
@@ -409,6 +465,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 .nav { display: grid; gap: var(--space-1); }
 .nav-item {
+  position: relative;
   min-height: 42px;
   padding: 0 var(--space-3);
   display: flex;
@@ -2282,7 +2339,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .brand > span:last-child,
   .artist-switcher__copy,
   .artist-switcher .chevron,
-  .nav-item > span:not(.nav-icon) {
+  .nav-item > span:not(.nav-icon),
+  .nav-group-label,
+  .artist-context-panel {
     display: none;
   }
 
@@ -2310,6 +2369,35 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
   .nav-icon {
     width: auto;
+  }
+
+  .nav-item::after,
+  .artist-switcher::after {
+    content: attr(aria-label);
+    position: absolute;
+    left: 56px;
+    top: 50%;
+    z-index: 80;
+    max-width: 220px;
+    padding: var(--space-1_5) var(--space-2);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%);
+    color: var(--neutral-0);
+    background: var(--neutral-900);
+    border-radius: var(--radius-1_5);
+    box-shadow: var(--shadow-mid);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .nav-item:hover::after,
+  .nav-item:focus-visible::after,
+  .artist-switcher:hover::after,
+  .artist-switcher:focus-visible::after {
+    opacity: 1;
   }
 }
 
@@ -2342,24 +2430,68 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
 
   .sidebar {
-    position: static;
+    position: sticky;
+    top: 0;
     width: 100%;
     height: 64px;
     padding: var(--space-3) var(--space-4);
-    flex-direction: row;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
     border-right: 0;
     border-bottom: 1px solid var(--stroke-default);
   }
 
   .brand {
+    width: 100%;
+    min-height: 40px;
     padding: 0;
+  }
+
+  .mobile-nav-toggle {
+    display: grid;
   }
 
   .artist-switcher,
   .nav,
   .sidebar-bottom {
     display: none;
+  }
+
+  .sidebar.is-mobile-open {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    height: 100dvh;
+    overflow-y: auto;
+    background: var(--surface-default);
+  }
+
+  .sidebar.is-mobile-open .artist-switcher {
+    display: flex;
+    margin-top: var(--space-5);
+  }
+
+  .sidebar.is-mobile-open .artist-context-panel:not([hidden]) {
+    display: grid;
+  }
+
+  .sidebar.is-mobile-open .nav {
+    display: grid;
+  }
+
+  .sidebar.is-mobile-open .sidebar-bottom {
+    margin-top: var(--space-6);
+    display: grid;
+  }
+
+  .sidebar.is-mobile-open .nav-group-label {
+    display: block;
+  }
+
+  body.is-nav-open {
+    overflow: hidden;
   }
 
   .main {
@@ -2535,9 +2667,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
       <div class="brand">
         <img class="brand-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2250%22%20height%3D%2250%22%20viewBox%3D%220%200%2050%2050%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M13.8125%2028.0625L5.6875%2044.375L7.5%2050H41.6875L43.5625%2042.5L34%2026.5L33.125%2017L38.5%2016.375L35.8125%2013.8125H29.125L30.3125%2026.5L40.375%2043.125L35.8125%2046.6875L10.1875%2045.5L11.8125%2041.5625L15.5%2035.375L16.75%2029.1875L17.9375%2022.25L19.5%2013.0625L11.8125%2012.4375L10.1875%2014.9375L13.8125%2016.0625V28.0625Z%22%20fill%3D%22%23101010%22%2F%3E%0A%3Cpath%20d%3D%22M23.1988%2028.1455L25.7343%2026.5H28.2698L30.5071%2029.093L36.125%2043.0053L35.1804%2043.9527L26.7734%2044.875L14.875%2043.9527V39.25L23.1988%2028.1455Z%22%20fill%3D%22%23101010%22%2F%3E%0A%3Cpath%20d%3D%22M4.92763%2028L0%2021.6851V17.6875L2.0625%2012.875L5.8125%2011.375L6.5625%2017.6875V28H4.92763Z%22%20fill%3D%22%23101010%22%2F%3E%0A%3Cpath%20d%3D%22M43.9865%2029L42%2013.3125L43.9865%2012.3125H46.6875L48.3125%2014L50%2017.375V23.0625L48.3125%2029H43.9865Z%22%20fill%3D%22%23101010%22%2F%3E%0A%3Cpath%20d%3D%22M10%207.4375L5%2015.125L5.75%2018.875L13.5625%208.875L18.4375%206.25L22%203.8125L30.9375%204.5625L34.5625%207.4375L44.0625%2022V17L39.0625%206.25L32.625%200H17.9375L10%207.4375Z%22%20fill%3D%22%23101010%22%2F%3E%0A%3Cpath%20d%3D%22M41.25%2012.3125L43.5625%2011.6875L44.125%2030.7499L42.1875%2030.7499L41.25%2012.3125Z%22%20fill%3D%22%23101010%22%2F%3E%0A%3Cpath%20d%3D%22M5.1875%2011.375L7.1875%2010.5625L8.875%2029.375L6.22368%2029.375L5.1875%2011.375Z%22%20fill%3D%22%23101010%22%2F%3E%0A%3C%2Fsvg%3E" alt="" aria-hidden="true" />
         <span>CHASM</span>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="주요 메뉴 열기" aria-expanded="false" aria-controls="sidebarNavigation">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg>
+        </button>
       </div>
 
-      <button class="artist-switcher" type="button" aria-label="아티스트 선택: 샘플 아티스트">
+      <button class="artist-switcher" id="artistContextButton" type="button" aria-label="아티스트 선택: 샘플 아티스트" aria-expanded="false" aria-controls="artistContextPanel">
         <span class="artist-avatar">ㅁ</span>
         <span class="artist-switcher__copy">
           <strong>샘플 아티스트</strong>
@@ -2545,8 +2680,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
         </span>
         <span class="chevron"><svg class="ui-icon ui-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9.5 5 5 5-5"/></svg></span>
       </button>
+      <div class="artist-context-panel" id="artistContextPanel" hidden>
+        <span class="section-kicker">ARTIST CONTEXT</span>
+        <strong>샘플 아티스트</strong>
+        <p>아티스트 전환은 전체 분석 대상이 바뀌는 Context 변경입니다. 실제 데이터 라우팅 연결 후 다른 아티스트 선택을 활성화합니다.</p>
+      </div>
 
-      <nav class="nav" aria-label="주요 메뉴">
+      <nav class="nav" id="sidebarNavigation" aria-label="주요 메뉴">
+        <span class="nav-group-label">분석</span>
         <a class="nav-item is-active" href="#overview" aria-label="대시보드" aria-current="page">
           <span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg></span><span>대시보드</span>
         </a>
@@ -2568,6 +2709,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
       </nav>
 
       <div class="sidebar-bottom">
+        <span class="nav-group-label">관리</span>
         <span class="nav-item is-disabled" role="link" aria-disabled="true" aria-label="데이터 업로드, 프로토타입에서 미구현"><span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V5"/><path d="m8 9 4-4 4 4"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></span><span>데이터 업로드</span></span>
         <span class="nav-item is-disabled" role="link" aria-disabled="true" aria-label="설정, 프로토타입에서 미구현"><span class="nav-icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h7M15 7h5M4 12h3M11 12h9M4 17h10M18 17h2"/><circle cx="13" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="16" cy="17" r="2"/></svg></span><span>설정</span></span>
       </div>
@@ -2994,7 +3136,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
       <footer class="prototype-note">
         <strong>Prototype note</strong>
-        <span>모든 수치는 UI 검증용 샘플입니다. 실제 제품에서는 DSP별 지표 정의와 합산 가능 여부를 확인한 뒤 표시 규칙을 연결합니다.</span>
+        <span>모든 수치는 UI 검증용 샘플입니다. 현재 사이드바의 섹션 링크는 IA 시각화를 위한 in-page anchor이며, 실제 제품에서는 page route로 교체합니다.</span>
       </footer>
     </main>
   </div>
@@ -3002,6 +3144,75 @@ button, a { -webkit-tap-highlight-color: transparent; }
   <div class="tooltip" id="tooltip" aria-hidden="true"></div>
   <div class="sr-only" id="statusAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div>
   <script>
+const mobileNavToggle = document.getElementById("mobileNavToggle");
+const sidebar = document.querySelector(".sidebar");
+const artistContextButton = document.getElementById("artistContextButton");
+const artistContextPanel = document.getElementById("artistContextPanel");
+
+function setMobileNav(open, { moveFocus = false } = {}) {
+  if (!mobileNavToggle || !sidebar) return;
+
+  sidebar.classList.toggle("is-mobile-open", open);
+  document.body.classList.toggle("is-nav-open", open);
+  mobileNavToggle.setAttribute("aria-expanded", String(open));
+  mobileNavToggle.setAttribute("aria-label", open ? "주요 메뉴 닫기" : "주요 메뉴 열기");
+
+  const iconPath = mobileNavToggle.querySelector("path");
+  if (iconPath) {
+    iconPath.setAttribute("d", open ? "m7 7 10 10M17 7 7 17" : "M5 7h14M5 12h14M5 17h14");
+  }
+
+  if (open && moveFocus) {
+    window.requestAnimationFrame(() => {
+      sidebar.querySelector(".nav-item:not(.is-disabled)")?.focus();
+    });
+  }
+
+  if (!open && moveFocus) {
+    mobileNavToggle.focus();
+  }
+}
+
+mobileNavToggle?.addEventListener("click", () => {
+  const open = mobileNavToggle.getAttribute("aria-expanded") !== "true";
+  setMobileNav(open, { moveFocus: open });
+});
+
+sidebar?.querySelectorAll(".nav-item[href]").forEach((link) => {
+  link.addEventListener("click", () => {
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      setMobileNav(false);
+    }
+  });
+});
+
+artistContextButton?.addEventListener("click", () => {
+  const open = artistContextButton.getAttribute("aria-expanded") !== "true";
+  artistContextButton.setAttribute("aria-expanded", String(open));
+  if (artistContextPanel) artistContextPanel.hidden = !open;
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+
+  if (artistContextButton?.getAttribute("aria-expanded") === "true") {
+    artistContextButton.setAttribute("aria-expanded", "false");
+    if (artistContextPanel) artistContextPanel.hidden = true;
+    artistContextButton.focus();
+    return;
+  }
+
+  if (mobileNavToggle?.getAttribute("aria-expanded") === "true") {
+    setMobileNav(false, { moveFocus: true });
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth >= 768 && mobileNavToggle?.getAttribute("aria-expanded") === "true") {
+    setMobileNav(false);
+  }
+});
+
 const colors = {
   blue: "#1393FD",
   teal: "#278F63",
