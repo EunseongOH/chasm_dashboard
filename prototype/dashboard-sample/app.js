@@ -120,6 +120,42 @@ const trendDataHead = document.getElementById("trendDataHead");
 const trendDataBody = document.getElementById("trendDataBody");
 const trendChartSummary = document.getElementById("trendChartSummary");
 const statusAnnouncer = document.getElementById("statusAnnouncer");
+const toastRegion = document.getElementById("toastRegion");
+
+function showToast({ title, body = "", status = "info", timeout = 5000 }) {
+  if (!toastRegion) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast is-${status}`;
+  toast.setAttribute("role", status === "error" ? "alert" : "status");
+
+  const iconPath = status === "success"
+    ? '<path d="m7 12 3 3 7-7"/>'
+    : status === "error"
+      ? '<path d="M12 7v6M12 17h.01"/><circle cx="12" cy="12" r="8"/>'
+      : '<circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/>';
+
+  toast.innerHTML = `
+    <span class="toast__icon"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">${iconPath}</svg></span>
+    <span class="toast__copy">
+      <strong>${title}</strong>
+      ${body ? `<p>${body}</p>` : ""}
+    </span>
+    <button class="toast__close" type="button" aria-label="알림 닫기">
+      <svg class="ui-icon ui-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>
+    </button>
+  `;
+
+  const remove = () => toast.remove();
+  toast.querySelector(".toast__close")?.addEventListener("click", remove);
+  toastRegion.prepend(toast);
+
+  while (toastRegion.children.length > 4) {
+    toastRegion.lastElementChild?.remove();
+  }
+
+  if (timeout) window.setTimeout(remove, timeout);
+}
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 function announce(message) {
@@ -752,3 +788,12 @@ updateTrackSearch();
 
 renderLegend();
 renderChart();
+
+
+document.getElementById("exportDemoButton")?.addEventListener("click", () => {
+  showToast({
+    title: "내보내기 피드백 예시",
+    body: "이 프로토타입에서는 실제 파일을 생성하지 않습니다.",
+    status: "success"
+  });
+});
