@@ -16,6 +16,7 @@ Read these documents first:
 10. `docs/design-system/08-interaction-states-and-controls.md`
 11. `docs/design-system/09-data-visualization-system.md`
 12. `docs/design-system/10-table-and-ranking-system.md`
+13. `docs/design-system/11-insight-and-annotation-system.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -83,6 +84,29 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Insight and annotation system
+
+Follow `docs/design-system/11-insight-and-annotation-system.md`.
+
+Key rules:
+- Separate Observation, Comparison, Pattern/Signal, Interpretation/Hypothesis, and Recommendation/Action.
+- Do not collapse direction, importance, evidence level, and alert severity into one color or score.
+- Direction != Evaluation and Signal != Cause.
+- Do not use arbitrary numeric confidence scores by default.
+- Deterministic observations/comparisons may use direct factual language; interpretations require uncertainty language.
+- Prefer explicit labels like “신호”, “가능한 해석”, or “다음 확인” when epistemic status could otherwise be confused.
+- Provide evidence through progressive disclosure: period, baseline, source, calculation, related event, and freshness when available.
+- Link insights back to supporting charts, periods, series, events, or table rows whenever possible.
+- Event/chart annotations are factual context; do not place causal claims directly inside the plot.
+- Keep analytical insights separate from system/data alerts. Amber/red alert tone is not for metric direction.
+- When signals conflict, show the contradiction rather than forcing one positive/negative conclusion.
+- When evidence is insufficient, explain that limitation and offer a next inspection path instead of inventing a cause.
+- Prefer exploration actions inside the product before strong operational recommendations.
+- If AI/LLM later generates interpretations or recommendations, identify that generation source and provide an explainability path.
+
+Design-system insight lab:
+`prototype/design-system-lab/insight-annotation.html`
 
 ## Table and ranking system
 
