@@ -29,6 +29,12 @@
    - 로고 크기·색상·접근성 사용 원칙
    - Prototype/preview에서 로고를 참조하는 방식
 
+5. `04-spacing-and-radius.md`
+   - 카드 내부 padding/gap 체계
+   - spacing primitive/semantic token
+   - radius hierarchy
+   - 중첩 rounded surface의 Concentric Radius 원칙
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
