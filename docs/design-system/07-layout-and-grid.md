@@ -169,6 +169,8 @@ KPI card의 초기 comfortable minimum은 약 200px이다.
 
 4-card layout에서 각 카드가 200px 아래로 내려가면 2-column reflow를 우선한다.
 
+> Navigation의 IA/wayfinding, icon rail label, mobile menu behavior는 `17-navigation-and-information-architecture.md`를 따른다. 이 문서는 layout width/reflow만 정의한다.
+
 ## 11. Sidebar Modes
 
 ### Full Sidebar
