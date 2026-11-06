@@ -20,6 +20,7 @@ Read these documents first:
 14. `docs/design-system/12-iconography-system.md`
 15. `docs/design-system/13-content-and-microcopy-system.md`
 16. `docs/design-system/14-accessibility-system.md`
+17. `docs/design-system/15-data-state-system.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -87,6 +88,32 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Data state system
+
+Follow `docs/design-system/15-data-state-system.md`.
+
+Key rules:
+- Treat data state as trust context, not a generic warning badge.
+- Model Availability, Freshness, Completeness, and Value Origin as independent dimensions; do not force them into one status enum.
+- Show state at the smallest affected scope: source/metric/card before page.
+- Ready/Fresh is quiet meta. Do not decorate every healthy card with a green success badge.
+- Use skeletons for initial structured loading. Do not use skeletons for unsupported/empty/error states.
+- Background refresh keeps last-known data visible and adds a small “갱신 중” state; never blank the dashboard or return it to skeleton.
+- Zero is a real observed value. Zero != empty/no data.
+- Separate Not connected, No data yet, No results, and Unsupported empty states.
+- Unsupported != Error and Stale != Error.
+- Partial data remains visible, but aggregate comparisons must be revalidated when source coverage differs between periods.
+- Prefer same-coverage recalculation, suppressing the delta, or clearly explaining the coverage difference over showing a misleading aggregate delta.
+- Stale data may remain useful; show the last successful refresh time and retain last-known values when appropriate.
+- Estimated values are labeled near the value/segment. Do not represent estimation only with color or an arbitrary confidence score.
+- If refresh fails but last-known data exists, preserve the data and explain that the latest refresh failed.
+- Retry actions appear only when the same operation can actually be retried.
+- Source-specific refresh cadence, stale thresholds, retry/backoff, and final health aggregation logic remain Deferred until the real DSP pipeline is known.
+- The candidate metadata fields in the data-state document are product interface requirements, not a finalized database schema.
+
+Design-system data-state lab:
+`prototype/design-system-lab/data-states.html`
 
 ## Accessibility system
 
