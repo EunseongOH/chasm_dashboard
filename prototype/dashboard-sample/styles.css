@@ -383,6 +383,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 .artist-switcher {
+  position: relative;
   width: 100%;
   margin: var(--space-5) 0 var(--space-4);
   padding: var(--space-2_5) var(--space-3);
@@ -457,6 +458,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 .nav { display: grid; gap: var(--space-1); }
 .nav-item {
+  position: relative;
   min-height: 42px;
   padding: 0 var(--space-3);
   display: flex;
@@ -2360,6 +2362,35 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
   .nav-icon {
     width: auto;
+  }
+
+  .nav-item::after,
+  .artist-switcher::after {
+    content: attr(aria-label);
+    position: absolute;
+    left: 56px;
+    top: 50%;
+    z-index: 80;
+    max-width: 220px;
+    padding: var(--space-1_5) var(--space-2);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%);
+    color: var(--neutral-0);
+    background: var(--neutral-900);
+    border-radius: var(--radius-1_5);
+    box-shadow: var(--shadow-mid);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .nav-item:hover::after,
+  .nav-item:focus-visible::after,
+  .artist-switcher:hover::after,
+  .artist-switcher:focus-visible::after {
+    opacity: 1;
   }
 }
 
