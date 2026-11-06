@@ -103,23 +103,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
   letter-spacing: -.02em;
 }
 
-.brand-mark {
-  position: relative;
+.brand-logo {
   width: 24px;
   height: 24px;
-  display: inline-block;
+  display: block;
+  flex: 0 0 auto;
 }
-
-.brand-mark span {
-  position: absolute;
-  width: 16px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--blue-500);
-  transform: rotate(-45deg);
-}
-.brand-mark span:first-child { left: 0; top: 5px; }
-.brand-mark span:last-child { right: 0; bottom: 5px; background: var(--blue-700); }
 
 .artist-switcher {
   width: 100%;
