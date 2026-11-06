@@ -15,6 +15,7 @@ Read these documents first:
 9. `docs/design-system/07-layout-and-grid.md`
 10. `docs/design-system/08-interaction-states-and-controls.md`
 11. `docs/design-system/09-data-visualization-system.md`
+12. `docs/design-system/10-table-and-ranking-system.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -82,6 +83,30 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Table and ranking system
+
+Follow `docs/design-system/10-table-and-ranking-system.md`.
+
+Key rules:
+- Separate Data Table, Rich Resource Table, Ranking Preview, and Comparison Matrix by task.
+- Prefer native HTML table semantics for read/sort/link/select use cases; do not turn a normal analytics table into an ARIA spreadsheet grid.
+- Primary identity columns align left; comparable numeric and delta columns align right with tabular numerals.
+- Use exact values in detail tables; compact values are acceptable in ranking previews.
+- Keep rank change formatting separate from metric delta formatting because lower rank numbers indicate improvement.
+- Use Compact 40px, Standard 48px, and Rich 64px row density as current proposed variants.
+- Track/album resource rows may include 32–40px artwork plus title and one secondary metadata line.
+- Assign responsive column priorities: P0 identity, P1 primary metric, P2 comparison/context, P3 supporting metadata.
+- On narrow layouts, recompose important row information into a list pattern instead of endlessly squeezing columns.
+- Sortable headers get explicit controls and aria-sort; static headers remain non-interactive.
+- Keep sort state independent of wide-only headers so narrow layouts can expose the same sort through another control.
+- Ranking previews default to roughly 5–6 visible rows and link to a full table for long-tail exploration.
+- Use pagination/cursor navigation for long analytical tables; do not default to infinite scroll.
+- Add selection only when a meaningful row/bulk action exists.
+- Use horizontal overflow only for genuine multi-metric comparison workspaces; consider a sticky identity column there.
+
+Design-system table lab:
+`prototype/design-system-lab/table-ranking.html`
 
 ## Data visualization system
 
