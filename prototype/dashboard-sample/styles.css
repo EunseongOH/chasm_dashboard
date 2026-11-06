@@ -202,8 +202,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
   font-weight: 700;
 }
 .artist-switcher__copy { min-width: 0; display: grid; }
-.artist-switcher__copy strong { font-size: 13px; }
-.artist-switcher__copy small { color: var(--fg-tertiary); font-size: 11px; }
+.artist-switcher__copy strong {
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-line);
+  font-weight: 600;
+}
+.artist-switcher__copy small {
+  color: var(--fg-tertiary);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+}
 .chevron { margin-left: auto; color: var(--fg-secondary); }
 
 .nav { display: grid; gap: var(--space-1); }
@@ -348,8 +356,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .kpi-card {
   position: relative;
-  min-height: 154px;
+  min-height: 164px;
   padding: var(--card-padding-compact);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   background: var(--bg-surface);
   border: 1px solid var(--stroke-default);
@@ -422,7 +432,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .spark-area { fill: var(--blue-50); }
 .spark-line { fill: none; stroke: var(--blue-400); stroke-width: 2; }
 .platform-mini {
-  margin-top: var(--space-4);
+  margin-top: auto;
+  padding-top: var(--space-3);
   display: flex;
   gap: var(--space-1);
   height: 7px;
@@ -438,7 +449,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .platform-mini span:nth-child(3) { background: var(--viz-purple); }
 .platform-mini span:nth-child(4) { background: var(--viz-amber); }
 .mini-track-list {
-  margin-top: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-3);
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-1_5);
@@ -569,7 +581,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .chart-event-label {
   fill: var(--fg-secondary);
-  font-size: 10px;
+  font-size: var(--type-meta-size);
   font-family: inherit;
 }
 .chart-highlight-box {
@@ -578,7 +590,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .chart-highlight-label {
   fill: var(--fg-brand);
-  font-size: 10px;
+  font-size: var(--type-meta-size);
   font-weight: 700;
   font-family: inherit;
 }
@@ -705,7 +717,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .track-card { overflow: hidden; }
 .track-table { margin-top: var(--space-4); }
 .track-table__row {
-  min-height: 58px;
+  min-height: 64px;
   padding: var(--space-2) var(--card-padding);
   display: grid;
   grid-template-columns: minmax(160px,1.6fr) minmax(90px,.7fr) minmax(70px,.5fr);
