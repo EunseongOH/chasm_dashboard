@@ -41,6 +41,12 @@
    - line-height를 포함한 vertical rhythm
    - KPI / Analysis / Insight / Table card anatomy
 
+7. `06-surface-border-elevation.md`
+   - Canvas / Default / Subtle / Floating surface 위계
+   - Card border와 shadow 사용 기준
+   - nested surface / divider 규칙
+   - Tooltip·Popover·Modal elevation 기준
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
