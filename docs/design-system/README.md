@@ -53,6 +53,12 @@
    - breakpoint별 reflow 규칙
    - chart / insight / KPI 최소 폭 검증
 
+9. `08-interaction-states-and-controls.md`
+   - Default / Hover / Pressed / Focus / Selected / Disabled 상태 체계
+   - Button / Tabs / Segmented / Filter Chip / Select 의미 구분
+   - Focus ring 및 target-size 접근성 기준
+   - keyboard interaction 원칙
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -62,6 +68,12 @@
 - `app.js`
 
 외부 라이브러리 없이 실행 가능한 초기 UI sample입니다. 현재 목적은 제품 코드 확정이 아니라 디자인 시스템과 Visualization Grammar를 실제 데이터 화면 맥락에서 검증하는 것입니다.
+
+### Design System Lab
+
+`prototype/design-system-lab/interaction-controls.html`
+
+Button, Tabs, Segmented control, Filter chip, Focus, Disabled 등 interaction state를 한 화면에서 비교하는 검증용 페이지입니다. VS Code Live Server에서 열어 실제 hover/focus/keyboard 상태를 확인합니다.
 
 ## 상태 표기
 
