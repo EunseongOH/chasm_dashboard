@@ -18,6 +18,7 @@ Read these documents first:
 12. `docs/design-system/10-table-and-ranking-system.md`
 13. `docs/design-system/11-insight-and-annotation-system.md`
 14. `docs/design-system/12-iconography-system.md`
+15. `docs/design-system/13-content-and-microcopy-system.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -85,6 +86,30 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Content and microcopy system
+
+Follow `docs/design-system/13-content-and-microcopy-system.md`.
+
+Key rules:
+- UI copy is part of data interpretation; prefer precise context over promotional language.
+- Analytical dashboard sentences use Korean 합니다체. Labels, headings, and controls use short noun/verb phrases without periods.
+- Do not mix 해요체 and 합니다체 inside the same analytical surface.
+- Use 증가/감소 primarily for quantity/count changes; use 상승/하락 for rate, rank, index, or level when appropriate.
+- Avoid generic “성장” as a direction label unless it is an actual defined metric or evaluative context is justified.
+- Distinguish 이전 기간 대비, 전월 대비, and event-specific baselines such as 발매 전 4주 평균 대비.
+- Keep % and %p distinct.
+- Prefer plain Korean over analytics jargon; translate terms such as baseline, anomaly, contribution, and leading signal when the technical term adds no value.
+- Button/link labels should reveal the destination or outcome: 근거 보기, 플랫폼별 보기, 발매 전후 비교, 필터 초기화. Avoid generic 자세히/확인/실행 when more specific wording is possible.
+- Tooltip copy should add definition, limitation, or rationale rather than repeat the label.
+- Separate empty states by cause: not connected, connected but no data, no filter results, and not applicable.
+- Error copy should state the problem, impact, and next action.
+- Keep Partial, Stale, and Estimated data wording distinct.
+- Avoid evaluative adjectives such as “좋은”, “폭발적”, “성공적” unless a benchmark/goal makes the evaluation supportable.
+- Product terminology must stay consistent. The current metric/entity glossary is Proposed until real DSP schema/entity mapping is validated.
+
+Design-system content lab:
+`prototype/design-system-lab/content-microcopy.html`
 
 ## Iconography system
 
