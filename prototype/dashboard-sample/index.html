@@ -71,6 +71,41 @@
         </div>
       </header>
 
+      <div class="data-health-bar" aria-label="샘플 데이터 상태">
+        <div class="data-health-bar__summary">
+          <span class="data-state-dot is-fresh" aria-hidden="true"></span>
+          <span><strong>샘플 데이터</strong></span>
+          <span aria-hidden="true">·</span>
+          <span>4개 플랫폼 포함</span>
+          <span aria-hidden="true">·</span>
+          <span>갱신 시각 예시 2026. 11. 7. 00:30</span>
+        </div>
+        <details class="data-health-details">
+          <summary>데이터 상태 보기</summary>
+          <div class="data-health-panel">
+            <p class="data-health-panel__note">아래 상태와 시각은 실제 연동값이 아닌 디자인 시스템 검증용 예시입니다.</p>
+            <dl class="data-source-list">
+              <div class="data-source-row">
+                <dt><span class="data-state-dot is-fresh" aria-hidden="true"></span>Spotify</dt>
+                <dd><span>최신</span><time datetime="2026-11-07T00:30:00+09:00">00:30</time></dd>
+              </div>
+              <div class="data-source-row">
+                <dt><span class="data-state-dot is-fresh" aria-hidden="true"></span>YouTube Music</dt>
+                <dd><span>최신</span><time datetime="2026-11-07T00:28:00+09:00">00:28</time></dd>
+              </div>
+              <div class="data-source-row">
+                <dt><span class="data-state-dot is-fresh" aria-hidden="true"></span>Apple Music</dt>
+                <dd><span>최신</span><time datetime="2026-11-07T00:26:00+09:00">00:26</time></dd>
+              </div>
+              <div class="data-source-row">
+                <dt><span class="data-state-dot is-fresh" aria-hidden="true"></span>Melon</dt>
+                <dd><span>최신</span><time datetime="2026-11-07T00:24:00+09:00">00:24</time></dd>
+              </div>
+            </dl>
+          </div>
+        </details>
+      </div>
+
       <section class="summary-banner" aria-labelledby="summaryTitle">
         <div class="summary-banner__icon" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8c.6 3.8 2.4 5.6 6.2 6.2-3.8.6-5.6 2.4-6.2 6.2-.6-3.8-2.4-5.6-6.2-6.2 3.8-.6 5.6-2.4 6.2-6.2Z"/><path d="M18.2 16.2c.2 1.5 1 2.3 2.5 2.5-1.5.2-2.3 1-2.5 2.5-.2-1.5-1-2.3-2.5-2.5 1.5-.2 2.3-1 2.5-2.5Z"/></svg></div>
         <div class="summary-banner__copy">
