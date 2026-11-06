@@ -76,6 +76,18 @@ Do not automatically use green for increases or red for decreases.
 
 DSP brand color is not automatically chart series color.
 
+## Official brand asset
+
+Use the official CHASM logo asset:
+
+`assets/brand/chasm-logo.svg`
+
+Do not redraw, approximate, or replace the logo with a generated symbol.
+
+Current official SVG uses the original `#101010` fill. Preserve the original geometry and aspect ratio. Alternative logo color variants are not defined yet; do not invent them without a design decision.
+
+When the logo appears next to visible "CHASM" text, it can be treated as decorative with an empty alt attribute. When used alone as the brand identifier, provide an appropriate accessible label.
+
 ## Prototype workflow
 
 Current prototype:
