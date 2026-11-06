@@ -10,6 +10,7 @@ Read these documents first:
 4. `docs/design-system/02-dashboard-ui-sample.md`
 5. `docs/design-system/03-brand-assets.md`
 6. `docs/design-system/04-spacing-and-radius.md`
+7. `docs/design-system/05-typography-and-card-anatomy.md`
 
 Treat these documents as the current source of truth for established product/design decisions.
 
@@ -77,6 +78,21 @@ Do not automatically use green for increases or red for decreases.
 **Direction != Evaluation**
 
 DSP brand color is not automatically chart series color.
+
+## Typography and card anatomy
+
+Follow `docs/design-system/05-typography-and-card-anatomy.md`.
+
+Key rules:
+- Do not solve dashboard density by shrinking meaningful text to 9–10px.
+- Prefer 12px+ for meaningful supporting/meta text, 13–14px for normal UI text, 16px for card titles, and 28px+ for KPI values.
+- Treat line-height as part of spacing; title/description groups often need only 0–2px explicit gap.
+- Use distinct card anatomies for KPI, Analysis/Chart, Insight, and Table/Ranking surfaces.
+- KPI cards are compact (16px padding); standard analysis/insight cards are comfortable (20px padding).
+- Table bodies may run edge-to-edge inside a card while keeping row content aligned to the card header.
+- Preserve left-edge alignment across header copy, legend/body content, and table rows unless the visualization itself requires different plot margins.
+- Use tabular numerals for comparable numeric data.
+- Korean readability takes priority over maximizing raw information density.
 
 ## Spacing and radius
 
