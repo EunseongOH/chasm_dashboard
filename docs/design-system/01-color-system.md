@@ -68,8 +68,8 @@
 | neutral-200 | `#E5EAF0` | Default border / grid |
 | neutral-300 | `#D5DCE5` | Strong border |
 | neutral-400 | `#AAB4C0` | Disabled / low emphasis |
-| neutral-500 | `#7C8796` | Tertiary text |
-| neutral-600 | `#5E6978` | Secondary text candidate |
+| neutral-500 | `#7C8796` | Low-priority non-text / decorative cue |
+| neutral-600 | `#5E6978` | Meaningful tertiary/supporting text |
 | neutral-700 | `#46515F` | Strong secondary |
 | neutral-800 | `#2E3743` | High-emphasis text |
 | neutral-900 | `#171D26` | Primary text |
@@ -127,10 +127,10 @@ Spotify = Green, Melon = Green처럼 플랫폼 브랜드 컬러를 그대로 차
 | 순서 | 이름 | Hex |
 |---|---|---|
 | 1 | Blue | `#1393FD` |
-| 2 | Green / Teal | `#2EAD75` |
+| 2 | Green / Teal | `#278F63` |
 | 3 | Purple | `#9D6ADE` |
 | 4 | Coral | `#E5484D` |
-| 5 | Amber | `#D99A13` |
+| 5 | Amber | `#B7790D` |
 | 6 | Slate | `#5C6F8A` |
 
 기존 콘텐츠 색:
@@ -144,7 +144,27 @@ Spotify = Green, Melon = Green처럼 플랫폼 브랜드 컬러를 그대로 차
 
 대시보드에서는 다중 series가 함께 있을 때 충돌을 줄이기 위해 채도를 조정할 수 있다.
 
-### 5.3 색 외의 구분을 함께 사용한다
+### 5.3 접근성 대비 검증
+
+WCAG 2.2 AA를 기준으로 의미 있는 작은 텍스트는 4.5:1, 필요한 graphical object/UI component는 3:1 이상의 대비를 목표로 한다.
+
+현재 light surface 기준 주요 결과:
+
+- neutral-500 #7C8796 → white 약 3.64:1: 작은 본문/metadata text에는 사용하지 않음
+- neutral-600 #5E6978 → white 약 5.57:1: 의미 있는 tertiary/supporting text 기본값
+- Blue #1393FD → white 약 3.17:1
+- Teal #278F63 → white 약 4.04:1
+- Purple #9D6ADE → white 약 3.78:1
+- Amber #B7790D → white 약 3.65:1
+- Coral #E5484D → white 약 3.91:1
+- Slate #5C6F8A → white 약 5.13:1
+
+기존 Teal #2EAD75와 Amber #D99A13은 각각 약 2.86:1, 2.45:1로 의미 있는 2px chart line의 3:1 기준에 미달해 접근성 후보값으로 수정했다.
+
+Reference:
+- https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html
+
+### 5.4 색 외의 구분을 함께 사용한다
 
 Color만 기억해야 데이터를 읽을 수 있는 차트를 지양한다.
 
@@ -216,7 +236,7 @@ Component token을 불필요하게 많이 만들지 않는다.
 | `bg.subtle` | neutral-100 `#F1F4F8` |
 | `fg.primary` | neutral-900 `#171D26` |
 | `fg.secondary` | neutral-700 `#46515F` |
-| `fg.tertiary` | neutral-500 `#7C8796` |
+| `fg.tertiary` | neutral-600 `#5E6978` |
 | `fg.brand` | blue-700 `#075FBA` |
 | `bg.brandSubtle` | blue-50 `#F4F9FF` |
 | `bg.brandSolid` | blue-700 `#075FBA` |
