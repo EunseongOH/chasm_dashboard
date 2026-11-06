@@ -678,6 +678,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
   display: none !important;
 }
 
+.comparison-off .resource-table .delta-col {
+  width: 0;
+}
+
 .chart-controls {
   display: flex;
   align-items: center;
