@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHASM Design System Lab — Interaction & Controls</title>
+  <link rel="stylesheet" href="../dashboard-sample/styles.css" />
+  <style>
+    body { padding: 32px; }
+    .lab { max-width: 1120px; margin: 0 auto; }
+    .lab-head { margin-bottom: 32px; }
+    .lab-head h1 { margin: 4px 0 6px; font-size: 28px; line-height: 36px; }
+    .lab-head p { margin: 0; color: var(--fg-secondary); }
+    .lab-grid { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .lab-card {
+      padding: 20px;
+      background: var(--surface-default);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
+    }
+    .lab-card h2 { margin: 0 0 4px; font-size: 16px; line-height: 24px; }
+    .lab-card > p { margin: 0 0 16px; color: var(--fg-tertiary); font-size: 13px; line-height: 20px; }
+    .lab-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .lab-stack { display: grid; gap: 16px; }
+    .state-note { margin-top: 12px; color: var(--fg-tertiary); font-size: 12px; line-height: 16px; }
+    .focus-demo { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+    .control-preview {
+      min-height: 40px;
+      padding: 0 12px;
+      color: var(--control-fg-default);
+      background: var(--control-bg-default);
+      border: 1px solid var(--control-border-default);
+      border-radius: var(--radius-control);
+      font: inherit;
+    }
+    @media (max-width: 760px) { .lab-grid { grid-template-columns: 1fr; } body { padding: 16px; } }
+  </style>
+</head>
+<body>
+  <main class="lab">
+    <header class="lab-head">
+      <span class="section-kicker">DESIGN SYSTEM LAB</span>
+      <h1>Interaction & Controls</h1>
+      <p>상태 위계와 control semantics를 실제 브라우저에서 비교하기 위한 테스트 페이지입니다.</p>
+    </header>
+
+    <div class="lab-grid">
+      <section class="lab-card">
+        <h2>Button hierarchy</h2>
+        <p>Primary는 현재 scope의 핵심 action 하나에만 제한적으로 사용합니다.</p>
+        <div class="lab-row">
+          <button class="button button--primary">데이터 연결</button>
+          <button class="button button--secondary">내보내기</button>
+          <button class="button button--tertiary">자세히 보기</button>
+          <button class="button button--secondary" disabled>사용 불가</button>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <h2>Focus-visible</h2>
+        <p>Selected와 독립된 2px blue-700 외곽 ring을 사용합니다.</p>
+        <div class="lab-row">
+          <button class="button button--secondary focus-demo">Focus 예시</button>
+          <button class="filter-chip focus-demo" aria-pressed="true">선택 + Focus</button>
+        </div>
+        <div class="state-note">실제 키보드 Tab 이동으로도 focus-visible 상태를 확인하세요.</div>
+      </section>
+
+      <section class="lab-card">
+        <h2>Segmented control</h2>
+        <p>같은 데이터의 표시 mode를 바꿀 때 사용합니다.</p>
+        <div class="segmented" role="group" aria-label="집계 단위 예시">
+          <button class="is-selected" type="button" aria-pressed="true">일간</button>
+          <button type="button" aria-pressed="false">주간</button>
+          <button type="button" aria-pressed="false" disabled>월간</button>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <h2>Filter chips</h2>
+        <p>데이터 subset을 변경하며 multi-select 여부를 명확히 정의합니다.</p>
+        <div class="lab-row">
+          <button class="filter-chip" aria-pressed="true">Spotify</button>
+          <button class="filter-chip" aria-pressed="false">YouTube Music</button>
+          <button class="filter-chip" aria-pressed="true">Apple Music</button>
+          <button class="filter-chip" aria-pressed="false" disabled>Melon</button>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <h2>Tabs</h2>
+        <p>서로 다른 view/section을 이동할 때 사용하며 Segmented와 구분합니다.</p>
+        <div class="tabs" role="tablist" aria-label="성과 보기">
+          <button class="tab" role="tab" aria-selected="true">전체</button>
+          <button class="tab" role="tab" aria-selected="false">음원</button>
+          <button class="tab" role="tab" aria-selected="false">오디언스</button>
+          <button class="tab" role="tab" aria-selected="false" disabled>콘텐츠</button>
+        </div>
+      </section>
+
+      <section class="lab-card">
+        <h2>Select / Date / Icon</h2>
+        <p>Page header의 기본 control은 40px target을 유지합니다.</p>
+        <div class="lab-row">
+          <label class="select-control">
+            <span class="sr-only">조회 기간 예시</span>
+            <select class="control-preview">
+              <option>최근 30일</option>
+              <option>최근 3개월</option>
+            </select>
+          </label>
+          <button class="date-control" type="button">2026. 10. 1. – 10. 31.</button>
+          <button class="icon-button" type="button" aria-label="내보내기">⇩</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    document.querySelectorAll('.filter-chip:not(:disabled)').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chip.setAttribute('aria-pressed', chip.getAttribute('aria-pressed') !== 'true');
+      });
+    });
+
+    document.querySelectorAll('.segmented').forEach((group) => {
+      const buttons = [...group.querySelectorAll('button:not(:disabled)')];
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          buttons.forEach((item) => {
+            const selected = item === button;
+            item.classList.toggle('is-selected', selected);
+            item.setAttribute('aria-pressed', String(selected));
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
