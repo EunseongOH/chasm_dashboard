@@ -1,0 +1,499 @@
+{
+  "version": "0.1",
+  "updated_at": "2026-11-07",
+  "repository": "EunseongOH/chasm_dashboard",
+  "status_definitions": {
+    "shared": "Shared CSS/HTML behavior exists and is reusable in the current prototype.",
+    "dashboard_specific": "Implemented in the dashboard sample but not yet extracted as a generic component.",
+    "lab_only_proposed": "Visually tested in a Design System Lab but depends on product/routing decisions before shared extraction.",
+    "reserved_contract": "Token or pattern is intentionally reserved by the design system although not rendered in the dashboard sample.",
+    "deferred": "Definition depends on real data architecture, routing, permissions, or framework decisions."
+  },
+  "foundations": [
+    {
+      "id": "brand.logo",
+      "name": "CHASM logo",
+      "category": "foundation",
+      "doc": "03-brand-assets.md",
+      "implementation": "assets/brand/chasm-logo.svg",
+      "status": "shared"
+    },
+    {
+      "id": "color.palette",
+      "name": "Brand / neutral / viz palette",
+      "category": "foundation",
+      "doc": "01-color-system.md",
+      "implementation": "styles.css :root",
+      "status": "shared"
+    },
+    {
+      "id": "color.semantic",
+      "name": "Semantic surface / foreground / border tokens",
+      "category": "foundation",
+      "doc": "01-color-system.md",
+      "implementation": "styles.css :root",
+      "status": "shared"
+    },
+    {
+      "id": "spacing.scale",
+      "name": "Primitive spacing scale",
+      "category": "foundation",
+      "doc": "04-spacing-and-radius.md",
+      "implementation": "styles.css :root --space-*",
+      "status": "shared"
+    },
+    {
+      "id": "spacing.inset",
+      "name": "Semantic content inset ladder",
+      "category": "foundation",
+      "doc": "19-content-spacing-and-inset-system.md",
+      "implementation": "styles.css :root --inset-*",
+      "status": "shared"
+    },
+    {
+      "id": "radius.scale",
+      "name": "Radius scale",
+      "category": "foundation",
+      "doc": "04-spacing-and-radius.md",
+      "implementation": "styles.css :root --radius-*",
+      "status": "shared"
+    },
+    {
+      "id": "typography.text",
+      "name": "Text type ramp",
+      "category": "foundation",
+      "doc": "05-typography-and-card-anatomy.md",
+      "implementation": "styles.css :root --type-*",
+      "status": "shared"
+    },
+    {
+      "id": "typography.data",
+      "name": "Data type ramp",
+      "category": "foundation",
+      "doc": "05-typography-and-card-anatomy.md",
+      "implementation": "styles.css :root --type-data-*",
+      "status": "shared"
+    },
+    {
+      "id": "surface.elevation",
+      "name": "Surface / border / shadow",
+      "category": "foundation",
+      "doc": "06-surface-border-elevation.md",
+      "implementation": "styles.css :root --surface-* --border-* --shadow-*",
+      "status": "shared"
+    },
+    {
+      "id": "layout.grid",
+      "name": "12-column responsive layout",
+      "category": "foundation",
+      "doc": "07-layout-and-grid.md",
+      "implementation": "styles.css layout tokens / media queries",
+      "status": "shared"
+    },
+    {
+      "id": "icon.system",
+      "name": "System icon sizing and color",
+      "category": "foundation",
+      "doc": "12-iconography-system.md",
+      "implementation": ".ui-icon variants",
+      "status": "shared"
+    }
+  ],
+  "controls": [
+    {
+      "id": "button.primary",
+      "name": "Primary button",
+      "category": "control",
+      "doc": "08-interaction-states-and-controls.md",
+      "implementation": ".button.button--primary",
+      "status": "shared"
+    },
+    {
+      "id": "button.secondary",
+      "name": "Secondary button",
+      "category": "control",
+      "doc": "08-interaction-states-and-controls.md",
+      "implementation": ".button.button--secondary",
+      "status": "shared"
+    },
+    {
+      "id": "button.tertiary",
+      "name": "Tertiary button",
+      "category": "control",
+      "doc": "08-interaction-states-and-controls.md",
+      "implementation": ".button.button--tertiary",
+      "status": "shared"
+    },
+    {
+      "id": "button.danger",
+      "name": "Danger / destructive button",
+      "category": "control",
+      "doc": "18-feedback-notification-confirmation.md",
+      "implementation": ".button.button--danger",
+      "status": "shared"
+    },
+    {
+      "id": "button.icon",
+      "name": "Icon-only button",
+      "category": "control",
+      "doc": "08-interaction-states-and-controls.md",
+      "implementation": ".icon-button",
+      "status": "shared"
+    },
+    {
+      "id": "action.text",
+      "name": "Text action",
+      "category": "control",
+      "doc": "08-interaction-states-and-controls.md",
+      "implementation": ".text-action",
+      "status": "shared"
+    },
+    {
+      "id": "control.segmented",
+      "name": "Segmented control",
+      "category": "control",
+      "doc": "08-interaction-states-and-controls.md",
+      "implementation": ".segmented",
+      "status": "shared"
+    },
+    {
+      "id": "control.tabs",
+      "name": "Tab primitive",
+      "category": "control",
+      "doc": "08-interaction-states-and-controls.md",
+      "implementation": ".tabs / .tab",
+      "status": "shared"
+    },
+    {
+      "id": "control.select",
+      "name": "Select",
+      "category": "control",
+      "doc": "16-filter-search-date-query-system.md",
+      "implementation": "native select + query-field",
+      "status": "shared"
+    },
+    {
+      "id": "control.date_range",
+      "name": "Date range disclosure",
+      "category": "control",
+      "doc": "16-filter-search-date-query-system.md",
+      "implementation": ".query-date / native date inputs",
+      "status": "dashboard_specific"
+    },
+    {
+      "id": "control.search",
+      "name": "Component search",
+      "category": "control",
+      "doc": "16-filter-search-date-query-system.md",
+      "implementation": ".track-search",
+      "status": "shared"
+    },
+    {
+      "id": "control.filter_menu",
+      "name": "Multi-select filter popover",
+      "category": "control",
+      "doc": "16-filter-search-date-query-system.md",
+      "implementation": ".filter-menu / .filter-popover",
+      "status": "shared"
+    },
+    {
+      "id": "control.filter_chip",
+      "name": "Removable filter chip",
+      "category": "control",
+      "doc": "16-filter-search-date-query-system.md",
+      "implementation": ".filter-chip",
+      "status": "shared"
+    },
+    {
+      "id": "control.field_error",
+      "name": "Field message / error",
+      "category": "control",
+      "doc": "18-feedback-notification-confirmation.md",
+      "implementation": ".field-message / .field-message--error",
+      "status": "shared"
+    }
+  ],
+  "containers_and_feedback": [
+    {
+      "id": "card.standard",
+      "name": "Standard analysis card",
+      "category": "container",
+      "doc": "05-typography-and-card-anatomy.md",
+      "implementation": ".card",
+      "status": "shared"
+    },
+    {
+      "id": "card.kpi",
+      "name": "KPI card",
+      "category": "container",
+      "doc": "05-typography-and-card-anatomy.md",
+      "implementation": ".kpi-card",
+      "status": "shared"
+    },
+    {
+      "id": "banner.summary",
+      "name": "Summary banner",
+      "category": "container",
+      "doc": "05-typography-and-card-anatomy.md",
+      "implementation": ".summary-banner",
+      "status": "dashboard_specific"
+    },
+    {
+      "id": "state.notice",
+      "name": "Data-state notice",
+      "category": "feedback",
+      "doc": "15-data-state-system.md",
+      "implementation": ".data-state-notice",
+      "status": "shared"
+    },
+    {
+      "id": "state.empty",
+      "name": "Empty / replacement state",
+      "category": "feedback",
+      "doc": "15-data-state-system.md",
+      "implementation": ".data-state-empty",
+      "status": "shared"
+    },
+    {
+      "id": "state.chip",
+      "name": "Data-state chip",
+      "category": "feedback",
+      "doc": "15-data-state-system.md",
+      "implementation": ".data-state-chip",
+      "status": "shared"
+    },
+    {
+      "id": "feedback.inline",
+      "name": "Inline notification",
+      "category": "feedback",
+      "doc": "18-feedback-notification-confirmation.md",
+      "implementation": ".feedback-message",
+      "status": "shared"
+    },
+    {
+      "id": "feedback.callout",
+      "name": "Callout",
+      "category": "feedback",
+      "doc": "18-feedback-notification-confirmation.md",
+      "implementation": ".feedback-callout",
+      "status": "shared"
+    },
+    {
+      "id": "feedback.toast",
+      "name": "Toast",
+      "category": "feedback",
+      "doc": "18-feedback-notification-confirmation.md",
+      "implementation": ".toast / .toast-region",
+      "status": "shared"
+    },
+    {
+      "id": "feedback.dialog",
+      "name": "Confirmation dialog",
+      "category": "feedback",
+      "doc": "18-feedback-notification-confirmation.md",
+      "implementation": ".dialog-system",
+      "status": "shared"
+    },
+    {
+      "id": "overlay.tooltip",
+      "name": "Tooltip",
+      "category": "overlay",
+      "doc": "08-interaction-states-and-controls.md",
+      "implementation": ".tooltip",
+      "status": "shared"
+    },
+    {
+      "id": "overlay.popover",
+      "name": "Popover panel",
+      "category": "overlay",
+      "doc": "16-filter-search-date-query-system.md",
+      "implementation": ".query-popover / .filter-popover",
+      "status": "shared"
+    },
+    {
+      "id": "loading.skeleton",
+      "name": "Skeleton",
+      "category": "feedback",
+      "doc": "15-data-state-system.md",
+      "implementation": ".skeleton-block",
+      "status": "shared"
+    },
+    {
+      "id": "loading.spinner",
+      "name": "Inline refreshing spinner",
+      "category": "feedback",
+      "doc": "15-data-state-system.md",
+      "implementation": ".data-refreshing__spinner",
+      "status": "shared"
+    }
+  ],
+  "navigation": [
+    {
+      "id": "nav.sidebar",
+      "name": "Full sidebar navigation",
+      "category": "navigation",
+      "doc": "17-navigation-and-information-architecture.md",
+      "implementation": ".sidebar / .nav / .nav-item",
+      "status": "shared"
+    },
+    {
+      "id": "nav.icon_rail",
+      "name": "Icon rail",
+      "category": "navigation",
+      "doc": "17-navigation-and-information-architecture.md",
+      "implementation": "768–1279px sidebar mode",
+      "status": "shared"
+    },
+    {
+      "id": "nav.mobile",
+      "name": "Mobile navigation panel",
+      "category": "navigation",
+      "doc": "17-navigation-and-information-architecture.md",
+      "implementation": ".mobile-nav-toggle / .sidebar.is-mobile-open",
+      "status": "shared"
+    },
+    {
+      "id": "nav.artist_context",
+      "name": "Artist context switcher",
+      "category": "navigation",
+      "doc": "17-navigation-and-information-architecture.md",
+      "implementation": ".artist-switcher / .artist-context-panel",
+      "status": "dashboard_specific"
+    },
+    {
+      "id": "nav.breadcrumb",
+      "name": "Breadcrumb",
+      "category": "navigation",
+      "doc": "17-navigation-and-information-architecture.md",
+      "implementation": "navigation-ia.html",
+      "status": "lab_only_proposed"
+    },
+    {
+      "id": "nav.page_tabs",
+      "name": "Page tabs",
+      "category": "navigation",
+      "doc": "17-navigation-and-information-architecture.md",
+      "implementation": "navigation-ia.html",
+      "status": "lab_only_proposed"
+    }
+  ],
+  "data_display": [
+    {
+      "id": "viz.timeseries",
+      "name": "Time-series chart grammar",
+      "category": "data_display",
+      "doc": "09-data-visualization-system.md",
+      "implementation": "app.js SVG + chart-* classes",
+      "status": "dashboard_specific"
+    },
+    {
+      "id": "viz.legend",
+      "name": "Chart legend",
+      "category": "data_display",
+      "doc": "09-data-visualization-system.md",
+      "implementation": ".legend / .legend-item",
+      "status": "shared"
+    },
+    {
+      "id": "table.standard",
+      "name": "Data table",
+      "category": "data_display",
+      "doc": "10-table-and-ranking-system.md",
+      "implementation": ".data-table",
+      "status": "shared"
+    },
+    {
+      "id": "table.resource",
+      "name": "Rich resource table",
+      "category": "data_display",
+      "doc": "10-table-and-ranking-system.md",
+      "implementation": ".resource-table",
+      "status": "shared"
+    },
+    {
+      "id": "ranking.preview",
+      "name": "Ranking preview",
+      "category": "data_display",
+      "doc": "10-table-and-ranking-system.md",
+      "implementation": ".ranking-*",
+      "status": "shared"
+    },
+    {
+      "id": "breakdown.contribution",
+      "name": "Contribution bars",
+      "category": "data_display",
+      "doc": "09-data-visualization-system.md",
+      "implementation": ".contribution-* / .bar-*",
+      "status": "dashboard_specific"
+    },
+    {
+      "id": "timeline.event",
+      "name": "Event timeline",
+      "category": "data_display",
+      "doc": "11-insight-and-annotation-system.md",
+      "implementation": ".timeline-* / .event-tag",
+      "status": "dashboard_specific"
+    },
+    {
+      "id": "insight.row",
+      "name": "Insight interactive row",
+      "category": "data_display",
+      "doc": "11-insight-and-annotation-system.md",
+      "implementation": ".insight-item",
+      "status": "shared"
+    },
+    {
+      "id": "insight.evidence",
+      "name": "Insight evidence disclosure",
+      "category": "data_display",
+      "doc": "11-insight-and-annotation-system.md",
+      "implementation": ".insight-evidence",
+      "status": "shared"
+    },
+    {
+      "id": "data.health",
+      "name": "Data health summary/detail",
+      "category": "data_display",
+      "doc": "15-data-state-system.md",
+      "implementation": ".data-health-*",
+      "status": "dashboard_specific"
+    }
+  ],
+  "deferred_contracts": [
+    {
+      "id": "route.production",
+      "name": "Production routes / browser history",
+      "category": "architecture",
+      "doc": "17-navigation-and-information-architecture.md",
+      "status": "deferred"
+    },
+    {
+      "id": "chart.library",
+      "name": "Reusable chart implementation/library",
+      "category": "architecture",
+      "doc": "09-data-visualization-system.md",
+      "status": "deferred"
+    },
+    {
+      "id": "date.calendar",
+      "name": "Production calendar/date picker",
+      "category": "control",
+      "doc": "16-filter-search-date-query-system.md",
+      "status": "deferred"
+    },
+    {
+      "id": "permission.nav",
+      "name": "Permission-aware navigation",
+      "category": "navigation",
+      "doc": "17-navigation-and-information-architecture.md",
+      "status": "deferred"
+    },
+    {
+      "id": "data.thresholds",
+      "name": "Refresh cadence / stale thresholds",
+      "category": "data_contract",
+      "doc": "15-data-state-system.md",
+      "status": "deferred"
+    }
+  ]
+}
