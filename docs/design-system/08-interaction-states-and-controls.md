@@ -163,9 +163,17 @@ Loading은:
 --focus-ring-offset: 2px;
 ```
 
-blue-500 #1393FD는 white 대비가 약 3.17:1로 경계선에 가깝다.
+blue-500 #1393FD는 white 대비가 약 3.17:1이며, blue-50 #F4F9FF 위에서는 약 3.00:1로 경계선에 가깝다.
 
-Focus는 다양한 subtle background 위에서도 안정적으로 보여야 하므로 blue-700 #075FBA를 사용한다.
+blue-700 #075FBA는:
+- white 대비 약 6.26:1
+- canvas #F7F9FC 대비 약 5.93:1
+- blue-50 #F4F9FF 대비 약 5.91:1
+- inset #F1F4F8 대비 약 5.67:1
+
+으로 현재 light surface들에서 focus indicator로 더 안정적이다.
+
+따라서 CHASM focus ring은 blue-700 #075FBA를 사용한다.
 
 ## Neutral Control
 
