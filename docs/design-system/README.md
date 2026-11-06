@@ -89,6 +89,13 @@
    - CTA / Tooltip / Empty / Error / Stale 문장 패턴
    - Proposed metric/entity glossary
 
+15. `14-accessibility-system.md`
+   - WCAG 2.2 AA 제품 기준선
+   - keyboard / focus / contrast / reflow / reduced motion
+   - tooltip / live status / semantic structure
+   - chart summary + accessible data table
+   - 현재 prototype accessibility audit
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -125,6 +132,10 @@ Rich music resource table, exact numeric table, ranking preview, rank change, na
 
 문체, 비교 기준, 증가/상승/성장 용어, CTA, Tooltip, Empty/Error/Stale 상태, 제품 용어 사전을 검증하는 Content Lab입니다.
 
+`prototype/design-system-lab/accessibility.html`
+
+Keyboard/focus, contrast, tooltip, live status, chart alternative, 320px reflow, manual QA 항목을 검증하는 Accessibility Lab입니다.
+
 ## 상태 표기
 
 - **Stable**: 넓게 적용해도 되는 확정 원칙
@@ -144,6 +155,8 @@ Rich music resource table, exact numeric table, ranking preview, rank change, na
 - 컬러 값: **Proposed v0.1**
 - Dashboard UI sample: **Proposed v0.1**
 - Data State 정의: DSP 스키마/수집 주기 확인 후 **Deferred**
+- 접근성 기준선: **WCAG 2.2 AA / Stable**
+- 실제 browser zoom·screen reader·forced-colors QA: **Required before production**
 
 ## 작업 원칙
 
