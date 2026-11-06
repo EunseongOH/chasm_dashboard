@@ -35,6 +35,12 @@
    - radius hierarchy
    - 중첩 rounded surface의 Concentric Radius 원칙
 
+6. `05-typography-and-card-anatomy.md`
+   - 한국어 중심 Typography ramp
+   - Data typography와 Text typography 분리
+   - line-height를 포함한 vertical rhythm
+   - KPI / Analysis / Insight / Table card anatomy
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
