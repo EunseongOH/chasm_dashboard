@@ -311,6 +311,8 @@ Default dashboard control의 대부분은 Secondary에 해당한다.
 
 ---
 
+> Feedback surface 선택과 confirmation behavior는 `18-feedback-notification-confirmation.md`를 따른다. 개별 button/control state는 이 문서가 담당한다.
+
 # 7. Icon Button
 
 기본:
