@@ -249,6 +249,8 @@ CHASM은 **box gap과 perceived visual gap을 구분**한다.
 
 ---
 
+> Card의 typography/vertical rhythm은 이 문서가 담당하고, 박스 내부 inset과 nested padding은 `19-content-spacing-and-inset-system.md`를 따른다.
+
 # 8. Card Anatomy
 
 CHASM은 모든 카드를 하나의 구조로 강제하지 않는다.
