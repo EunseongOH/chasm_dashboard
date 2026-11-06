@@ -307,7 +307,7 @@ function renderPlatformFilterState() {
     active.forEach((item) => {
       const chip = document.createElement("span");
       chip.className = "filter-chip";
-      chip.innerHTML = `<span>${item.label}</span><button type="button" data-remove-platform="${item.key}" aria-label="${item.label} 플랫폼 필터 제거">×</button>`;
+      chip.innerHTML = `<span>${item.label}</span><button type="button" data-remove-platform="${item.key}" aria-label="${item.label} 플랫폼 필터 제거"><svg class="ui-icon ui-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>`;
       platformFilterChips.appendChild(chip);
     });
   }
@@ -581,6 +581,13 @@ periodSelect.addEventListener("change", () => {
   };
   renderQueryState();
   announce(`조회 기간을 ${preset.label}로 변경했습니다. 적용 기간은 ${formatDateKo(preset.start)}부터 ${formatDateKo(preset.end)}까지입니다.`);
+});
+
+dateRangeControl.addEventListener("toggle", () => {
+  if (!dateRangeControl.open && periodSelect.value === "custom" && appliedQuery.period !== "custom") {
+    dateRangeError.hidden = true;
+    renderQueryState();
+  }
 });
 
 comparisonSelect.addEventListener("change", () => {
