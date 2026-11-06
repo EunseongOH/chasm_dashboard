@@ -445,6 +445,8 @@ Error:
 
 ---
 
+Navigation 세부 wayfinding, icon rail, mobile menu, breadcrumb 규칙은 `17-navigation-and-information-architecture.md`를 따른다.
+
 # 19. Navigation State
 
 현재 위치:
