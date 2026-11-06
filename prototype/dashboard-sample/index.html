@@ -230,30 +230,64 @@
             <button class="text-action" type="button">전체 곡 보기 →</button>
           </div>
 
-          <div class="track-table" role="table" aria-label="최근 성과가 좋은 곡">
-            <div class="track-table__row track-table__head" role="row">
-              <span>곡</span><span>전체 스트리밍</span><span>최근 변화</span>
-            </div>
-            <div class="track-table__row" role="row">
-              <div class="track-name"><span class="cover c1"></span><span><strong>늦은 여름</strong><small>싱글 · 2026. 9. 18.</small></span></div>
-              <span class="numeric">4,832,101</span>
-              <span class="delta neutral-up">↑ 36.8%</span>
-            </div>
-            <div class="track-table__row" role="row">
-              <div class="track-name"><span class="cover c2"></span><span><strong>그날의 우리</strong><small>EP · 2026. 5. 03.</small></span></div>
-              <span class="numeric">3,214,987</span>
-              <span class="delta neutral-up">↑ 12.1%</span>
-            </div>
-            <div class="track-table__row" role="row">
-              <div class="track-name"><span class="cover c3"></span><span><strong>지금, 여기</strong><small>싱글 · 2025. 11. 21.</small></span></div>
-              <span class="numeric">2,976,430</span>
-              <span class="delta neutral-up">↑ 8.4%</span>
-            </div>
-            <div class="track-table__row" role="row">
-              <div class="track-name"><span class="cover c4"></span><span><strong>안녕, 또 안녕</strong><small>EP · 2025. 4. 11.</small></span></div>
-              <span class="numeric">1,982,771</span>
-              <span class="delta">↓ 2.3%</span>
-            </div>
+          <div class="table-shell">
+            <table class="data-table resource-table">
+              <caption class="sr-only">최근 성과가 좋은 곡</caption>
+              <colgroup>
+                <col class="resource-col" />
+                <col class="metric-col" />
+                <col class="delta-col" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">곡</th>
+                  <th scope="col" class="cell-number">전체 스트리밍</th>
+                  <th scope="col" class="cell-delta" data-priority="2">최근 변화</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="track-name">
+                      <span class="cover c1" aria-hidden="true"></span>
+                      <span><strong>늦은 여름</strong><small>싱글 · 2026. 9. 18.</small></span>
+                    </div>
+                  </td>
+                  <td class="numeric cell-number">4,832,101</td>
+                  <td class="delta neutral-up cell-delta" data-priority="2">↑ 36.8%</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="track-name">
+                      <span class="cover c2" aria-hidden="true"></span>
+                      <span><strong>그날의 우리</strong><small>EP · 2026. 5. 03.</small></span>
+                    </div>
+                  </td>
+                  <td class="numeric cell-number">3,214,987</td>
+                  <td class="delta neutral-up cell-delta" data-priority="2">↑ 12.1%</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="track-name">
+                      <span class="cover c3" aria-hidden="true"></span>
+                      <span><strong>지금, 여기</strong><small>싱글 · 2025. 11. 21.</small></span>
+                    </div>
+                  </td>
+                  <td class="numeric cell-number">2,976,430</td>
+                  <td class="delta neutral-up cell-delta" data-priority="2">↑ 8.4%</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="track-name">
+                      <span class="cover c4" aria-hidden="true"></span>
+                      <span><strong>안녕, 또 안녕</strong><small>EP · 2025. 4. 11.</small></span>
+                    </div>
+                  </td>
+                  <td class="numeric cell-number">1,982,771</td>
+                  <td class="delta cell-delta" data-priority="2">↓ 2.3%</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </article>
 
