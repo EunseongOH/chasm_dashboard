@@ -484,15 +484,27 @@ button, a { -webkit-tap-highlight-color: transparent; }
   font-weight: 600;
 }
 .info {
-  width: 17px; height: 17px;
+  width: 24px;
+  height: 24px;
   padding: 0;
-  display: inline-grid; place-items: center;
+  display: inline-grid;
+  place-items: center;
   color: var(--fg-tertiary);
   background: transparent;
   border: 1px solid var(--neutral-300);
   border-radius: 50%;
-  font-size: 10px;
+  font-size: 11px;
   cursor: help;
+}
+
+.info:hover {
+  color: var(--fg-secondary);
+  background: var(--control-bg-hover);
+  border-color: var(--control-border-hover);
+}
+
+.info:active {
+  background: var(--control-bg-pressed);
 }
 .kpi-card__value {
   margin-top: var(--space-1);
