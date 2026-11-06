@@ -754,6 +754,8 @@ Spotify 데이터가 아직 최신 상태가 아닙니다.
 
 ---
 
+> Feedback 문구의 surface/지속/dismissal은 `18-feedback-notification-confirmation.md`를 따른다. 이 문서는 실제 문장 vocabulary를 담당한다.
+
 # 27. Success Feedback
 
 작업 완료 feedback은 짧게.
