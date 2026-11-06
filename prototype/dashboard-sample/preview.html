@@ -187,6 +187,18 @@
   --table-row-hover: var(--surface-subtle);
   --table-divider: var(--border-subtle);
   --table-artwork-size: 36px;
+
+  --insight-observation-bg: transparent;
+  --insight-signal-bg: var(--surface-subtle);
+  --insight-interpretation-bg: #F8F6FA;
+  --insight-action-bg: var(--blue-50);
+  --insight-evidence-border: var(--border-default);
+  --insight-link-color: var(--blue-700);
+
+  --annotation-event-bg: var(--surface-default);
+  --annotation-event-border: var(--border-default);
+  --annotation-selected-bg: var(--blue-50);
+  --annotation-selected-border: var(--blue-200);
 }
 
 * { box-sizing: border-box; }
@@ -958,6 +970,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .insight-item:hover { background: var(--control-bg-hover); }
 .insight-item:active { background: var(--control-bg-pressed); }
+.insight-item.is-active {
+  background: var(--insight-action-bg);
+}
+.insight-item.is-active .arrow {
+  color: var(--fg-brand);
+}
 .insight-item:disabled {
   color: var(--control-fg-disabled);
   background: transparent;
@@ -970,7 +988,20 @@ button, a { -webkit-tap-highlight-color: transparent; }
   border-radius: var(--radius-control);
   font-size: 13px;
 }
-.insight-copy { display: grid; gap: var(--space-0_5); }
+.insight-copy {
+  display: grid;
+  gap: var(--space-0_5);
+}
+.insight-kind {
+  color: var(--fg-tertiary);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+.insight-kind--signal {
+  color: var(--fg-secondary);
+}
 .insight-copy strong {
   font-size: var(--type-supporting-size);
   line-height: var(--type-supporting-line);
@@ -999,6 +1030,95 @@ button, a { -webkit-tap-highlight-color: transparent; }
   color: var(--fg-tertiary);
   font-size: var(--type-meta-size);
   line-height: var(--type-meta-line);
+}
+
+.insight-evidence {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-subtle);
+  border-radius: var(--radius-control);
+}
+
+.insight-evidence__title {
+  margin: 0;
+  color: var(--fg-primary);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+  font-weight: 650;
+}
+
+.insight-evidence__list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.insight-evidence__row {
+  display: grid;
+  grid-template-columns: minmax(92px, auto) minmax(0, 1fr);
+  gap: var(--space-3);
+  color: var(--fg-secondary);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+}
+
+.insight-evidence__row dt {
+  color: var(--fg-tertiary);
+}
+
+.insight-evidence__row dd {
+  margin: 0;
+}
+
+.insight-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.insight-disclosure {
+  min-height: 32px;
+  padding: 0 var(--space-2);
+  color: var(--insight-link-color);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-control);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-line);
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.insight-disclosure:hover {
+  background: var(--control-bg-hover);
+}
+
+.insight-disclosure:active {
+  background: var(--control-bg-pressed);
+}
+
+.chart-event-line[data-insight-target].is-linked-highlight {
+  stroke: var(--blue-500);
+  stroke-width: 1.5;
+}
+
+.chart-event-box[data-insight-target].is-linked-highlight,
+.chart-highlight-box[data-insight-target].is-linked-highlight {
+  fill: var(--annotation-selected-bg);
+  stroke: var(--annotation-selected-border);
+}
+
+.chart-event-label[data-insight-target].is-linked-highlight,
+.chart-highlight-label[data-insight-target].is-linked-highlight {
+  fill: var(--fg-brand);
+  font-weight: 700;
+}
+
+.data-table tbody tr.is-insight-highlight td {
+  background: var(--blue-50);
 }
 
 .secondary-grid > .card {
@@ -1719,29 +1839,32 @@ button, a { -webkit-tap-highlight-color: transparent; }
             </div>
           </div>
 
-          <button class="insight-item" type="button">
+          <button class="insight-item" type="button" data-link-target="release" aria-label="발매 전후 스트리밍 변화 근거 보기">
             <span class="insight-icon">↗</span>
             <span class="insight-copy">
-              <strong>신곡 발매 후 전체 스트리밍이 42.3% 증가</strong>
-              <small>발매 전 4주 평균과 비교</small>
+              <span class="insight-kind">비교</span>
+              <strong>전체 스트리밍이 발매 전 4주 평균보다 42.3% 높습니다.</strong>
+              <small>발매 전 4주 평균 대비</small>
             </span>
             <span class="arrow">→</span>
           </button>
 
-          <button class="insight-item" type="button">
+          <button class="insight-item" type="button" data-link-target="late-summer" aria-label="늦은 여름 성장 기여 근거 보기">
             <span class="insight-icon">♪</span>
             <span class="insight-copy">
-              <strong>〈늦은 여름〉이 최근 증가량의 38%를 차지</strong>
-              <small>다른 곡보다 성장 기여가 큼</small>
+              <span class="insight-kind">비교</span>
+              <strong>〈늦은 여름〉이 최근 스트리밍 증가분의 38%를 차지합니다.</strong>
+              <small>최근 기간 증가량 기준</small>
             </span>
             <span class="arrow">→</span>
           </button>
 
-          <button class="insight-item" type="button">
+          <button class="insight-item" type="button" data-link-target="trend" aria-label="Instagram 선행 신호 근거 보기">
             <span class="insight-icon">◎</span>
             <span class="insight-copy">
-              <strong>Instagram 반응 상승이 스트리밍보다 먼저 나타남</strong>
-              <small>인과가 아닌 시계열상 선행 신호</small>
+              <span class="insight-kind insight-kind--signal">신호</span>
+              <strong>Instagram 반응 상승이 스트리밍보다 먼저 나타났습니다.</strong>
+              <small>인과가 아닌 시계열상 선행</small>
             </span>
             <span class="arrow">→</span>
           </button>
@@ -1812,7 +1935,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr id="track-late-summer">
                   <td>
                     <div class="track-name">
                       <span class="cover c1" aria-hidden="true"></span>
@@ -2019,7 +2142,8 @@ function renderChart() {
       y1: margin.top - 6,
       x2: releaseX,
       y2: margin.top + plotH,
-      class: "chart-event-line"
+      class: "chart-event-line",
+      "data-insight-target": "release"
     }));
 
     const releaseBox = svgEl("rect", {
@@ -2028,7 +2152,8 @@ function renderChart() {
       width: 70,
       height: 28,
       rx: 7,
-      class: "chart-highlight-box"
+      class: "chart-highlight-box",
+      "data-insight-target": "release"
     });
     svg.appendChild(releaseBox);
 
@@ -2036,7 +2161,8 @@ function renderChart() {
       x: releaseX,
       y: 25,
       "text-anchor": "middle",
-      class: "chart-highlight-label"
+      class: "chart-highlight-label",
+      "data-insight-target": "release"
     });
     releaseText.textContent = "신곡 발매 9/18";
     svg.appendChild(releaseText);
@@ -2173,6 +2299,54 @@ document.querySelectorAll(".info").forEach((button) => {
       button.blur();
     }
   });
+});
+
+
+const insightItems = [...document.querySelectorAll(".insight-item[data-link-target]")];
+
+function clearInsightLinks() {
+  insightItems.forEach((item) => item.classList.remove("is-active"));
+  document.querySelectorAll("[data-insight-target].is-linked-highlight")
+    .forEach((item) => item.classList.remove("is-linked-highlight"));
+  document.querySelectorAll(".data-table tr.is-insight-highlight")
+    .forEach((item) => item.classList.remove("is-insight-highlight"));
+}
+
+function activateInsight(item) {
+  clearInsightLinks();
+  item.classList.add("is-active");
+
+  const target = item.dataset.linkTarget;
+
+  if (target === "release") {
+    if (granularity !== "day") {
+      const dayButton = segmentedButtons.find((button) => button.dataset.granularity === "day");
+      if (dayButton) selectGranularity(dayButton);
+    }
+
+    document.querySelectorAll('[data-insight-target="release"]')
+      .forEach((node) => node.classList.add("is-linked-highlight"));
+
+    document.getElementById("music")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  if (target === "late-summer") {
+    const row = document.getElementById("track-late-summer");
+    if (row) {
+      row.classList.add("is-insight-highlight");
+      row.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    return;
+  }
+
+  if (target === "trend") {
+    document.getElementById("music")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
+insightItems.forEach((item) => {
+  item.addEventListener("click", () => activateInsight(item));
 });
 
 document.getElementById("periodSelect").addEventListener("change", (event) => {
