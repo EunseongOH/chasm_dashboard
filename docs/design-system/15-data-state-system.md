@@ -370,6 +370,10 @@ Unsupported metric에 skeleton 유지
 
 ---
 
+## Query transition과의 구분
+
+Query transition의 loading은 `16-filter-search-date-query-system.md`를 따른다. 기간/filter/comparison이 바뀐 경우 새 query label 아래 old-query data를 정상값처럼 유지하지 않는다. 이 문서의 Refreshing 규칙은 **같은 query의 background refresh**에 적용한다.
+
 # 11. Refreshing
 
 기존 데이터가 있고 background refresh 중.
