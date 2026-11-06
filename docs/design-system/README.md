@@ -83,6 +83,12 @@
    - icon-only 접근성 및 target 규칙
    - System icon / DSP logo / artwork / avatar 구분
 
+14. `13-content-and-microcopy-system.md`
+   - 한국어 문체와 분석 카피 원칙
+   - 증가/상승/성장, 이전 기간/전월/baseline 용어 구분
+   - CTA / Tooltip / Empty / Error / Stale 문장 패턴
+   - Proposed metric/entity glossary
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -114,6 +120,10 @@ Rich music resource table, exact numeric table, ranking preview, rank change, na
 `prototype/design-system-lab/iconography.html`
 
 아이콘 size/stroke, navigation state, icon button target, status, contrast, insight cue, icon-only 접근성을 검증하는 Iconography Lab입니다.
+
+`prototype/design-system-lab/content-microcopy.html`
+
+문체, 비교 기준, 증가/상승/성장 용어, CTA, Tooltip, Empty/Error/Stale 상태, 제품 용어 사전을 검증하는 Content Lab입니다.
 
 ## 상태 표기
 
