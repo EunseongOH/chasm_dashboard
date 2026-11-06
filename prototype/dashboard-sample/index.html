@@ -59,17 +59,64 @@
           <p class="page-description">여러 플랫폼의 변화를 한 화면에서 보고, 지금 확인할 지점을 빠르게 찾습니다.</p>
         </div>
         <div class="header-actions">
-          <label class="select-control">
-            <span class="sr-only">조회 기간</span>
-            <select id="periodSelect">
-              <option value="90">최근 3개월</option>
-              <option value="30">최근 30일</option>
-            </select>
-          </label>
-          <button class="date-control" type="button">2026. 8. 1. – 10. 31.</button>
           <button class="icon-button" type="button" aria-label="내보내기"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10"/><path d="m8.5 10.5 3.5 3.5 3.5-3.5"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></button>
         </div>
       </header>
+
+      <section class="query-bar" aria-label="조회 조건">
+        <div class="query-bar__label">
+          <span class="section-kicker">QUERY</span>
+          <strong>조회 조건</strong>
+        </div>
+
+        <div class="query-bar__controls">
+          <label class="query-field">
+            <span class="query-field__label">기간</span>
+            <select id="periodSelect">
+              <option value="90">최근 3개월</option>
+              <option value="30">최근 30일</option>
+              <option value="custom">사용자 지정</option>
+            </select>
+          </label>
+
+          <details class="query-date" id="dateRangeControl">
+            <summary>
+              <span class="query-field__label">날짜 범위</span>
+              <span id="dateRangeSummary">2026. 8. 1. – 10. 31.</span>
+            </summary>
+            <div class="query-popover">
+              <div class="query-date-grid">
+                <label class="query-field">
+                  <span class="query-field__label">시작일</span>
+                  <input id="dateStart" type="date" value="2026-08-01" />
+                </label>
+                <label class="query-field">
+                  <span class="query-field__label">종료일</span>
+                  <input id="dateEnd" type="date" value="2026-10-31" />
+                </label>
+              </div>
+              <p class="query-error" id="dateRangeError" role="alert" hidden></p>
+              <div class="query-popover__actions">
+                <button class="button button--secondary button--compact" id="dateCancelButton" type="button">취소</button>
+                <button class="button button--primary button--compact" id="dateApplyButton" type="button">날짜 적용</button>
+              </div>
+            </div>
+          </details>
+
+          <label class="query-field">
+            <span class="query-field__label">비교 기준</span>
+            <select id="comparisonSelect">
+              <option value="previous">이전 동일 기간</option>
+              <option value="none">비교 안 함</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="query-bar__summary">
+          <span id="queryContextSummary">최근 3개월 · 이전 동일 기간과 비교</span>
+          <button class="text-action query-reset" id="queryResetButton" type="button" hidden>조회 조건 초기화</button>
+        </div>
+      </section>
 
       <div class="data-health-bar" aria-label="샘플 데이터 상태">
         <div class="data-health-bar__summary">
@@ -123,7 +170,7 @@
             <button class="info" type="button" aria-label="전체 스트리밍 지표 설명" aria-describedby="help-total-streams" data-tip="합산 가능한 DSP의 재생 수만 포함한 샘플 지표입니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button>
           </div>
           <div class="kpi-card__value">2,498만 <small>회</small></div>
-          <div class="metric-context"><span class="delta neutral-up">↑ 18.4%</span><span>이전 3개월 대비</span></div>
+          <div class="metric-context" data-global-comparison><span class="delta neutral-up">↑ 18.4%</span><span data-period-comparison-label>이전 3개월 대비</span></div>
           <svg class="sparkline" viewBox="0 0 160 36" role="img" aria-label="전체 스트리밍 상승 추이">
             <path class="spark-area" d="M0 31 L16 30 L32 27 L48 28 L64 23 L80 22 L96 20 L112 22 L128 15 L144 13 L160 5 L160 36 L0 36 Z"></path>
             <path class="spark-line" d="M0 31 L16 30 L32 27 L48 28 L64 23 L80 22 L96 20 L112 22 L128 15 L144 13 L160 5"></path>
@@ -144,7 +191,7 @@
         <article class="kpi-card">
           <div class="kpi-card__head"><span>스트리밍 증가 곡</span><button class="info" type="button" aria-label="스트리밍 증가 곡 지표 설명" aria-describedby="help-increasing-tracks" data-tip="최근 기간 스트리밍이 이전 기간보다 증가한 곡입니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button></div>
           <div class="kpi-card__value">3 <small>곡</small></div>
-          <div class="metric-context"><span class="delta neutral-up">+1곡</span><span>이전 기간 대비</span></div>
+          <div class="metric-context" data-global-comparison><span class="delta neutral-up">+1곡</span><span data-period-comparison-label>이전 기간 대비</span></div>
           <div class="mini-track-list"><span>늦은 여름</span><span>그날의 우리</span><span>지금, 여기</span></div>
         <span class="sr-only" id="help-increasing-tracks">최근 기간 스트리밍이 이전 기간보다 증가한 곡입니다.</span>
         </article>
@@ -152,7 +199,7 @@
         <article class="kpi-card">
           <div class="kpi-card__head"><span>SNS 신규 팔로워</span><button class="info" type="button" aria-label="SNS 신규 팔로워 지표 설명" aria-describedby="help-social-followers" data-tip="YouTube와 Instagram 신규 팔로워의 샘플 합산입니다."><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/></svg></button></div>
           <div class="kpi-card__value">4,820 <small>명</small></div>
-          <div class="metric-context"><span class="delta neutral-up">↑ 6.1%</span><span>이전 3개월 대비</span></div>
+          <div class="metric-context" data-global-comparison><span class="delta neutral-up">↑ 6.1%</span><span data-period-comparison-label>이전 3개월 대비</span></div>
           <svg class="sparkline" viewBox="0 0 160 36" role="img" aria-label="SNS 신규 팔로워 추이">
             <path class="spark-area" d="M0 27 L16 26 L32 25 L48 26 L64 24 L80 19 L96 21 L112 17 L128 16 L144 11 L160 9 L160 36 L0 36 Z"></path>
             <path class="spark-line" d="M0 27 L16 26 L32 25 L48 26 L64 24 L80 19 L96 21 L112 17 L128 16 L144 11 L160 9"></path>
@@ -169,10 +216,35 @@
               <h2 id="musicTitle" class="focus-target" tabindex="-1">플랫폼별 스트리밍 추이</h2>
               <p>플랫폼 간 절대값보다 변화의 방향과 이벤트 전후 흐름을 함께 봅니다.</p>
             </div>
-            <div class="segmented" role="group" aria-label="집계 단위">
-              <button class="is-selected" type="button" data-granularity="day" aria-pressed="true">일간</button>
-              <button type="button" data-granularity="week" aria-pressed="false">주간</button>
+            <div class="chart-controls">
+              <details class="filter-menu" id="platformFilter">
+                <summary id="platformFilterSummary">플랫폼 전체</summary>
+                <div class="filter-popover">
+                  <fieldset>
+                    <legend>플랫폼</legend>
+                    <label class="filter-option"><input type="checkbox" data-platform-key="spotify" checked /> <span>Spotify</span></label>
+                    <label class="filter-option"><input type="checkbox" data-platform-key="youtube" checked /> <span>YouTube Music</span></label>
+                    <label class="filter-option"><input type="checkbox" data-platform-key="apple" checked /> <span>Apple Music</span></label>
+                    <label class="filter-option"><input type="checkbox" data-platform-key="melon" checked /> <span>Melon</span></label>
+                  </fieldset>
+                  <p class="filter-error" id="platformFilterError" role="alert" hidden>최소 1개 플랫폼을 선택하세요.</p>
+                  <div class="filter-popover__actions">
+                    <button class="button button--tertiary button--compact" id="platformDraftReset" type="button">플랫폼 초기화</button>
+                    <button class="button button--primary button--compact" id="platformApply" type="button">적용</button>
+                  </div>
+                </div>
+              </details>
+
+              <div class="segmented" role="group" aria-label="집계 단위">
+                <button class="is-selected" type="button" data-granularity="day" aria-pressed="true">일간</button>
+                <button type="button" data-granularity="week" aria-pressed="false">주간</button>
+              </div>
             </div>
+          </div>
+
+          <div class="chart-filter-summary" id="chartFilterSummary" hidden>
+            <div class="filter-chip-list" id="platformFilterChips" aria-label="적용된 플랫폼 필터"></div>
+            <button class="text-action" id="platformFilterReset" type="button">플랫폼 초기화</button>
           </div>
 
           <div class="chart-meta-row">
@@ -191,13 +263,7 @@
               <table class="data-table compact-table chart-data-table">
                 <caption class="sr-only">플랫폼별 스트리밍 추이 차트 데이터</caption>
                 <thead>
-                  <tr>
-                    <th scope="col">기간</th>
-                    <th scope="col" class="cell-number">Spotify</th>
-                    <th scope="col" class="cell-number">YouTube Music</th>
-                    <th scope="col" class="cell-number">Apple Music</th>
-                    <th scope="col" class="cell-number">Melon</th>
-                  </tr>
+                  <tr id="trendDataHead"></tr>
                 </thead>
                 <tbody id="trendDataBody"></tbody>
               </table>
@@ -290,7 +356,17 @@
               <h2>곡별 스트리밍 성과</h2>
               <p>전체 스트리밍과 최근 변화를 함께 봅니다.</p>
             </div>
-            <button class="text-action" type="button">전체 곡 보기 →</button>
+            <div class="track-search">
+              <label class="sr-only" for="trackSearchInput">곡명 검색</label>
+              <svg class="ui-icon ui-icon--sm track-search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4 4"/></svg>
+              <input id="trackSearchInput" type="search" placeholder="곡명 검색" autocomplete="off" />
+              <button class="track-search__clear" id="trackSearchClear" type="button" aria-label="곡명 검색어 지우기" hidden>×</button>
+            </div>
+          </div>
+
+          <div class="table-toolbar-meta">
+            <span id="trackSearchCount">4곡</span>
+            <span class="sr-only" id="trackSearchStatus" role="status" aria-live="polite" aria-atomic="true"></span>
           </div>
 
           <div class="table-shell">
@@ -305,11 +381,11 @@
                 <tr>
                   <th scope="col">곡</th>
                   <th scope="col" class="cell-number">전체 스트리밍</th>
-                  <th scope="col" class="cell-delta" data-priority="2">최근 변화</th>
+                  <th scope="col" class="cell-delta" data-priority="2" data-global-comparison>최근 변화</th>
                 </tr>
               </thead>
               <tbody>
-                <tr id="track-late-summer" class="focus-target" tabindex="-1">
+                <tr id="track-late-summer" class="focus-target" tabindex="-1" data-track-name="늦은 여름">
                   <td>
                     <div class="track-name">
                       <span class="cover c1" aria-hidden="true"></span>
@@ -317,9 +393,9 @@
                     </div>
                   </td>
                   <td class="numeric cell-number">4,832,101</td>
-                  <td class="delta neutral-up cell-delta" data-priority="2">↑ 36.8%</td>
+                  <td class="delta neutral-up cell-delta" data-priority="2" data-global-comparison>↑ 36.8%</td>
                 </tr>
-                <tr>
+                <tr data-track-name="그날의 우리">
                   <td>
                     <div class="track-name">
                       <span class="cover c2" aria-hidden="true"></span>
@@ -327,9 +403,9 @@
                     </div>
                   </td>
                   <td class="numeric cell-number">3,214,987</td>
-                  <td class="delta neutral-up cell-delta" data-priority="2">↑ 12.1%</td>
+                  <td class="delta neutral-up cell-delta" data-priority="2" data-global-comparison>↑ 12.1%</td>
                 </tr>
-                <tr>
+                <tr data-track-name="지금, 여기">
                   <td>
                     <div class="track-name">
                       <span class="cover c3" aria-hidden="true"></span>
@@ -337,9 +413,9 @@
                     </div>
                   </td>
                   <td class="numeric cell-number">2,976,430</td>
-                  <td class="delta neutral-up cell-delta" data-priority="2">↑ 8.4%</td>
+                  <td class="delta neutral-up cell-delta" data-priority="2" data-global-comparison>↑ 8.4%</td>
                 </tr>
-                <tr>
+                <tr data-track-name="안녕, 또 안녕">
                   <td>
                     <div class="track-name">
                       <span class="cover c4" aria-hidden="true"></span>
@@ -347,7 +423,15 @@
                     </div>
                   </td>
                   <td class="numeric cell-number">1,982,771</td>
-                  <td class="delta cell-delta" data-priority="2">↓ 2.3%</td>
+                  <td class="delta cell-delta" data-priority="2" data-global-comparison>↓ 2.3%</td>
+                </tr>
+                <tr id="trackSearchEmpty" hidden>
+                  <td colspan="3">
+                    <div class="table-empty-inline">
+                      <strong>검색어와 일치하는 곡이 없습니다.</strong>
+                      <span>검색어를 바꿔보세요.</span>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
