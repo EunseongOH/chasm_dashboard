@@ -116,6 +116,18 @@
    - Artist context switch와 cross-page drill-down
    - Proposed L1 IA와 route 방향
 
+19. `18-feedback-notification-confirmation.md`
+   - Inline / Callout / Toast / Message Bar / Dialog 구분
+   - Information / Success / Warning / Error semantic feedback
+   - destructive confirmation과 Undo 조건
+   - feedback scope / persistence / accessibility
+
+20. `19-content-spacing-and-inset-system.md`
+   - Outer spacing / Inset / Stack / Inline / Action separation 구분
+   - Tag→Tooltip→Row→Notice→Panel→Card→Empty/Dialog inset ladder
+   - nested padding 누적 방지
+   - role-based semantic inset token
+
 ## 코드 프로토타입
 
 `prototype/dashboard-sample/`
@@ -168,6 +180,14 @@ Global query, date preset/custom range, comparison, draft/applied multi-filter, 
 
 Full sidebar, icon rail, mobile menu, artist context, breadcrumb, tabs, drill-down, deep-link orientation을 검증하는 Navigation & IA Lab입니다.
 
+`prototype/design-system-lab/feedback-notification.html`
+
+Inline status, callout, page/card message, toast stack, field error, destructive confirmation, undo candidate를 검증하는 Feedback Lab입니다.
+
+`prototype/design-system-lab/content-spacing-inset.html`
+
+Tag/Tooltip/Notice/Panel/Card/Empty의 inset ladder, text/icon/action gap, nested padding, edge-to-edge table anatomy를 검증하는 Spacing Lab입니다.
+
 ## 상태 표기
 
 - **Stable**: 넓게 적용해도 되는 확정 원칙
@@ -188,6 +208,8 @@ Full sidebar, icon rail, mobile menu, artist context, breadcrumb, tabs, drill-do
 - Dashboard UI sample: **Proposed v0.1**
 - Data State 원칙·시각 문법: **Stable**
 - source별 refresh cadence / stale threshold / health aggregation: 실제 DSP 파이프라인 확인 후 **Deferred**
+- Role-based content inset / nested spacing 원칙: **Stable**
+- Feedback surface 선택과 destructive confirmation 원칙: **Stable**
 - Navigation hierarchy 원칙과 Breadcrumb/Back 구분: **Stable**
 - 현재 L1 메뉴 이름/순서 및 route schema: **Proposed / Deferred implementation**
 - Query/Filter/Search 역할 구분과 scope 원칙: **Stable**
