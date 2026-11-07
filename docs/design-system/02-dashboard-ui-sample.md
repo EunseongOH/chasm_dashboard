@@ -1,4 +1,4 @@
-# Dashboard UI Sample — v0.1
+# Lab CHASM 대시보드 UI Sample — v0.1
 
 > Prototype: `prototype/dashboard-sample/`  
 > 상태: Proposed / 실제 DSP 데이터 연결 전 UI·정보 구조 검증용
