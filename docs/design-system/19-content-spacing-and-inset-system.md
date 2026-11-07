@@ -545,7 +545,7 @@ Sibling spacing is owned by the parent.
 
 ---
 
-# 25. Nested Inset Accumulation
+# 26. Nested Inset Accumulation
 
 다음처럼 같은 방향 padding이 누적되지 않는지 확인한다.
 
@@ -570,7 +570,7 @@ Nested surface가 독립 의미를 가질수록 inset을 가질 수 있지만,
 
 ---
 
-# 26. Flush vs Inset Children
+# 27. Flush vs Inset Children
 
 ## Flush child
 
@@ -594,7 +594,7 @@ Header alignment은 card inset을 유지.
 
 ---
 
-# 27. Box Density Modes
+# 28. Box Density Modes
 
 CHASM은 user-selectable density mode를 제공하지 않는다.
 
@@ -610,7 +610,7 @@ CHASM은 user-selectable density mode를 제공하지 않는다.
 
 ---
 
-# 28. Responsive Inset
+# 29. Responsive Inset
 
 좁은 화면에서 무조건 모든 padding을 절반으로 줄이지 않는다.
 
@@ -624,7 +624,7 @@ CHASM은 user-selectable density mode를 제공하지 않는다.
 
 ---
 
-# 29. Audit of Current Prototype
+# 30. Audit of Current Prototype
 
 2026-11 audit:
 
@@ -691,7 +691,7 @@ Artist context explanatory panel:
 
 ---
 
-# 30. Semantic CSS Tokens
+# 31. Semantic CSS Tokens
 
 Candidate:
 
@@ -720,7 +720,7 @@ Primitive values를 직접 쓰는 것을 금지하지는 않지만,
 
 ---
 
-# 31. Decision Checklist
+# 32. Decision Checklist
 
 새 box를 만들기 전:
 
@@ -735,7 +735,7 @@ Primitive values를 직접 쓰는 것을 금지하지는 않지만,
 
 ---
 
-# 32. Decision Status
+# 33. Decision Status
 
 | 결정 | 상태 |
 |---|---|
@@ -754,7 +754,7 @@ Primitive values를 직접 쓰는 것을 금지하지는 않지만,
 | Dialog 24 | Proposed |
 
 
-# 33. Text Group Separation
+# 34. Text Group Separation
 
 CHASM의 heading/supporting copy는 line-height만으로 붙여놓지 않는다.
 
@@ -781,7 +781,7 @@ Description
 
 을 기본으로 한다.
 
-# 34. Overlap Prevention
+# 35. Overlap Prevention
 
 Grid/Flex 안에서 긴 한국어 text가 sibling control을 밀어 겹치지 않도록:
 - text column에 `min-width: 0`
