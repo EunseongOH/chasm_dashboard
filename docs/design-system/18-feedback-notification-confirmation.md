@@ -219,7 +219,7 @@ Long text가 2줄 이상 계속 필요하면 상세 page/dialog/link로 넘긴�
 
 ---
 
-# 7. Inline Persistence
+# 8. Inline Persistence
 
 Inline notification은 기본적으로 자동으로 사라지지 않는다.
 
@@ -233,7 +233,7 @@ Critical한 정보를 반드시 읽어야 한다면 close button을 제공하지
 
 ---
 
-# 8. Toast
+# 9. Toast
 
 Toast는 **행동이 끝난 뒤의 짧은 확인**에 사용한다.
 
@@ -250,7 +250,7 @@ Toast는 **행동이 끝난 뒤의 짧은 확인**에 사용한다.
 
 ---
 
-# 9. Toast Placement
+# 10. Toast Placement
 
 CHASM desktop 초기안:
 
@@ -274,7 +274,7 @@ Narrow screen:
 
 ---
 
-# 10. Toast Anatomy
+# 11. Toast Anatomy
 
 ```text
 [Icon] Title              [Close]
@@ -293,7 +293,7 @@ Korean copy line length를 고려해 Carbon 288px보다 조금 넓게 시작하�
 
 ---
 
-# 11. Toast Dismissal
+# 12. Toast Dismissal
 
 No action:
 - auto-dismiss 가능
@@ -310,7 +310,7 @@ Action 포함:
 
 ---
 
-# 12. Toast Queue
+# 13. Toast Queue
 
 - 최대 4개
 - newest closest to viewport edge
@@ -326,7 +326,7 @@ Batch action이면:
 
 ---
 
-# 13. Callout
+# 14. Callout
 
 Callout은 **사용자 행동 결과가 아니라 미리 알아야 할 정보**다.
 
@@ -345,7 +345,7 @@ Success/Error callout은 기본적으로 사용하지 않는다.
 
 ---
 
-# 14. Callout Spacing
+# 15. Callout Spacing
 
 - inset: 16
 - title → body: 4
@@ -358,7 +358,7 @@ Success/Error callout은 기본적으로 사용하지 않는다.
 
 ---
 
-# 15. Page Message Bar
+# 16. Page Message Bar
 
 여러 card/module에 공통 영향을 주는 상태.
 
@@ -375,7 +375,7 @@ Side navigation 위에 띄우지 않는다.
 
 ---
 
-# 16. Container Message Bar
+# 17. Container Message Bar
 
 한 card/section에만 영향.
 
@@ -393,7 +393,7 @@ Card 전체를 red background로 만들지 않는다.
 
 ---
 
-# 17. Message Bar Reflow
+# 18. Message Bar Reflow
 
 한 줄을 강제하지 않는다.
 
@@ -412,7 +412,7 @@ Message text를 ellipsis로 잘라 중요한 상태를 숨기지 않는다.
 
 ---
 
-# 18. Success Feedback
+# 19. Success Feedback
 
 작업 성공은 짧게.
 
@@ -430,7 +430,7 @@ Success가 화면 content 변화로 이미 명확하다면 toast도 생략할 �
 
 ---
 
-# 19. Warning Feedback
+# 20. Warning Feedback
 
 Warning은:
 - 사용자는 계속 진행 가능
@@ -446,7 +446,7 @@ Warning은:
 
 ---
 
-# 20. Error Feedback
+# 21. Error Feedback
 
 Error anatomy:
 
@@ -468,7 +468,7 @@ Spotify 데이터를 불러오지 못했습니다.
 
 ---
 
-# 21. Field-level Error
+# 22. Field-level Error
 
 특정 form field에 문제가 있다면:
 - field outline/state
@@ -488,7 +488,7 @@ Page/inline summary만 보여주고 field 자체에는 아무 표시도 하지 �
 
 ---
 
-# 22. Confirmation Is Not Feedback
+# 23. Confirmation Is Not Feedback
 
 Confirmation은 행동 **전** 판단을 요구한다.
 
@@ -506,7 +506,7 @@ Delete click
 
 ---
 
-# 23. When Confirmation Is Needed
+# 24. When Confirmation Is Needed
 
 Dialog confirmation 사용:
 
@@ -526,7 +526,7 @@ Dialog confirmation 사용:
 
 ---
 
-# 24. Confirmation Copy
+# 25. Confirmation Copy
 
 피함:
 ```text
@@ -548,7 +548,7 @@ Title과 action button에 **실제 object/action**을 넣는다.
 
 ---
 
-# 25. Danger Confirmation
+# 26. Danger Confirmation
 
 Destructive/irreversible:
 - danger action color
@@ -560,7 +560,7 @@ Cancel에 danger styling을 사용하지 않는다.
 
 ---
 
-# 26. Dialog Anatomy
+# 27. Dialog Anatomy
 
 ```text
 ┌────────────────────────────
@@ -582,7 +582,7 @@ Spacing:
 
 ---
 
-# 27. Dialog Dismissal
+# 28. Dialog Dismissal
 
 일반 modal:
 - Esc
@@ -600,7 +600,7 @@ Destructive alert-style confirmation:
 
 ---
 
-# 28. Default Focus in Danger Dialog
+# 29. Default Focus in Danger Dialog
 
 Destructive button을 자동 focus해 Enter 한 번으로 삭제되는 패턴은 피한다.
 
@@ -613,7 +613,7 @@ Destructive button을 자동 focus해 Enter 한 번으로 삭제되는 패턴은
 
 ---
 
-# 29. Undo vs Confirmation
+# 30. Undo vs Confirmation
 
 행동이 **진짜로 완전히 되돌릴 수 있고** rollback을 제품이 보장한다면:
 
@@ -632,7 +632,7 @@ Action
 
 ---
 
-# 30. Feedback and Data State
+# 31. Feedback and Data State
 
 Data State:
 ```text
@@ -649,7 +649,7 @@ Container message bar
 
 ---
 
-# 31. Feedback and Query
+# 32. Feedback and Query
 
 Query control validation:
 - field-level error 우선
@@ -664,7 +664,7 @@ Background request success:
 
 ---
 
-# 32. Feedback and Navigation
+# 33. Feedback and Navigation
 
 Navigation 성공 자체:
 - toast 없음
@@ -676,7 +676,7 @@ Route 실패/권한:
 
 ---
 
-# 33. Accessibility — Toast
+# 34. Accessibility — Toast
 
 Non-urgent success/info:
 - `role=status`
@@ -691,7 +691,7 @@ Actionable toast만 별도 focus pattern을 검토한다.
 
 ---
 
-# 34. Accessibility — Dialog
+# 35. Accessibility — Dialog
 
 Dialog:
 - accessible title
@@ -704,7 +704,7 @@ Alert dialog는 매우 제한적으로 사용한다.
 
 ---
 
-# 35. Motion
+# 36. Motion
 
 Toast entry/exit:
 - 짧고 subtle
@@ -716,7 +716,7 @@ Message bar/inline notification:
 
 ---
 
-# 36. Content Length
+# 37. Content Length
 
 Toast:
 - title + 최대 1–2 short lines
@@ -739,7 +739,7 @@ Dialog:
 
 ---
 
-# 37. Dismissibility Matrix
+# 38. Dismissibility Matrix
 
 | Surface | Auto dismiss | Manual close |
 |---|---|---|
@@ -753,7 +753,7 @@ Dialog:
 
 ---
 
-# 38. Visual Priority
+# 39. Visual Priority
 
 ## Info
 - subtle blue/info icon
@@ -776,7 +776,7 @@ low-contrast background + icon/accent를 기본으로 한다.
 
 ---
 
-# 39. Prototype Rules
+# 40. Prototype Rules
 
 Feedback Lab에서 다음을 검증한다.
 
@@ -805,7 +805,7 @@ Dashboard sample에는:
 
 ---
 
-# 40. Decision Status
+# 41. Decision Status
 
 | 결정 | 상태 |
 |---|---|
