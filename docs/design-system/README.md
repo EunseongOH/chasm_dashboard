@@ -1,6 +1,6 @@
-# CHASM Dashboard Design System
+# Lab CHASM 대시보드 Design System
 
-이 폴더는 CHASM 대시보드의 제품·디자인 의사결정을 팀원이나 이후의 AI 작업 세션에서도 그대로 이어갈 수 있도록 기록하는 공간입니다.
+이 폴더는 Lab CHASM 대시보드의 제품·디자인 의사결정을 팀원이나 이후의 AI 작업 세션에서도 그대로 이어갈 수 있도록 기록하는 공간입니다.
 
 ## 문서
 
