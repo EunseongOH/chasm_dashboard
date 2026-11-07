@@ -1,6 +1,6 @@
-# Dashboard Sample — Local Preview
+# Lab CHASM 대시보드 — Local Preview
 
-이 폴더는 CHASM Dashboard 디자인 시스템을 실제 화면에서 검증하기 위한 코드 기반 프로토타입입니다.
+이 폴더는 Lab CHASM 대시보드 디자인 시스템을 실제 화면에서 검증하기 위한 코드 기반 프로토타입입니다.
 
 ## 가장 빠르게 확인하는 방법
 
@@ -88,7 +88,7 @@ Claude Code는 가능하면 저장소 루트에서 실행하고, 작업 전에 �
 예시:
 
 ```text
-docs/design-system 문서를 먼저 읽고 현재 CHASM Dashboard의 제품 원칙과 디자인 시스템을 유지해줘.
+docs/design-system 문서를 먼저 읽고 현재 Lab CHASM 대시보드의 제품 원칙과 디자인 시스템을 유지해줘.
 prototype/dashboard-sample의 기존 구조를 기반으로 수정하고,
 결정된 디자인 원칙을 임의로 변경하지 말아줘.
 수정 후 preview.html도 동일한 상태로 갱신해줘.
