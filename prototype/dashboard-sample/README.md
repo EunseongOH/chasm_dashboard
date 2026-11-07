@@ -2,6 +2,14 @@
 
 이 폴더는 Lab CHASM 대시보드 디자인 시스템을 실제 화면에서 검증하기 위한 코드 기반 프로토타입입니다.
 
+## GitHub Pages 공개 주소
+
+GitHub Pages를 활성화한 뒤에는 다음 주소에서 Lab CHASM 대시보드를 확인합니다.
+
+`https://eunseongoh.github.io/chasm_dashboard/`
+
+저장소의 `.github/workflows/pages.yml`이 `main`의 정적 prototype을 GitHub Pages로 배포합니다.
+
 ## 가장 빠르게 확인하는 방법
 
 ### 방법 A — `preview.html` 하나만 열기
