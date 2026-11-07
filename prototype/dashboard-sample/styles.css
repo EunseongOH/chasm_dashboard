@@ -2160,8 +2160,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 .sort-button {
   min-height: 32px;
-  margin: -4px -8px;
-  padding: 0 8px;
+  margin: 0;
+  padding: 0 var(--space-2);
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
