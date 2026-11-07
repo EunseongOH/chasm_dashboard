@@ -188,7 +188,24 @@ Blue:
 
 ---
 
-# 6. Inline Spacing
+# 6. Visual treatment — no accent bar
+
+CHASM의 Inline status는 왼쪽에 진한 semantic color bar를 두지 않는다.
+
+기본 visual:
+- neutral/default surface
+- 1px default border
+- semantic status는 icon color와 명시적 copy로 전달
+- 상태 전체를 진한 색 면/세로 띠로 과장하지 않음
+
+이유:
+- status bar가 분석 내용보다 먼저 눈에 들어오는 것을 방지
+- AI-generated dashboard에서 흔한 장식적 callout 인상을 줄임
+- Error/Warning의 의미를 색상 하나가 아니라 icon + title + body로 전달
+
+Critical blocking state처럼 더 높은 시각 강도가 실제로 필요한 경우에만 별도 variant를 검토한다.
+
+# 7. Inline Spacing
 
 Content Spacing System 적용:
 
