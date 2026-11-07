@@ -1,4 +1,4 @@
-# CHASM Dashboard — Claude Code Guidance
+# Lab CHASM 대시보드 — Claude Code Guidance
 
 ## Before editing
 
@@ -32,7 +32,7 @@ Treat these documents as the current source of truth for established product/des
 
 ## Product context
 
-CHASM Dashboard integrates artist data scattered across DSP/SNS services and helps Korean indie artists, labels, and distributors understand what changed and what to inspect next.
+Lab CHASM 대시보드는 artist data scattered across DSP/SNS services and helps Korean indie artists, labels, and distributors understand what changed and what to inspect next.
 
 The MVP is Korean-first and must remain understandable to users who are not comfortable with data analysis.
 
