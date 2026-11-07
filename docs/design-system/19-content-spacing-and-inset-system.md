@@ -500,7 +500,28 @@ Button은 container inset보다 min-height 중심.
 
 ---
 
-# 24. Parent Owns Spacing
+# 24. Structural spacing에서 negative margin 금지
+
+기본적으로 component 간 간격을 맞추기 위해 negative margin을 사용하지 않는다.
+
+피함:
+- 이전 요소의 bottom margin을 상쇄하기 위한 `margin-top: -12px`
+- close/action target을 box edge 밖으로 밀어내는 음수 margin
+- breakpoint마다 겹침을 숨기기 위한 offset 보정
+
+선호:
+- parent `gap`
+- expanded/collapsed state별 명시적 margin
+- grid/flex alignment
+- 별도의 inset token
+
+예외:
+- chart annotation처럼 좌표 기반 optical positioning
+- 명확한 overlay primitive
+
+이 예외도 content flow spacing 용도로 사용하지 않는다.
+
+# 25. Parent Owns Spacing
 
 Stable 원칙:
 
@@ -731,3 +752,43 @@ Primitive values를 직접 쓰는 것을 금지하지는 않지만,
 | Compact card 16 | Proposed |
 | Empty state 24 | Proposed |
 | Dialog 24 | Proposed |
+
+
+# 33. Text Group Separation
+
+CHASM의 heading/supporting copy는 line-height만으로 붙여놓지 않는다.
+
+기본:
+- Kicker → Title: 2px
+- Title → supporting description: 4px
+- Description → distinct content group: 16–20px
+- Body → button/action group: 12px
+
+Lab specimen에서도 같은 원칙을 사용한다.
+
+특히:
+```text
+CASE LABEL
+Title
+Description
+[Specimen]
+```
+
+구조는:
+- Label → Title: 2px
+- Title → Description: 4px
+- Description → Specimen: 20px
+
+을 기본으로 한다.
+
+# 34. Overlap Prevention
+
+Grid/Flex 안에서 긴 한국어 text가 sibling control을 밀어 겹치지 않도록:
+- text column에 `min-width: 0`
+- 필요한 설명문에 `overflow-wrap: anywhere`
+- action/close target은 독립 column/row
+- 좁은 화면에서는 축소보다 reflow 우선
+
+를 적용한다.
+
+Absolute positioning은 chart/tooltip/overlay처럼 실제 overlay 의미가 있을 때만 사용한다.
